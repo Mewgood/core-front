@@ -24,7 +24,7 @@
 
         <!-- BEGIN ASSOCIATION TABLE RUN -->
         <!-- BEGIN TABLE TITLE-->
-        <h1 class="page-title">Real Users Normal</h1>
+        <h1 class="page-title assoc_table_title run_table">Real Users Normal</h1>
         <!-- END TABLE TITLE-->
 
         <div class="row">
@@ -32,17 +32,17 @@
                 <div id="table-association-run" class="table-association" data-table="run">
 
                     <!-- TODO founded events -->
-                    <span class="events-number"></span>
+                    <!-- <span class="events-number"></span>
                     <script class="template-events-number" type="text/template7">
                         <small class="pull-right">{{number}} events found</small>
-                    </script>
+                    </script> -->
 
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="selection-param">
                                 <ul class="table_import_filters_container">
-                                    <li>
+                                    <!-- <li>
                                         <div class="form-group">
                                             <label class="control-label">Tipster</label>
                                             <select class="form-control select-provider select2 table_import_filter_select"></select>
@@ -102,14 +102,18 @@
                                                 <option value="10"> <= 10 </option>
                                             </select>
                                         </div>
-                                    </li>
+                                    </li> -->
 
                                     <li>
-                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Search</button>
+                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Add Existing Event</button>
                                     </li>
 
-                                    <li>
+                                    <!-- <li>
                                         <button type="button" class="btn green refresh-events-btn refresh-event-info">Refresh</button>
+                                    </li> -->
+
+                                    <li>
+                                        <button type="button" class="btn green add-event">Add New Event</button>
                                     </li>
                                 </ul>
                             </div>
@@ -117,7 +121,7 @@
                         <div class="portlet-body">
 
                             <!-- content of association table -->
-                            <table class="table table-striped table-bordered table-hover table-checkable order-column association-table-datatable">
+                            <table class="table table-striped table-hover table-checkable order-column association-table-datatable">
                                 <thead>
                                     <tr>
                                         <th>Country</th>
@@ -148,7 +152,7 @@
         <!-- BEGIN ASSOCIATION TABLE -->
 
         <!-- BEGIN TABLE TITLE-->
-        <h1 class="page-title">Real Users VIP</h1>
+        <h1 class="page-title assoc_table_title ruv_table">Real Users VIP</h1>
         <!-- END TABLE TITLE-->
 
        <div class="row">
@@ -156,17 +160,17 @@
                 <div id="table-association-ruv" class="table-association" data-table="ruv">
 
                     <!-- TODO founded events -->
-                    <span class="events-number"></span>
+                    <!-- <span class="events-number"></span>
                     <script class="template-events-number" type="text/template7">
                         <small class="pull-right">{{number}} events found</small>
-                    </script>
+                    </script> -->
 
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="selection-param">
                                 <ul class="table_import_filters_container">
-                                    <li>
+                                    <!-- <li>
                                         <div class="form-group">
                                             <label class="control-label">Tipster</label>
                                             <select class="form-control select-provider select2 table_import_filter_select"></select>
@@ -226,14 +230,18 @@
                                                 <option value="10"> <= 10 </option>
                                             </select>
                                         </div>
-                                    </li>
+                                    </li> -->
 
                                     <li>
-                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Search</button>
+                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Add Existing Event</button>
                                     </li>
 
-                                    <li>
+                                    <!-- <li>
                                         <button type="button" class="btn green refresh-events-btn refresh-event-info">Refresh</button>
+                                    </li> -->
+
+                                    <li>
+                                        <button type="button" class="btn green add-event">Add New Event</button>
                                     </li>
                                 </ul>
                             </div>
@@ -272,7 +280,7 @@
         <!-- BEGIN ASSOCIATION TABLE -->
 
         <!-- BEGIN TABLE TITLE-->
-        <h1 class="page-title">No Users Normal</h1>
+        <h1 class="page-title assoc_table_title nun_table">No Users Normal</h1>
         <!-- END TABLE TITLE-->
 
        <div class="row">
@@ -280,17 +288,17 @@
                 <div id="table-association-nun" class="table-association" data-table="nun">
 
                     <!-- TODO founded events -->
-                    <span class="events-number"></span>
+                    <!-- <span class="events-number"></span>
                     <script class="template-events-number" type="text/template7">
                         <small class="pull-right">{{number}} events found</small>
-                    </script>
+                    </script> -->
 
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="selection-param">
                                 <ul class="table_import_filters_container">
-                                    <li>
+                                    <!-- <li>
                                         <div class="form-group">
                                             <label class="control-label">Tipster</label>
                                             <select class="form-control select-provider select2 table_import_filter_select"></select>
@@ -350,14 +358,18 @@
                                                 <option value="10"> <= 10 </option>
                                             </select>
                                         </div>
-                                    </li>
+                                    </li> -->
 
                                     <li>
-                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Search</button>
+                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Add Existing Event</button>
                                     </li>
 
-                                    <li>
+                                    <!-- <li>
                                         <button type="button" class="btn green refresh-events-btn refresh-event-info">Refresh</button>
+                                    </li> -->
+
+                                    <li>
+                                        <button type="button" class="btn green add-event">Add New Event</button>
                                     </li>
                                 </ul>
                             </div>
@@ -396,7 +408,7 @@
         <!-- BEGIN ASSOCIATION TABLE -->
 
         <!-- BEGIN TABLE TITLE-->
-        <h1 class="page-title">No Users VIP</h1>
+        <h1 class="page-title assoc_table_title nuv_table">No Users VIP</h1>
         <!-- END TABLE TITLE-->
 
        <div class="row">
@@ -404,17 +416,17 @@
                 <div id="table-association-nuv" class="table-association" data-table="nuv">
 
                     <!-- TODO founded events -->
-                    <span class="events-number"></span>
+                    <!-- <span class="events-number"></span>
                     <script class="template-events-number" type="text/template7">
                         <small class="pull-right">{{number}} events found</small>
-                    </script>
+                    </script> -->
 
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="selection-param">
                                 <ul class="table_import_filters_container">
-                                    <li>
+                                    <!-- <li>
                                         <div class="form-group">
                                             <label class="control-label">Tipster</label>
                                             <select class="form-control select-provider select2 table_import_filter_select"></select>
@@ -474,14 +486,18 @@
                                                 <option value="10"> <= 10 </option>
                                             </select>
                                         </div>
-                                    </li>
+                                    </li> -->
 
                                     <li>
-                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Search</button>
+                                        <button type="button" class="btn green btn-outline search-events-btn modal-get-event">Add Existing Event</button>
                                     </li>
 
-                                    <li>
+                                    <!-- <li>
                                         <button type="button" class="btn green refresh-events-btn refresh-event-info">Refresh</button>
+                                    </li> -->
+
+                                    <li>
+                                        <button type="button" class="btn green add-event">Add New Event</button>
                                     </li>
                                 </ul>
                             </div>
@@ -603,7 +619,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <div class="assoc_modal_titles col-md-9">
                     <h4 class="modal-title">Associate Event: {{table}}</h4>
-                    <h6>
+                    <h5>
                         {{#if event.isNoTip}}
                             No Tip
                         {{else}}
@@ -612,10 +628,7 @@
                             {{event.homeTeam}} - {{event.awayTeam}},
                             {{event.predictionId}}
                         {{/if}}
-                    </h6>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control assoc_websites_search" placeholder="Search">
+                    </h5>
                 </div>
             </div>
             <div class="modal-body">
@@ -632,7 +645,7 @@
 
                                     {{#each tipIdentifier}}
                                     <div class="tip-identifier" data-tip-identifier="{{@key}}">
-                                        {{@key}}
+                                        <!-- {{@key}} -->
                                         {{#each packages}}
                                         <label class="mt-checkbox mt-checkbox-outline">
                                             <input class="use" type="checkbox" {{#if eventIsAssociated}}checked="checked"{{/if}} data-id="{{id}}"/> {{name}}

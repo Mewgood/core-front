@@ -197,13 +197,17 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">Preview and Send</h4>
             </div>
-            <div class="modal-body">
-                <label class="control-label">Pack: {{siteName}} - {{packageName}}</label>
-                <div class="form-group">
+            <div class="modal-body row">
+                <label class="control-label col-md-12">Pack: {{siteName}} - {{packageName}}</label>
+                <div class="form-group col-md-4">
+                    <label>Subject</label>
+                    <input class="form-control"/>
+                </div>
+                <div class="form-group col-md-12">
                     <div class="summernote">{{template}}</div>
                 </div>
                 <br/>
-                <div class="preview-template"></div>
+                <div class="preview-template col-md-12"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>

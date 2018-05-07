@@ -539,8 +539,8 @@ function getEventsAssociations(argTable, date = '0') {
 
             var element = $('#table-association-' + argTable);
             var table = element.find('.association-table-datatable').DataTable();
-            var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages">Associate</button>';
-            buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
+            var buttons = '<button type="button" class="btn btn-sm green btn-outline search-events-btn modal-available-packages">Associate</button>';
+            buttons += '<button type="button" class="btn btn-sm red btn-outline search-events-btn delete-event">Del</button>';
 
             // clear table
             table.clear().draw();
