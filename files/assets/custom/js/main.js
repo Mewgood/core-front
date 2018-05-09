@@ -128,5 +128,9 @@ $(document).ready(function() {
         if (config.activePage == 'country-league-team') {
             countryLeagueTeamShowAllCountries();
         }
+
+        if (config.activePage == 'league-alias') {
+            leagueAliasShowAllCountries();
+        }
     }
 });

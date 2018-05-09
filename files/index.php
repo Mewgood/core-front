@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors','On');
     session_start();
 
     // logout user
@@ -37,6 +39,7 @@
         include "pages/archive-home.php";
         include "pages/auto-unit.php";
         include "pages/country-league-team.php";
+        include "pages/league-alias.php";
 
         include "common/sidebar.php";
 
@@ -88,12 +91,21 @@
     }
 ?>
 
-<!-- show login form -->
-<form action="" method="post">
-    Email:
-    <input type="text" name="email">
-    <br/>
-    Password
-    <input type="text" name="password">
-    <input type="submit" name="login" value="login">
-</form>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Development</title>
+	</head>
+	<body>
+		<!-- show login form -->
+		<form action="" method="post">
+		    Email:
+		    <input type="text" name="email" value="david@app.com">
+		    <br/>
+		    Password
+		    <input type="password" name="password" value="v#TI1n!u71yAP%ycI06Gbh2x&Dybcx9y">
+		    <input type="submit" name="login" value="login">
+		</form>
+	</body>
+</html>
