@@ -157,20 +157,31 @@ $('#modal-add-manual-event .odd').keyup(function() {
 });
 
 // Modal Add Event --- add complete event
+var matchFilterAjax; // define an variable to be used for the Ajax call ( in order to cancel older requests when we make a new one )
 // live search fot available events
 // every keyup means a new search
 $('#modal-add-manual-event .search-match').keyup(function() {
     var element = $('#modal-add-manual-event');
     var table = element.find('.select-table').val();
     var filterValue = $(this).val().trim();
+	var filterDate = $('#match_date_filter').val();
+	var dateFilterQuery = '';
+	if( typeof filterDate != 'undefined' && filterDate != 'none' ) {
+		dateFilterQuery = "/"+filterDate;
+	}
+	
+	if (typeof matchFilterAjax !='undefined' ) {
+		matchFilterAjax.abort();
+	}
 
     if (filterValue.length < 2) {
         element.find('.selectable-block').addClass('hidden');
         return;
     }
-
-    $.ajax({
-        url: config.coreUrl + "/match/filter/" + table + "/" + filterValue + "?" + getToken(),
+	
+	
+    matchFilterAjax = $.ajax({
+        url: config.coreUrl + "/match/filter/" + table + "/" + filterValue + dateFilterQuery + "?" + getToken(),
         type: "get",
         success: function (response) {
 
@@ -182,10 +193,53 @@ $('#modal-add-manual-event .search-match').keyup(function() {
             var html = compiledTemplate(data);
             element.find('.selectable-block').html(html);
         },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
+        error: function (matchFilterAjax, textStatus, errorTrown) {
+            manageError(matchFilterAjax, textStatus, errorTrown);
         }
     });
+});
+// Date select change means a new search
+$('#modal-add-manual-event #match_date_filter').on('change',function() {
+    var element = $('#modal-add-manual-event');
+    var table = element.find('.select-table').val();
+    var filterValue = $('#modal-add-manual-event .search-match').val().trim();
+	var filterDate = $('#match_date_filter').val();
+	var dateFilterQuery = '';
+	if( typeof filterDate != 'undefined' && filterDate != 'none' ) {
+		dateFilterQuery = "/"+filterDate;
+	}
+
+	if (typeof matchFilterAjax !='undefined' ) {
+		matchFilterAjax.abort();
+	}
+	
+    if (filterValue.length < 2) {
+        element.find('.selectable-block').addClass('hidden');
+        return;
+    }
+	
+	
+    matchFilterAjax = $.ajax({
+        url: config.coreUrl + "/match/filter/" + table + "/" + filterValue + dateFilterQuery + "?" + getToken(),
+        type: "get",
+        success: function (response) {
+
+            var data = {matches: response};
+            element.find('.selectable-block').removeClass('hidden');
+
+            var template = element.find('.template-selectable-block').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(data);
+            element.find('.selectable-block').html(html);
+        },
+        error: function (matchFilterAjax, textStatus, errorTrown) {
+            manageError(matchFilterAjax, textStatus, errorTrown);
+        }
+    });
+});
+// Hide the search results when closing the modal
+$('#modal-add-manual-event').on('hidden.bs.modal', function(e) { 
+    $('#modal-add-manual-event').find('.selectable-block').addClass('hidden');
 });
 
 // Modal Add Event --- add complete event
