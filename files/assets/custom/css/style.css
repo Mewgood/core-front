@@ -15,9 +15,12 @@
 }
 .table_import_filters_container li{
 	display: inline-block;
+	width: 19%;
 	padding-right: 1%;
 }
-
+.table_import_filters_container li:nth-child(5), .table_import_filters_container li:nth-child(6) {
+	width: 9%;
+}
 .table_import_filters_container li:nth-child(6) {
 	padding-right: 0;
 }
@@ -34,27 +37,8 @@
 	margin-right: 20px;
 }
 
-/*Association*/
-.page-content-white .assoc_table_title{
-	font-size: 29px;
-	font-weight: bold;
-}
 
-.page-content-white .run_table{
-	color: #34bfa3;
-}
 
-.page-content-white .ruv_table{
-	color: #5867dd;
-}
-
-.page-content-white .nun_table{
-	color: #ffb822;
-}
-
-.page-content-white .nuv_table{
-	color: #f4516c;
-}
 .assoc_website .form-group{
 	border-bottom: 1px solid #eee;
 	margin-bottom: 0;
@@ -100,10 +84,6 @@
 }
 .subscription-entry td{
 	background: #ffe5c7;
-}
-
-.association-table-datatable tbody tr td, .association-table-datatable tbody tr th{
-	line-height: 2;
 }
 
 .autounit.leagues + div,
