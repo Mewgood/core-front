@@ -756,11 +756,11 @@
 												<div class="row">
 													<div class="date-selector col-md-12">
 														<select id="match_date_filter" class="form-control input-sm">
-															<option value="none" selected="selected" >No date filter</option>
+															<option value="none" >No date filter</option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d'); ?>" >Today: <?php echo gmdate('Y-m-d'); ?></option>
+															<option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected" >Today: <?php echo gmdate('Y-m-d'); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
