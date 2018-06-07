@@ -193,8 +193,10 @@ $('#modal-add-manual-event .search-match').keyup(function() {
             var html = compiledTemplate(data);
             element.find('.selectable-block').html(html);
         },
-        error: function (matchFilterAjax, textStatus, errorTrown) {
-            manageError(matchFilterAjax, textStatus, errorTrown);
+        error: function (xhr, textStatus, errorTrown) {
+			console.log(textStatus);
+			console.log(errorTrown);
+            manageError(xhr, textStatus, errorTrown);
         }
     });
 });
@@ -232,8 +234,10 @@ $('#modal-add-manual-event #match_date_filter').on('change',function() {
             var html = compiledTemplate(data);
             element.find('.selectable-block').html(html);
         },
-        error: function (matchFilterAjax, textStatus, errorTrown) {
-            manageError(matchFilterAjax, textStatus, errorTrown);
+        error: function (xhr, textStatus, errorTrown) {
+			console.log(textStatus);
+			console.log(errorTrown);
+            manageError(xhr, textStatus, errorTrown);
         }
     });
 });
