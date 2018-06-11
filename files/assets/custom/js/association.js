@@ -87,6 +87,30 @@ config.association.on('click', '.add-manual-event', function() {
             manageError(xhr, textStatus, errorTrown);
         }
     });
+	
+	// fetch the countries for the 'manual event' -> select countries drop down 
+	$.ajax({
+        url: config.coreUrl + "/leagues/get-all-countries?" + getToken(),
+        type: "get",
+        success: function (response) {
+			console.log(response);
+			
+			var options_string = '';
+			var options_string = '<option value="-">-</option>';
+			$.each(response, function(i, e) {
+				// options_string += '<option value="'+e.country_code+'" >'+e.name+'</option>';
+				options_string += '<option value="'+e.code+'" >'+e.name+'</option>';
+			});
+			// clear the countries select options and re-generate them
+			// $('#manual_event_country_sel').html('');
+			// $('#manual_event_country_sel').html(options_string);
+			$('#manual_event_country_sel').append(options_string);
+			
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
 
     showContentBasedOnEventType($('#modal-add-manual-event [name="association-modal-event-type"]:checked').val());
     $('#modal-add-manual-event .confirm-event .systemDate').html($('#association-system-date').val());
@@ -374,6 +398,67 @@ $('#modal-add-manual-event').on('click', '.button-submit', function() {
     }
 });
 
+/* ------ Country / League / Team drop-down actions ------- */
+// Clickable - country selection
+// change country selection
+// show leagues in selected country.
+$('#modal-add-manual-event').on('change', '#manual_event_country_sel' , function() {
+	var country_code = $('#manual_event_country_sel').val();
+	if( country_code == '-' ) {
+		return;
+	}
+	
+    $.ajax({
+        url: config.coreUrl + "/leagues/get-country-leagues/" + country_code + "?" + getToken(),
+        type: "get",
+        success: function (response) {
+            console.log(response);
+			
+			var options_string = '<option value="-">-</option>';
+			$.each(response, function(i, e) {
+				// options_string += '<option value="'+e.league_id+'" >'+e.title+'</option>';
+				options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
+			});
+			// clear the league select options and re-generate them
+			$('#manual_event_league_sel').append(options_string);
+			
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+// Clickable - league selection
+// change league selection
+// show teams in selected league.
+$('#modal-add-manual-event').on('change', '#manual_event_league_sel', function() {
+	var league = $('#manual_event_league_sel').val();
+	if( league == '-' ) {
+		return;
+	}
+	
+    $.ajax({
+        url: config.coreUrl + "/leagues/get-league-teams/" + league + "?" + getToken(),
+        type: "get",
+        success: function (response) {			
+            console.log(response);
+			
+			var options_string = '<option value="-">-</option>';
+			$.each(response, function(i, e) {
+				// options_string += '<option value="'+e.team_id+'" >'+e.title+'</option>';
+				options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
+			});
+			// clear the teams select options and re-generate them
+			$('#manual_event_home_sel').append(options_string);
+			$('#manual_event_away_sel').append(options_string);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
+	
     /*
      *  ----- Modal Available Events -----
     ----------------------------------------------------------------------*/

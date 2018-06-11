@@ -806,37 +806,46 @@
                                                     <li class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="control-label">Select Country</label>
-                                                            <select class="form-control select-provider select2">
+                                                            <select class="form-control select-provider select2" id="manual_event_country_sel" >
+																<!--
                                                                 <option></option>
                                                                 <option value="1"> 1 </option>
                                                                 <option value="2"> 2 </option>
+																-->
                                                             </select>
                                                         </div>
                                                     </li>
                                                     <li class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="control-label">Select League</label>
-                                                            <select class="form-control select-provider select2">
+                                                            <select class="form-control select-provider select2" id="manual_event_league_sel" >
+																<!--
                                                                 <option></option>
                                                                 <option value="1"> 1 </option>
                                                                 <option value="2"> 2 </option>
+																-->
                                                             </select>
                                                         </div>
                                                     </li>
                                                     <li class="col-md-3">
                                                         <div class="form-group">
-                                                            <label class="control-label">Select Event</label>
-                                                            <select class="form-control select-provider select2">
+                                                            <!--<label class="control-label">Select Event</label>-->
+                                                            <label class="control-label">Home Team</label>
+                                                            <select class="form-control select-provider select2" id="manual_event_home_sel" >
+																<!--
                                                                 <option></option>
                                                                 <option value="1"> 1 </option>
                                                                 <option value="2"> 2 </option>
+																-->
                                                             </select>
                                                         </div>
                                                     </li>
                                                     <li class="col-md-3">
                                                         <div class="form-group">
-                                                            <label class="control-label">Select Prediction</label>
-                                                            <select class="form-control select-prediction-manual select2"></select>
+                                                            <!--<label class="control-label">Select Prediction</label>-->
+                                                            <label class="control-label">Away Team</label>
+                                                            <select class="form-control select-prediction-manual select2" id="manual_event_away_sel" >
+															</select>
                                                         </div>
                                                     </li>
                                                 </ul>
