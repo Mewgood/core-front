@@ -802,6 +802,23 @@
 	                                    <div class="col-md-12">
                                             <div class="add-event-option option-create hidden">
                                                 <h3>Create Event Manually</h3>
+												
+												<!-- GDM Placeholder START -->
+												<div class="row">
+													<div class="date-selector col-md-12">
+														<select id="manual_event_date" class="form-control input-sm">
+															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected" >Today: <?php echo gmdate('Y-m-d'); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
+														</select>
+													</div>
+												</div>
+												<!-- GDM Placeholder END -->
+												
                                                 <ul class="add_event_manually row">
                                                     <li class="col-md-3">
                                                         <div class="form-group">

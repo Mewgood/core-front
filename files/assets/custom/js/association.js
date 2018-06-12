@@ -93,7 +93,7 @@ config.association.on('click', '.add-manual-event', function() {
         url: config.coreUrl + "/leagues/get-all-countries?" + getToken(),
         type: "get",
         success: function (response) {
-			console.log(response);
+			// console.log(response);
 			
 			var options_string = '';
 			var options_string = '<option value="-">-</option>';
@@ -102,9 +102,7 @@ config.association.on('click', '.add-manual-event', function() {
 				options_string += '<option value="'+e.code+'" >'+e.name+'</option>';
 			});
 			// clear the countries select options and re-generate them
-			// $('#manual_event_country_sel').html('');
-			// $('#manual_event_country_sel').html(options_string);
-			$('#manual_event_country_sel').append(options_string);
+			$('#manual_event_country_sel').empty().append(options_string);
 			
         },
         error: function (xhr, textStatus, errorTrown) {
@@ -267,9 +265,12 @@ $('#modal-add-manual-event #match_date_filter').on('change',function() {
         }
     });
 });
-// Hide the search results when closing the modal
+// Hide the search results when closing the modal and reset the manual event dropdowns 
 $('#modal-add-manual-event').on('hidden.bs.modal', function(e) { 
     $('#modal-add-manual-event').find('.selectable-block').addClass('hidden');
+	$('#manual_event_league_sel').empty().append('<option value="-">-</option>');
+	$('#manual_event_home_sel').empty().append('<option value="-">-</option>');
+	$('#manual_event_away_sel').empty().append('<option value="-">-</option>');
 });
 
 // Modal Add Event --- add complete event
@@ -344,7 +345,71 @@ $('#modal-add-manual-event').on('click', '.button-submit', function() {
     }
 
     if (eventType === 'create') {
-        alert('Not implemented yet!');
+        // get parameters
+        var eventDate = $('#modal-add-manual-event #manual_event_date').val();
+        var countryCode = $('#modal-add-manual-event #manual_event_country_sel').val();
+        var leagueId = $('#modal-add-manual-event #manual_event_league_sel').val();
+        var homeTeamId = $('#modal-add-manual-event #manual_event_home_sel').val();
+        var awayTeamId = $('#modal-add-manual-event #manual_event_away_sel').val();
+        var predictionId = $('#modal-add-manual-event .select-prediction').val();
+        var odd = $('#modal-add-manual-event .odd').val();		
+		
+		var homeTeam = $('#modal-add-manual-event #manual_event_home_sel option:selected' ).text();		
+		var awayTeam = $('#modal-add-manual-event #manual_event_away_sel option:selected' ).text();		
+		var country = $('#modal-add-manual-event #manual_event_country_sel option:selected' ).text();		
+		var league = $('#modal-add-manual-event #manual_event_league_sel option:selected' ).text();		
+
+        $.ajax({
+            url: config.coreUrl + "/event/create-manually" + "?" + getToken(),
+            type: "post",
+            dataType: "json",
+            data: {
+                eventDate: eventDate,
+                countryCode: countryCode,
+                leagueId: leagueId,
+                homeTeamId: homeTeamId,
+                awayTeamId: awayTeamId,
+                predictionId: predictionId,
+                odd: odd,
+                homeTeam: homeTeam,
+                awayTeam: awayTeam,
+                country: country,
+                league: league,
+            },
+            success: function (response) {
+                alert("Type: --- " + response.type + " --- \r\n" + response.message);
+                if (response.type == 'error')
+                    return;
+
+                // start seccond ajax to create association event - table
+                $.ajax({
+                    url: config.coreUrl + "/association" + "?" + getToken(),
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        eventsIds: [response.data.id],
+                        table : table,
+                        systemDate: currentDate,
+                        // systemDate: eventDate,
+                    },
+                    beforeSend: function() {},
+                    success: function (r) {
+                        alert("Type: --- " + r.type + " --- \r\n" + r.message);
+                        // refresh table to see new entry
+                        getEventsAssociations(table, currentDate);
+                        $('#modal-add-manual-event').modal('hide');
+
+                        // TODO clean inputs
+                    },
+                    error: function (xhr, textStatus, errorTrown) {
+                        manageError(xhr, textStatus, errorTrown);
+                    }
+                });
+            },
+            error: function (xhr, textStatus, errorTrown) {
+                manageError(xhr, textStatus, errorTrown);
+            }
+        });
         return;
     }
 
@@ -404,15 +469,22 @@ $('#modal-add-manual-event').on('click', '.button-submit', function() {
 // show leagues in selected country.
 $('#modal-add-manual-event').on('change', '#manual_event_country_sel' , function() {
 	var country_code = $('#manual_event_country_sel').val();
+	var country = $('#modal-add-manual-event #manual_event_country_sel option:selected' ).text();
+	
 	if( country_code == '-' ) {
+		$('#modal-add-manual-event .confirm-event .country').html( '-' );
+		$('#manual_event_league_sel').empty().append('<option value="-">-</option>');
+		$('#manual_event_home_sel').empty().append('<option value="-">-</option>');
+		$('#manual_event_away_sel').empty().append('<option value="-">-</option>');
 		return;
 	}
+	$('#modal-add-manual-event .confirm-event .country').html( country );
 	
     $.ajax({
         url: config.coreUrl + "/leagues/get-country-leagues/" + country_code + "?" + getToken(),
         type: "get",
         success: function (response) {
-            console.log(response);
+            // console.log(response);
 			
 			var options_string = '<option value="-">-</option>';
 			$.each(response, function(i, e) {
@@ -420,7 +492,7 @@ $('#modal-add-manual-event').on('change', '#manual_event_country_sel' , function
 				options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
 			});
 			// clear the league select options and re-generate them
-			$('#manual_event_league_sel').append(options_string);
+			$('#manual_event_league_sel').empty().append(options_string);			
 			
         },
         error: function (xhr, textStatus, errorTrown) {
@@ -432,16 +504,22 @@ $('#modal-add-manual-event').on('change', '#manual_event_country_sel' , function
 // change league selection
 // show teams in selected league.
 $('#modal-add-manual-event').on('change', '#manual_event_league_sel', function() {
-	var league = $('#manual_event_league_sel').val();
-	if( league == '-' ) {
+	var leagueId = $('#manual_event_league_sel').val();
+	var league = $('#modal-add-manual-event #manual_event_league_sel option:selected' ).text();
+	
+	if( leagueId == '-' ) {
+		$('#modal-add-manual-event .confirm-event .league').html( '-' );
+		$('#manual_event_home_sel').empty().append('<option value="-">-</option>');
+		$('#manual_event_away_sel').empty().append('<option value="-">-</option>');
 		return;
 	}
+	$('#modal-add-manual-event .confirm-event .league').html( league );
 	
     $.ajax({
-        url: config.coreUrl + "/leagues/get-league-teams/" + league + "?" + getToken(),
+        url: config.coreUrl + "/leagues/get-league-teams/" + leagueId + "?" + getToken(),
         type: "get",
         success: function (response) {			
-            console.log(response);
+            // console.log(response);
 			
 			var options_string = '<option value="-">-</option>';
 			$.each(response, function(i, e) {
@@ -449,15 +527,28 @@ $('#modal-add-manual-event').on('change', '#manual_event_league_sel', function()
 				options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
 			});
 			// clear the teams select options and re-generate them
-			$('#manual_event_home_sel').append(options_string);
-			$('#manual_event_away_sel').append(options_string);
+			$('#manual_event_home_sel').empty().append(options_string);
+			$('#manual_event_away_sel').empty().append(options_string);
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
         }
     });
 });
-
+// Clickable - Home/Away team selection
+// set the html for the confirm poage
+$('#modal-add-manual-event').on('change', '#manual_event_home_sel', function() {
+	var homeTeam = $('#modal-add-manual-event #manual_event_home_sel option:selected' ).text();		
+	var awayTeam = $('#modal-add-manual-event #manual_event_away_sel option:selected' ).text();	
+		
+	$('#modal-add-manual-event .confirm-event .teams').html(homeTeam + ' - '+ awayTeam);
+});	
+$('#modal-add-manual-event').on('change', '#manual_event_away_sel', function() {
+	var homeTeam = $('#modal-add-manual-event #manual_event_home_sel option:selected' ).text();		
+	var awayTeam = $('#modal-add-manual-event #manual_event_away_sel option:selected' ).text();	
+		
+	$('#modal-add-manual-event .confirm-event .teams').html(homeTeam + ' - '+ awayTeam);
+});	
 	
     /*
      *  ----- Modal Available Events -----
