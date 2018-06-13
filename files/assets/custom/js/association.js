@@ -347,6 +347,7 @@ $('#modal-add-manual-event').on('click', '.button-submit', function() {
     if (eventType === 'create') {
         // get parameters
         var eventDate = $('#modal-add-manual-event #manual_event_date').val();
+		var eventTime = $('.timepicker').val();
         var countryCode = $('#modal-add-manual-event #manual_event_country_sel').val();
         var leagueId = $('#modal-add-manual-event #manual_event_league_sel').val();
         var homeTeamId = $('#modal-add-manual-event #manual_event_home_sel').val();
@@ -364,7 +365,7 @@ $('#modal-add-manual-event').on('click', '.button-submit', function() {
             type: "post",
             dataType: "json",
             data: {
-                eventDate: eventDate,
+                eventDate: eventDate + ' ' + eventTime,
                 countryCode: countryCode,
                 leagueId: leagueId,
                 homeTeamId: homeTeamId,

@@ -754,7 +754,7 @@
 												
 												<!-- GDM Placeholder START -->
 												<div class="row">
-													<div class="date-selector col-md-12">
+													<div class="date-selector col-md-4">
 														<select id="match_date_filter" class="form-control input-sm">
 															<option value="none" >No date filter</option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
@@ -765,7 +765,7 @@
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
 														</select>
-													</div>
+													</div>													
 												</div>
 												<!-- GDM Placeholder END -->
 												
@@ -805,7 +805,7 @@
 												
 												<!-- GDM Placeholder START -->
 												<div class="row">
-													<div class="date-selector col-md-12">
+													<div class="date-selector col-md-4">
 														<select id="manual_event_date" class="form-control input-sm">
 															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
@@ -815,6 +815,16 @@
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
 														</select>
+													</div>
+													<div class="col-md-3">
+														<div class="input-group">
+                                                            <input type="text" class="form-control timepicker timepicker-24">
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
 													</div>
 												</div>
 												<!-- GDM Placeholder END -->
