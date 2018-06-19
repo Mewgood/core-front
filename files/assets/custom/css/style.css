@@ -90,3 +90,26 @@
 .multiselect.dropdown-toggle {
   width: 100%;
 }
+
+.distribution-event .popover{
+	max-width: none;
+} 
+ul.schedule{
+	padding:15px;
+}
+.action-group{
+	margin-left: 15px;
+}
+.distribution .page-bar, .distribution .page-bar{
+	width: calc(100% - 235px);
+    top: 75px;
+    border-radius: 0;
+    position: fixed;
+    z-index: 1;
+}
+.page-header-fixed .page-container{
+	margin-top: 31px;
+}
+.page-content-white .page-title{
+	margin-top: 45px;
+}

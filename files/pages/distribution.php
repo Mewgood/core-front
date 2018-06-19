@@ -6,7 +6,7 @@
         <!-- BEGIN PAGE BAR-->
         <div class="page-bar">
             <div class="date-selector">
-                <select class="form-control input-sm select-system-date">
+                <select class="form-control select-system-date">
                     <option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
                     <option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
                     <option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
@@ -18,23 +18,75 @@
             </div>
             <div class="bar-buttons actions">
                 <div class="btn-group">
+                    <span> Sort By</span>
+                </div>
+                <div class="btn-group">
+                    <select class="form-control">
+                        <option>Real Users/No Users</option>
+                        <option>Real Users</option>
+                        <option>No Users</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <select class="form-control">
+                        <option>Normal Users/VIP Users</option>
+                        <option>Normal Users</option>
+                        <option>VIP Users</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <select class="form-control">
+                        <option>Email Sent/Email Unset</option>
+                        <option>Email Sent</option>
+                        <option>Email Unset</option>
+                    </select>
+                </div>
+                <div class="btn-group action-group">
+                    <span> Action</span>
+                </div>
+                <div class="btn-group">
+                    <button class="btn green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Select
+                        <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li><a class="select-unsent"> Select All Unsent </a></li>
+                        <li><a class="select-unpublish"> Select All Unpublish </a></li>
+                        <li><a class="clear-selection"> Clear All </a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button class="btn green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Open
+                        <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li><a> All Win Websites - Real Users </a></li>
+                        <li><a> All Win Websites - No Users </a></li>
+                        <li><a> All Loss Websites - Real Users </a></li>
+                        <li><a> All Loss Websites - No Users </a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
                     <button class="btn green dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"> Schedule
                         <i class="fa fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu pull-right schedule" role="menu">
                         <li>
-                            <label class="control-label">Start Date</label>
-                            <input class="form-control form-control-inline input-medium timepicker timepicker-24 start"/>
+                            <div class="form-group">
+                                <label class="control-label">Start Date</label>
+                                <input class="form-control form-control-inline timepicker timepicker-24 start"/>
+                            </div>
                         </li>
                         <li>
-                            <label class="control-label">End Date</label>
-                            <input class="form-control form-control-inline input-medium timepicker timepicker-24 end"/>
+                            <div class="form-group">
+                                <label class="control-label">End Date</label>
+                                <input class="form-control form-control-inline timepicker timepicker-24 end"/>
+                            </div>
                         </li>
                         <li>
-                            <button class="stop">Stop Schedule</button>
+                            <button class="stop btn btn-primary">Stop Schedule</button>
                         </li>
                         <li>
-                            <button class="create">Create Schedule</button>
+                            <button class="create btn btn-primary">Create Schedule</button>
                         </li>
                     </ul>
                 </div>
@@ -43,17 +95,15 @@
                         <i class="fa fa-angle-down"></i>
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        <li><a class="preview-and-send"> Preview and Send </a></li>
+                        <li><a class="preview-and-send" data-toggle="modal" href="#modal-distribution-preview-and-send"> Preview and Send </a></li>
                         <li><a class="send"> Send </a></li>
                         <li><a href="#modal-distribution-set-time" data-toggle="modal" > Edit </a></li>
                         <li><a class="publish"> Publish </a></li>
                         <li><a class="delete"> Delete </a></li>
                         <li><a class="subscription-restricted-tips"> Manage Users </a></li>
-                        <li><button class="btn btn-primary select-unsent"> Select all unsent </button></li>
-                        <li><button class="btn btn-primary select-unpublish"> Select all unpublish </button></li>
-                        <li><button class="btn btn-primary clear-selection"> Clear all </button></li>
                     </ul>
                 </div>
+                
             </div>
         </div>
         <!-- END PAGE BAR-->
@@ -66,93 +116,352 @@
 
         <!-- BEGIN SAMPLE TABLE PORTLET-->
         <div class="portlet light bordered">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-social-dribbble font-green"></i>
-                    <span class="caption-subject font-green bold uppercase">Distributed Events</span>
-                </div>
-            </div>
             <div class="portlet-body">
 
                 <!-- main table -->
-                <div class="table-content"></div>
-                <script class="template-table-content" type="text/template7">
+                <div class="table-content">
                     <div class="table-scrollable">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th> # </th>
-                                    <th> Country </th>
-                                    <th> League </th>
+                                    <th> Website </th>
+                                    <th> Tip </th>
                                     <th> Event </th>
-                                    <th> Prediction </th>
-                                    <th> Odd </th>
-                                    <th> Score </th>
-                                    <th> Status </th>
                                     <th> Sent At </th>
-                                    <th> Status </th>
+                                    <th> Email Received </th>
+                                    <th> Published </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{#each sites}}
-                                    <tr class="website_tr">
-                                        <td> <input class="select-group-site" type="checkbox" value="{{siteId}}"> </td>
-                                        <td colspan="9">{{name}}</td>
-                                    </tr>
-                                    {{#each packages}}
-                                        <tr class="pack_tr">
-                                            <td></td>
-                                            <td>{{name}} - {{eventsNumber}}/{{tipsPerDay}}</td>
-                                            <td colspan="8">
-                                            {{#if customerNotEnoughTips}}
-                                                Manage users: <strong>{{customerNotEnoughTips}}</strong>
-                                            {{/if}}
-                                            </td>
-                                        </tr>
-                                        {{#each events}}
-                                            <tr>
-                                                <td>
-                                                    <input class="use"
-                                                    email-sent=
-                                                    "{{#if isEmailSend}}sent{{else}}not-sent{{/if}}"
-                                                    event-publish=
-                                                    "{{#if isPublish}}publish{{else}}not-publish{{/if}}"
-                                                    type="checkbox" data-site-id="{{siteId}}" data-event-id="{{id}}"/>
-                                                </td>
-                                                {{#if isNoTip}}
-                                                    <td colspan="7">NO TIP</td>
-                                                {{else}}
-                                                    <td>{{country}}</td>
-                                                    <td>{{league}}</td>
-                                                    <td>{{homeTeam}} - {{awayTeam}}</td>
-                                                    <td>{{predictionName}}</td>
-                                                    <td>{{odd}}</td>
-                                                    <td>{{result}}</td>
-                                                    <td>{{#if status}}{{status.name}}{{else}}???{{/if}}</td>
-                                                {{/if}}
-                                                {{#if isEmailSend}}
-                                                    <td><span class="label label-sm label-success">{{mailingDate}}</span></td>
-                                                {{else}}
-                                                    <td><span class="label label-sm label-danger">{{mailingDate}}</span></td>
-                                                {{/if}}
-                                                {{#if isPublish}}
-                                                    <td><span class="label label-sm label-success"> Published </span></td>
-                                                {{else}}
-                                                    <td><span class="label label-sm label-danger"> Unpublished </span></td>
-                                                {{/if}}
-                                            </tr>
-                                            {{else}}
-                                            <tr>
-                                                <td> </td>
-                                                <td colspan="9">--- No events distributed in package ---</td>
-                                            </tr>
-                                        {{/each}}
-                                    {{/each}}
-                                {{/each}}
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> 13:00 | Barcelona - Real Madrid | Over 2.5 </td>
+                                    <td> <span class="label label-sm label-success"> 13.45 </span> </td>
+                                    <td> <span class="label label-sm label-info"> 0/15 </span> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> 13:00 | Barcelona - Real Madrid | Over 2.5 </td>
+                                    <td> <span class="label label-sm label-success"> 13.45 </span> </td>
+                                    <td> <span class="label label-sm label-success"> Sent </span> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> 13:00 | Barcelona - Real Madrid | Over 2.5 </td>
+                                    <td> <span class="label label-sm label-success"> 13.45 </span> </td>
+                                    <td> <span class="label label-sm label-success"> Sent </span> </td>
+                                    <td> <span class="label label-sm label-success"> Published </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> 13:00 | Barcelona - Real Madrid | Over 2.5 </td>
+                                    <td> <span class="label label-sm label-success"> 13.45 </span> </td>
+                                    <td> <span class="label label-sm label-danger"> Error </span> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> 13:00 | Barcelona - Real Madrid | Over 2.5 </td>
+                                    <td> <span class="label label-sm label-warning"> 12:25 </span> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                            <input data-index="0" name="btSelectItem" type="checkbox">
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td> DailySoccerWins.com </td>
+                                    <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
+                                    <td class="distribution-event"> <span href="javascript:;" class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="13:00 | Barcelona - Real Madrid | Over 2.5<br> 13:00 | Barcelona - Real Madrid | Over 2.5" >Multiple Events</span> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
+                                </tr>
+                                
                             </tbody>
                         </table>
-                    </div>
-                </script>
+                    </div>                    
+                </div>
+                
 
             </div>
         </div>
@@ -191,8 +500,87 @@
 <!-- START PREVIEW AND SEND -->
 <div class="modal fade" id="modal-distribution-preview-and-send" tabindex="-1" role="basic" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content"></div>
-        <script class="template-modal-content" type="text/template7">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Preview and Send</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label class="control-label">Pack: {{siteName}} - {{packageName}}</label>
+                        <div class="form-group">
+                            <div class="summernote">{{template}}</div>
+                        </div>
+                        <br/>
+                        <div class="preview-template"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="portlet light">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold uppercase"> Send To</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="scroller" style="height:200px" data-rail-visible="1">
+                                    <div class="form-group">
+                                        <div class="mt-checkbox-list">
+                                            <label class="mt-checkbox mt-checkbox-outline mt-checkbox-disabled"> email@email.com
+                                                <input type="checkbox" value="1" name="test" disabled="">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                <button type="button" class="btn green show-preview-template">Preview Template</button>
+                <button type="button" class="btn green send">Send</button>
+            </div>
+        </div>
+        <!-- <script class="template-modal-content" type="text/template7">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title">Preview and Send</h4>
@@ -210,7 +598,7 @@
                 <button type="button" class="btn green show-preview-template">Preview Template</button>
                 <button type="button" class="btn green send">Send</button>
             </div>
-        </script>
+        </script> -->
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
