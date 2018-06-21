@@ -144,7 +144,7 @@
                                     <td> DailySoccerWins.com </td>
                                     <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
                                     <td class="distribution-event"> 13:00 | Barcelona - Real Madrid | Over 2.5 </td>
-                                    <td> <span class="label label-sm label-success"> 13.45 </span> </td>
+                                    <td> <span class="label label-sm label-info"> 13.45 | 0/15 </span> </td>
                                     <td> <span class="label label-sm label-info"> 0/15 </span> </td>
                                     <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
                                 </tr>
@@ -158,7 +158,7 @@
                                     <td> DailySoccerWins.com </td>
                                     <td class="distribution-tip"> <span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="3 Days<br>30 Days" >Normal 1</span> </td>
                                     <td class="distribution-event"> 13:00 | Barcelona - Real Madrid | Over 2.5 </td>
-                                    <td> <span class="label label-sm label-success"> 13.45 </span> </td>
+                                    <td> <span class="label label-sm label-danger"> 13.45 | Error </span> </td>
                                     <td> <span class="label label-sm label-success"> Sent </span> </td>
                                     <td> <span class="label label-sm label-danger"> Unpublished </span> </td>
                                 </tr>
@@ -467,6 +467,79 @@
         </div>
         <!-- END SAMPLE TABLE PORTLET-->
 
+        <div class="date-selector">
+                <select class="form-control select-system-date">
+                    <option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected">Today: <?php echo gmdate('Y-m-d'); ?></option>
+                    <option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
+                    <option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
+                    <option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
+                </select>
+            </div>
+
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+
+                <!-- main table -->
+                <div class="table-content">
+                    <div class="table-scrollable">
+                        <table class="table table-hover">
+                            <tbody>
+                            	<tr class="email-logs-website-caption">
+                                    <td colspan="5"> Dailysoccerwins.com </td>
+                                </tr>
+                                <tr>
+                                    <td> cristi@cristi.com </td>
+                                    <td class="email-log-email-sending-status"> <span class="label label-sm label-success"> Sent | 13:00 </span> </td>
+                                    <td> <span class="label label-sm label-success"> Received | 13:05 </span> </td>
+                                    <td class="email-log-email-content"> <span class="popovers" data-trigger="hover" data-container=".email-log-email-content" data-html="true" data-content="email body" >Email Content</span> </td>
+                                    <td> <a type="button" class="btn blue btn-xs">Resend</a></td>
+                                </tr>
+                                <tr>
+                                    <td> cristi@cristi.com </td>
+                                    <td class="email-log-email-sending-status"> <span class="label label-sm label-success"> Sent | 13:00 </span> </td>
+                                    <td> <span class="label label-sm label-warning"> Waiting Response </span> </td>
+                                    <td class="email-log-email-content"> <span class="popovers" data-trigger="hover" data-container=".email-log-email-content" data-html="true" data-content="email body" >Email Content</span> </td>
+                                    <td> <a type="button" class="btn blue btn-xs">Resend</a></td>
+                                </tr>
+                                <tr>
+                                    <td> cristi@cristi.com </td>
+                                    <td class="email-log-email-sending-status"> <span class="label label-sm label-success"> Sent | 13:00 </span> </td>
+                                    <td> <span class="label label-sm label-danger popovers" data-trigger="hover" data-container=".email-log-email-sending-status" data-html="true" data-content="Error details"> Not Received </span> </td>
+                                    <td class="email-log-email-content"> <span class="popovers" data-trigger="hover" data-container=".email-log-email-content" data-html="true" data-content="email body" >Email Content</span> </td>
+                                    <td> <a type="button" class="btn blue btn-xs">Resend</a></td>
+                                </tr>
+                                <tr class="email-logs-website-caption">
+                                    <td colspan="5"> Dailysoccerwins.com </td>
+                                </tr>
+                                <tr>
+                                    <td> cristi@cristi.com </td>
+                                    <td class="email-log-email-sending-status"> <span class="label label-sm label-info"> Sending </span> </td>
+                                    <td> </td>
+                                    <td class="email-log-email-content"> <span class="popovers" data-trigger="hover" data-container=".email-log-email-content" data-html="true" data-content="email body" >Email Content</span> </td>
+                                    <td> <a type="button" class="btn blue btn-xs">Resend</a></td>
+                                </tr>
+                                <tr>
+                                    <td> cristi@cristi.com </td>
+                                    <td class="email-log-email-sending-status"> <span class="label label-sm label-danger popovers" data-trigger="hover" data-container=".email-log-email-sending-status" data-html="true" data-content="Error details"> Not Sent </span> </td>
+                                    <td> </td>
+                                    <td class="email-log-email-content"> <span class="popovers" data-trigger="hover" data-container=".email-log-email-content" data-html="true" data-content="email body" >Email Content</span> </td>
+                                    <td> <a type="button" class="btn blue btn-xs">Resend</a></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>                    
+                </div>
+                
+
+            </div>
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+
+
+
+
         <!-- END TIPS DISTRIBUTION -->
     </div>
     <!-- END CONTENT BODY -->
@@ -526,8 +599,8 @@
                                 <div class="scroller" style="height:200px" data-rail-visible="1">
                                     <div class="form-group">
                                         <div class="mt-checkbox-list">
-                                            <label class="mt-checkbox mt-checkbox-outline mt-checkbox-disabled"> email@email.com
-                                                <input type="checkbox" value="1" name="test" disabled="">
+                                            <label class="mt-checkbox mt-checkbox-outline"> email@email.com
+                                                <input type="checkbox" value="1" name="test">
                                                 <span></span>
                                             </label>
                                             <label class="mt-checkbox mt-checkbox-outline"> email@email.com
@@ -569,6 +642,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
+                                <button type="button" class="btn btn-default">Select All</button>
                             </div>
                         </div>
                     </div>
