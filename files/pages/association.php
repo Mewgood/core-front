@@ -754,7 +754,7 @@
 												
 												<!-- GDM Placeholder START -->
 												<div class="row">
-													<div class="date-selector col-md-12">
+													<div class="date-selector col-md-4">
 														<select id="match_date_filter" class="form-control input-sm">
 															<option value="none" >No date filter</option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
@@ -765,7 +765,7 @@
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
 															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
 														</select>
-													</div>
+													</div>													
 												</div>
 												<!-- GDM Placeholder END -->
 												
@@ -802,41 +802,77 @@
 	                                    <div class="col-md-12">
                                             <div class="add-event-option option-create hidden">
                                                 <h3>Create Event Manually</h3>
+												
+												<!-- GDM Placeholder START -->
+												<div class="row">
+													<div class="date-selector col-md-4">
+														<select id="manual_event_date" class="form-control input-sm">
+															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected" >Today: <?php echo gmdate('Y-m-d'); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
+															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
+														</select>
+													</div>
+													<div class="col-md-3">
+														<div class="input-group">
+                                                            <input type="text" class="form-control timepicker timepicker-24">
+                                                            <span class="input-group-btn">
+                                                                <button class="btn default" type="button">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+													</div>
+												</div>
+												<!-- GDM Placeholder END -->
+												
                                                 <ul class="add_event_manually row">
                                                     <li class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="control-label">Select Country</label>
-                                                            <select class="form-control select-provider select2">
+                                                            <select class="form-control select-provider select2" id="manual_event_country_sel" >
+																<!--
                                                                 <option></option>
                                                                 <option value="1"> 1 </option>
                                                                 <option value="2"> 2 </option>
+																-->
                                                             </select>
                                                         </div>
                                                     </li>
                                                     <li class="col-md-3">
                                                         <div class="form-group">
                                                             <label class="control-label">Select League</label>
-                                                            <select class="form-control select-provider select2">
+                                                            <select class="form-control select-provider select2" id="manual_event_league_sel" >
+																<!--
                                                                 <option></option>
                                                                 <option value="1"> 1 </option>
                                                                 <option value="2"> 2 </option>
+																-->
                                                             </select>
                                                         </div>
                                                     </li>
                                                     <li class="col-md-3">
                                                         <div class="form-group">
-                                                            <label class="control-label">Select Event</label>
-                                                            <select class="form-control select-provider select2">
+                                                            <!--<label class="control-label">Select Event</label>-->
+                                                            <label class="control-label">Home Team</label>
+                                                            <select class="form-control select-provider select2" id="manual_event_home_sel" >
+																<!--
                                                                 <option></option>
                                                                 <option value="1"> 1 </option>
                                                                 <option value="2"> 2 </option>
+																-->
                                                             </select>
                                                         </div>
                                                     </li>
                                                     <li class="col-md-3">
                                                         <div class="form-group">
-                                                            <label class="control-label">Select Prediction</label>
-                                                            <select class="form-control select-prediction-manual select2"></select>
+                                                            <!--<label class="control-label">Select Prediction</label>-->
+                                                            <label class="control-label">Away Team</label>
+                                                            <select class="form-control select-prediction-manual select2" id="manual_event_away_sel" >
+															</select>
                                                         </div>
                                                     </li>
                                                 </ul>
