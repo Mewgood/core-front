@@ -116,3 +116,9 @@ ul.schedule{
 .email-logs-website-caption td{
 	font-weight: bold;
 }
+.distributions-table tr th, .distributions-table tr td{
+	vertical-align: middle !important;
+}
+.distribution-site, .distribution-tip, .distribution-user{
+	text-align: center;
+}
