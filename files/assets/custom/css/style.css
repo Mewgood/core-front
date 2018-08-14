@@ -128,6 +128,9 @@ ul.schedule{
 .distribution-event-container .dist-event-teams{
 	width: 43%;
 }
+.distribution-event-container .dist-event-predictions{
+	width: 22%;
+}
 .distribution-event-container .dist-event-status{
 	text-align: center;
 	border-radius: 3px;
