@@ -124,17 +124,17 @@ ul.schedule{
 }
 .distribution-event-container > span{
 	display: inline-block;
-	width: 5%;
 }
 .distribution-event-container .dist-event-teams{
-	width: 50%;
-}
-.distribution-event-container .dist-event-predictions{
-	width: 25%;
+	width: 43%;
 }
 .distribution-event-container .dist-event-status{
 	text-align: center;
 	border-radius: 3px;
+	padding: 0 5px;
+}
+.distribution-event-container .dist-event-result{
+	text-align: center;
 }
 .distribution-event-container .Win{
 	background: #26C281;
