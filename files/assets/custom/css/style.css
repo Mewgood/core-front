@@ -122,3 +122,36 @@ ul.schedule{
 .distribution-site, .distribution-tip, .distribution-user{
 	text-align: center;
 }
+.distribution-event-container > span{
+	display: inline-block;
+	width: 5%;
+}
+.distribution-event-container .dist-event-teams{
+	width: 50%;
+}
+.distribution-event-container .dist-event-predictions{
+	width: 25%;
+}
+.distribution-event-container .dist-event-status{
+	text-align: center;
+	border-radius: 3px;
+}
+.distribution-event-container .Win{
+	background: #26C281;
+	color: #ffffff;
+}
+
+.distribution-event-container .Loss{
+	background: #E43A45;
+	color: #ffffff;
+}
+
+.distribution-event-container .Draw{
+	background: #E87E04;
+	color: #ffffff;
+}
+
+.distribution-event-container .Postpone{
+	background: #E87E04;
+	color: #ffffff;
+}
