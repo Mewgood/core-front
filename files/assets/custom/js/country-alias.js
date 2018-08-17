@@ -9,7 +9,7 @@ config.countryAlias = $('.page-content-wrapper.country-alias');
 // show available leagues in selected country.
 config.countryAlias.on('change', '.select-country', function() {
     $.ajax({
-        url: config.coreUrl + "/country/alias/get/" + $(this).val() + "?" + getToken(),
+        url: config.coreUrl + "/country/get-country-alias/" + $(this).val() + "?" + getToken(),
         type: "get",
         success: function (response) {
             config.countryAlias.find('.country-alias-name').val(response.alias);
@@ -33,7 +33,7 @@ config.countryAlias.on('click', '.save', function() {
     }
 
     $.ajax({
-        url: config.coreUrl + "/country/alias/" + countryCode + "?" + getToken(),
+        url: config.coreUrl + "/country/set-alias/" + countryCode + "?" + getToken(),
         type: "post",
         data: {
             countryCode: countryCode,
