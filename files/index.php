@@ -40,6 +40,7 @@ ini_set('display_errors','On');
         include "pages/auto-unit.php";
         include "pages/country-league-team.php";
         include "pages/league-alias.php";
+        include "pages/country-alias.php";
 
         include "common/sidebar.php";
 

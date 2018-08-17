@@ -121,6 +121,8 @@
         <script src="../assets/custom/js/country-league-team.js"></script>
         <!-- league-alias.js    -->
         <script src="../assets/custom/js/league-alias.js"></script>
+		 <!-- country-alias.js    -->
+        <script src="../assets/custom/js/country-alias.js"></script>
         <!--  main js    -->
         <script src="../assets/custom/js/main.js"></script>
 

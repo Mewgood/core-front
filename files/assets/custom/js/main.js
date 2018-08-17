@@ -132,5 +132,9 @@ $(document).ready(function() {
         if (config.activePage == 'league-alias') {
             leagueAliasShowAllCountries();
         }
+		
+		if (config.activePage == 'country-alias') {
+            countryAliasShowAllCountries();
+        }
     }
 });

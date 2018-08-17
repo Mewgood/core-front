@@ -111,6 +111,13 @@
                     <span class="selected"></span>
                 </a>
             </li>
+			 <li class="nav-item" target="country-alias">
+                <a class="nav-link">
+                    <i class="icon-home"></i>
+                    <span class="title">Manage Country Alias</span>
+                    <span class="selected"></span>
+                </a>
+            </li>
             <!--
             <li class="nav-item start ">
                 <a href="javascript:;" class="nav-link nav-toggle">
