@@ -70,6 +70,7 @@
                     <ul class="sortable">
                         {{#each events}}
                         <li data-id="{{id}}">
+                            {{isVip}} ###
                             {{publishDate}} ---
                             {{#if stringEventDate}} {{stringEventDate}} {{else}} No Custom Date {{/if}}
                             {{systemDate}}

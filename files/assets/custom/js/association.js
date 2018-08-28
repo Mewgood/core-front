@@ -109,8 +109,8 @@ config.association.on('click', '.add-manual-event', function() {
             manageError(xhr, textStatus, errorTrown);
         }
     });
-
-    showContentBasedOnEventType($('#modal-add-manual-event [name="association-modal-event-type"]:checked').val());
+    var container = $('#modal-add-manual-event [name="association-modal-event-type[]"]');
+    showContentBasedOnEventType($(container).val(), container);
     $('#modal-add-manual-event .confirm-event .systemDate').html($('#association-system-date').val());
     $('#modal-add-manual-event .confirm-event .table').html($('#modal-add-manual-event .select-table option:selected').val());
 
@@ -131,8 +131,8 @@ config.association.on('click', '.add-manual-event', function() {
 
 // Modal Add Event
 // when change type of new event show differit content based os selection
-$('#modal-add-manual-event').on('change', '[name="association-modal-event-type"]', function() {
-    showContentBasedOnEventType($(this).val())
+$('#modal-add-manual-event').on('change', '[name="association-modal-event-type[]"]', function() {
+    showContentBasedOnEventType($(this).val(), $(this))
 });
 
 // Modal Add Event
@@ -810,20 +810,34 @@ function getEventsAssociations(argTable, date = '0') {
 // Functions ----- Modal Add Event
 // @string type
 // manage content when change event type (noTip, create, add)
-function showContentBasedOnEventType(type) {
+function showContentBasedOnEventType(type, container) {
+    console.log(type);
     // add class hidden  for all .add-event-option
-    $('#modal-add-manual-event .add-event-option').addClass('hidden');
+    $(container).parent().parent().find('.add-event-option').addClass('hidden');
 
-    if (type === 'noTip')
-        $('#modal-add-manual-event .add-event-option.option-no-tip').removeClass('hidden');
-
+    if (type === 'noTip') {
+        $(container).parent().parent().find('.add-event-option.option-no-tip').removeClass('hidden');
+        console.log("no tip");
+    }
     if (type === 'create') {
-        $('#modal-add-manual-event .add-event-option.option-create').removeClass('hidden');
-        $('#modal-add-manual-event .add-event-option.option-add-create').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-create').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-add-create').removeClass('hidden');
+        console.log("create");
     }
 
     if (type === 'add') {
-        $('#modal-add-manual-event .add-event-option.option-add').removeClass('hidden');
-        $('#modal-add-manual-event .add-event-option.option-add-create').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-add').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-add-create').removeClass('hidden');
+        console.log("add");
     }
 }
+
+$("#modal-add-manual-event").on("click", ".save-events", function() {
+    $(".container-multiple").each(function () {
+        var table = $(this).find("[name='table[]']").val();
+        var eventType = $(this).find("[name='association-modal-event-type[]']").val();
+        var 
+        
+        console.log(table);
+    });
+});
