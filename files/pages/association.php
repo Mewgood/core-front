@@ -751,7 +751,7 @@
                                                                 <!-- GDM Placeholder START -->
                                                                 <div class="row">
                                                                     <div class="date-selector col-md-4">
-                                                                        <select id="match_date_filter" class="form-control input-sm" name="search_date">
+                                                                        <select class="match_date_filter" class="form-control input-sm" name="search_date">
                                                                             <option value="none" >No date filter</option>
                                                                             <option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
                                                                             <option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
@@ -801,7 +801,7 @@
                                                                 <!-- GDM Placeholder START -->
                                                                 <div class="row">
                                                                     <div class="date-selector col-md-4">
-                                                                        <select id="manual_event_date" class="form-control input-sm" name="event_date">
+                                                                        <select class="manual_event_date" class="form-control input-sm" name="event_date[]">
                                                                             <option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
                                                                             <option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
                                                                             <option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
@@ -813,7 +813,7 @@
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                         <div class="input-group">
-                                                                            <input type="text" class="form-control timepicker timepicker-24">
+                                                                            <input type="text" class="form-control timepicker timepicker-24" name="event_time[]">
                                                                             <span class="input-group-btn">
                                                                                 <button class="btn default" type="button">
                                                                                     <i class="fa fa-clock-o"></i>
@@ -828,28 +828,28 @@
                                                                     <li class="col-md-3">
                                                                         <div class="form-group">
                                                                             <label class="control-label">Select Country</label>
-                                                                            <select class="form-control select-provider select2" id="manual_event_country_sel" name="country">
+                                                                            <select class="form-control select-provider manual_event_country_sel" name="country[]">
                                                                             </select>
                                                                         </div>
                                                                     </li>
                                                                     <li class="col-md-3">
                                                                         <div class="form-group">
                                                                             <label class="control-label">Select League</label>
-                                                                            <select class="form-control select-provider select2" id="manual_event_league_sel" name="league">
+                                                                            <select class="form-control select-provider manual_event_league_sel" name="league[]">
                                                                             </select>
                                                                         </div>
                                                                     </li>
                                                                     <li class="col-md-3">
                                                                         <div class="form-group">
                                                                             <label class="control-label">Home Team</label>
-                                                                            <select class="form-control select-provider select2" id="manual_event_home_sel" name="home_team">
+                                                                            <select class="form-control select-provider manual_event_home_sel" name="home_team[]">
                                                                             </select>
                                                                         </div>
                                                                     </li>
                                                                     <li class="col-md-3">
                                                                         <div class="form-group">
                                                                             <label class="control-label">Away Team</label>
-                                                                            <select class="form-control select-prediction-manual select2" id="manual_event_away_sel" name="away_team">
+                                                                            <select class="form-control select-prediction-manual manual_event_away_sel" name="away_team[]">
                                                                             </select>
                                                                         </div>
                                                                     </li>
@@ -864,7 +864,7 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label class="control-label">Select Prediction</label>
-                                                                        <select class="form-control select-prediction select2" name="prediction"></select>
+                                                                        <select class="form-control select-prediction" name="prediction[]"></select>
                                                                         <script class="template-select-prediction" type="text/template7">
                                                                             <option value="-">- Select -</option>
                                                                             {{#each predictions}}

@@ -40,6 +40,7 @@ $(document).ready(function() {
         html += '</div>';
         
         $(html).appendTo($(this).parent().parent().find(".multiple-panel")).slideDown('slow');
+        $(".timepicker").timepicker();
     });
 
     // remove the item from the panel body
