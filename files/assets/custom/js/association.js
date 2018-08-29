@@ -101,37 +101,6 @@ $('#modal-add-manual-event').on('change', '[name="association-modal-event-type[]
 });
 
 // Modal Add Event
-// when change prediction show text in confirm area
-$('#modal-add-manual-event').on('change', '.select-prediction', function() {
-    var element = $('#modal-add-manual-event');
-
-    var matchId = element.find('.match-id').val();
-    var leagueId = element.find('.league-id').val();
-    var predictionId = $(this).val();
-
-    element.find('.confirm-event .prediction').html(predictionId);
-
-    $.ajax({
-        url: config.coreUrl + "/odd/get-value?" + getToken(),
-        type: "post",
-        data: {
-            matchId: matchId,
-            leagueId: leagueId,
-            predictionId: predictionId,
-        },
-        success: function (response) {
-            if (response.type == 'success'){
-                element.find('.odd').val(response.value);
-                element.find('.confirm-event .odd').html(response.value);
-            }
-        },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
-        }
-    });
-});
-
-// Modal Add Event
 // when change table show text in confirm area
 $('#modal-add-manual-event').on('change', '.select-table', function() {
     $('#modal-add-manual-event .confirm-event .table').html($(this).val());
@@ -147,44 +116,43 @@ $('#modal-add-manual-event .odd').keyup(function() {
 var matchFilterAjax; // define an variable to be used for the Ajax call ( in order to cancel older requests when we make a new one )
 // live search fot available events
 // every keyup means a new search
-$('#modal-add-manual-event .search-match').keyup(function() {
-    var element = $('#modal-add-manual-event');
-    var table = element.find('.select-table').val();
+$('#modal-add-manual-event').on("keyup", ".search-match", function() {
+    var table = $(this).parents().eq(5).find('.select-table').first().val();
     var filterValue = $(this).val().trim();
-	var filterDate = $('#match_date_filter').val();
-	var dateFilterQuery = '';
-	if( typeof filterDate != 'undefined' && filterDate != 'none' ) {
-		dateFilterQuery = "/"+filterDate;
-	}
-	
-	if (typeof matchFilterAjax !='undefined' ) {
-		matchFilterAjax.abort();
-	}
+    var filterDate = $(this).parents().eq(3).find('.match_date_filter').val();
+    var dateFilterQuery = '';
+    if( typeof filterDate != 'undefined' && filterDate != 'none' ) {
+        dateFilterQuery = "/"+filterDate;
+    }
+
+    if (typeof matchFilterAjax !='undefined' ) {
+        matchFilterAjax.abort();
+    }
 
     if (filterValue.length < 2) {
-        element.find('.selectable-block').addClass('hidden');
+        $(this).parents().eq(3).find('.selectable-block').first().addClass('hidden');
         return;
     }
-	
-	
+
+    var container = $(this);
     matchFilterAjax = $.ajax({
         url: config.coreUrl + "/match/filter/" + table + "/" + filterValue + dateFilterQuery + "?" + getToken(),
         type: "get",
         success: function (response) {
 
             var data = {matches: response};
-            element.find('.selectable-block').removeClass('hidden');
+            $(container).parents().eq(3).find('.selectable-block').removeClass('hidden');
 
-            var template = element.find('.template-selectable-block').html();
+            var template = $(container).parents().eq(3).find('.template-selectable-block').html();
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
-            element.find('.selectable-block').html(html);
+            $(container).parents().eq(3).find('.selectable-block').html(html);
         },
         error: function (xhr, textStatus, errorTrown) {
-			// we don't throw error if the request was 'aborted'
-			if( errorTrown != 'abort' ) {
-				manageError(xhr, textStatus, errorTrown);
-			}
+            // we don't throw error if the request was 'aborted'
+            if( errorTrown != 'abort' ) {
+                manageError(xhr, textStatus, errorTrown);
+            }
         }
     });
 });
@@ -240,9 +208,10 @@ $('#modal-add-manual-event').on('hidden.bs.modal', function(e) {
 
 // Modal Add Event --- add complete event
 // click on selectable-row to choose it
-$('#modal-add-manual-event .selectable-block').on('click', '.selectable-row', function() {
+$('#modal-add-manual-event').on('click', '.selectable-row', function() {
     var matchId = $(this).attr('data-id');
     var leagueId = $(this).attr('data-league-id');
+    var container = $(this);
 
     // return if click on no available events
     if (typeof matchId === typeof undefined || matchId === false)
@@ -251,17 +220,16 @@ $('#modal-add-manual-event .selectable-block').on('click', '.selectable-row', fu
     if (typeof leagueId === typeof undefined || leagueId === false)
         return;
 
-    var element = $('#modal-add-manual-event');
-
     // put content in html input
-    element.find('.search-match').val($(this).html());
+    $(this).parents().eq(2).find('.search-match').val($(this).html());
 
     // put id in hidden input .match-id
-    element.find('.match-id').val(matchId);
-    element.find('.league-id').val(leagueId);
-    element.find('.selectable-block').addClass('hidden');
+    $(this).parents().eq(5).find('.match-id').val(matchId);
+    $(this).parents().eq(5).find('.league-id').val(leagueId);
+    $(this).parents().eq(5).find('.selectable-block').addClass('hidden');
 
     // get selected event and complete confirmation step with event details
+    /*
     $.ajax({
         url: config.coreUrl + "/match/" + matchId + "?" + getToken(),
         type: "get",
@@ -275,6 +243,7 @@ $('#modal-add-manual-event .selectable-block').on('click', '.selectable-row', fu
             manageError(xhr, textStatus, errorTrown);
         }
     });
+    */
 });
 
 // Modal Add Event
@@ -701,7 +670,6 @@ function getEventsAssociations(argTable, date = '0') {
         url: config.coreUrl + "/association/event/" + argTable + '/' + date + "?" + getToken(),
         type: "get",
         success: function (response) {
-
             var element = $('#table-association-' + argTable);
             var table = element.find('.association-table-datatable').DataTable();
             var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages">Associate</button>';
@@ -735,6 +703,61 @@ function getEventsAssociations(argTable, date = '0') {
     });
 }
 
+/******************************************************************************/
+/*********  MULTIPLE ADD MODAL     ********************************************/
+/******************************************************************************/
+    
+// clone the panel form inputs and append to the panel body
+$(document).on('click', '.add-multiple', function() {
+    var remove = "";
+    if($(this).parents().eq(2).find('.multiple-panel').find('.container-multiple').length == 1) {
+        remove = '';
+        remove += '<div class="row form-group">'
+        remove += '<button class="btn btn-xs btn-danger pull-right itm-m-r-10 remove" type="button" title="Remove"><i class="fa fa-times"></i></button>';
+        remove += '</div>';
+        $(this).parents().eq(2).find(".multiple-panel").find('.container-multiple').first().prepend(remove);
+    }
+
+    var html = '';
+    html += '<div class="panel panel-primary itm-none">';
+    html += $(this).parents().eq(2).find(".panel").last().html();
+    html += '</div>';
+    
+    $("a[data-parent='#accordion']").last().trigger("click");
+    $(html).insertBefore($(this).parent());
+    $(".panel.panel-primary").slideDown('slow', function() {
+        $('[name="association-modal-event-type[]"]').last().trigger("change");
+        $(this).removeClass("itm-none");
+    });
+    var length = $(".panel.panel-primary").length;
+    $(".panel.panel-primary").last().find(".panel-heading").attr("href", "#events" + length);
+    $(".panel-collapse").last().attr("id", "events" + length);
+
+    $('.timepicker-24').timepicker({
+        autoclose: true,
+        minuteStep: 5,
+        showSeconds: false,
+        showMeridian: false
+    });
+});
+
+// remove the item from the panel body
+$(document).on('click', '.remove', function() {
+    var element = $(this);
+    var length = $(element).parents().eq(6).find('.container-multiple').length;
+
+    $(element).parents().eq(4).fadeOut('slow', function() {
+        console.log(length);
+        if (--length <= 1) {
+            console.log($(element).parents().eq(6).find('.container-multiple').find('.remove').parent());
+            $(element).parents().eq(6).find('.container-multiple').find('.remove').parent().remove();
+        }
+        $(this).remove();
+    });
+
+    $(this).parents().eq(1).slideUp('slow', function() {});
+});
+
 // Functions ----- Modal Add Event
 // @string type
 // manage content when change event type (noTip, create, add)
@@ -757,22 +780,95 @@ function showContentBasedOnEventType(type, container) {
 }
 
 $("#modal-add-manual-event").on("click", ".save-events", function() {
-    var data = [];
+    var addEvents = [];
+    var createEvents = [];
+    var noTipEvents = [];
+    var currentDate = $('#association-system-date').val();
+
     $(".container-multiple").each(function () {
-        var table = $(this).find("[name='table[]']").first().val();
         var eventType = $(this).find("[name='association-modal-event-type[]']").first().val();
-        
-        if (eventType === 'create') {
-            // get parameters
-            data.push(mapCreateEventData($(this)));
+
+        if (eventType === 'add') {
+            console.log("intra");
+            addEvents.push(mapAddEventData($(this)));
         }
+        if (eventType === 'create') {
+            createEvents.push(mapCreateEventData($(this)));
+        }
+        if (eventType === 'noTip') {
+            noTipEvents.push(mapNoTipEventData($(this)));
+        }
+        
     });
-    console.log(data);
-    ajaxCreateEvent(JSON.stringify(data));
+    
+    if (addEvents.length > 0) {
+        ajaxAddEvent(addEvents, currentDate);
+    }
+    if (createEvents.length > 0) {
+        ajaxCreateEvent(createEvents, currentDate);
+    }
+    if (noTipEvents.length > 0) {
+        ajaxAddNoTipEvent(noTipEvents, currentDate);
+    }
 });
 
-function ajaxCreateEvent(data) {
-    console.log(data);
+function ajaxAddEvent(data, currentDate) {
+    $.ajax({
+        url: config.coreUrl + "/event/create-from-match" + "?" + getToken(),
+        type: "post",
+        dataType: "json",
+        data: {
+            events: data
+        },
+        success: function (response) {
+            console.log(response);
+            alert("Type: --- " + response.type + " --- \r\n" + response.message);
+            if (response.type == 'error')
+                return;
+
+            // map the id from the events saved in the DB
+            for (var index in response.data) {
+                data[index].id = response.data[index].id;
+            }
+            // start seccond ajax to create association event - table
+            $.ajax({
+                url: config.coreUrl + "/association" + "?" + getToken(),
+                type: "post",
+                dataType: "json",
+                data: {
+                    events: data,
+                    systemDate: currentDate,
+                },
+                beforeSend: function() {},
+                success: function (r) {
+                    console.log(r);
+                    alert("Type: --- " + r.type + " --- \r\n" + r.message);
+                    // refresh table to see new entry
+                    var tables = [];
+                    for (var index in data) {
+                        if (tables.indexOf(data[index].table) == -1) {
+                            getEventsAssociations(data[index].table, currentDate);
+                            tables.push(data[index].table);
+                        }
+                    }
+                    $('#modal-add-manual-event').modal('hide');
+
+                    // TODO clean inputs
+                },
+                error: function (xhr, textStatus, errorTrown) {
+                    console.log(errorTrown);
+                    manageError(xhr, textStatus, errorTrown);
+                }
+            });
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            console.log(errorTrown);
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function ajaxCreateEvent(data, currentDate) {
     $.ajax({
         url: config.coreUrl + "/event/create-manually-bulk" + "?" + getToken(),
         type: "post",
@@ -785,22 +881,31 @@ function ajaxCreateEvent(data) {
             if (response.type == 'error')
                 return;
 
+            // map the id from the events saved in the DB
+            for (var index in response.data) {
+                data[index].id = response.data[index].id;
+            }
             // start seccond ajax to create association event - table
             $.ajax({
                 url: config.coreUrl + "/association" + "?" + getToken(),
                 type: "post",
                 dataType: "json",
                 data: {
-                    eventsIds: [response.data.id],
-                    table : table,
+                    events: data,
                     systemDate: currentDate,
-                    // systemDate: eventDate,
                 },
-                beforeSend: function() {},
                 success: function (r) {
+                    console.log(r);
                     alert("Type: --- " + r.type + " --- \r\n" + r.message);
+                    
                     // refresh table to see new entry
-                    getEventsAssociations(table, currentDate);
+                    var tables = [];
+                    for (var index in data) {
+                        if (tables.indexOf(data[index].table) == -1) {
+                            getEventsAssociations(data[index].table, currentDate);
+                            tables.push(data[index].table);
+                        }
+                    }
                     $('#modal-add-manual-event').modal('hide');
 
                     // TODO clean inputs
@@ -815,10 +920,54 @@ function ajaxCreateEvent(data) {
             manageError(xhr, textStatus, errorTrown);
         }
     });
-    return;
+}
+
+function ajaxAddNoTipEvent(data, currentDate) {
+    $.ajax({
+        url: config.coreUrl + "/association/no-tip" + "?" + getToken(),
+        type: "post",
+        dataType: "json",
+        data: {
+            table : data,
+            systemDate: currentDate,
+        },
+        success: function (r) {
+            console.log(r);
+            alert("Type: --- " + r.type + " --- \r\n" + r.message);
+
+            // refresh table to see new entry
+            var tables = [];
+            for (var index in data) {
+                if (tables.indexOf(data[index].table) == -1) {
+                    getEventsAssociations(data[index].table, currentDate);
+                    tables.push(data[index].table);
+                }
+            }
+            $('#modal-add-manual-event').modal('hide');
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function mapAddEventData(container) {
+    var table = $(container).find("[name='table[]']").first().val();
+    var matchId = $(container).find("[name='match_id[]']").val();
+    var odd = $(container).find("[name='odd[]']").first().val();
+    var predictionId = $(container).find("[name='prediction[]']").first().val();
+
+    var data = {
+        matchId: matchId,
+        odd: odd,
+        predictionId: predictionId,
+        table: table
+    };
+    return data;
 }
 
 function mapCreateEventData(container) {
+    var table = $(container).find("[name='table[]']").first().val();
     var eventDate = $(container).find("[name='event_date[]']").first().val();
     var eventTime = $(container).find($("[name='event_time[]']")).first().val();
     var countryCode = $(container).find("[name='country[]']").first().val();
@@ -844,7 +993,17 @@ function mapCreateEventData(container) {
         homeTeam: homeTeam,
         awayTeam: awayTeam,
         country: country,
-        league: league
+        league: league,
+        table: table
+    };
+    return data;
+}
+
+function mapNoTipEventData(container) {
+    var table = $(container).find("[name='table[]']").first().val();
+
+    var data = {
+        table: table
     };
     return data;
 }

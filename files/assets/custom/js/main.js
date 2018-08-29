@@ -19,44 +19,6 @@ $(document).ready(function() {
         setActivePage();
     });
 
-    /******************************************************************************/
-    /*********  MULTIPLE ADD MODAL     ********************************************/
-    /******************************************************************************/
-    
-    // clone the panel form inputs and append to the panel body
-    $(document).on('click', '.add-multiple', function() {
-        var remove = "";
-        if($(this).parent().parent().find('.multiple-panel').find('.container-multiple').length == 1) {
-            remove = '';
-            remove += '<div class="row form-group">'
-            remove += '<button class="btn btn-xs btn-danger pull-right itm-m-r-10 remove" type="button" title="Remove"><i class="fa fa-times"></i></button>';
-            remove += '</div>';
-            $(this).parent().parent().find(".multiple-panel").find('.container-multiple').first().prepend(remove);
-        }
-
-        var html = '';
-        html += '<div class="container-multiple itm-none">';
-        html += $(this).parent().parent().find(".multiple-panel").find('.container-multiple').first().html();
-        html += '</div>';
-        
-        $(html).appendTo($(this).parent().parent().find(".multiple-panel")).slideDown('slow');
-        $(".timepicker").timepicker();
-    });
-
-    // remove the item from the panel body
-    $(document).on('click', '.remove', function() {
-        var element = $(this);
-        $(this).parent().parent().slideUp('slow', function() {
-            var multiplePanel = $(element).parent().parent().parent();
-            $(this).remove();
-            $(element).parent().parent().remove();
-
-            if(multiplePanel.find('.container-multiple').length == 1) {
-                multiplePanel.find('.container-multiple').find('.remove').parent().remove();
-            }
-        });
-    });
-    
     // show notifications
     setInterval(showLogs, 5000);
 
