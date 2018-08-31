@@ -69,6 +69,11 @@ $('.table-association').on('click', '.delete-event', function() {
 // Modal Add Event
 // Launch modal for add new event
 config.association.on('click', '.add-manual-event', function() {
+    $("[href='#default']").first().attr("href", "#event");
+    var panelHtml = $("#multiple-add-panel-template").html();
+    $(panelHtml).insertBefore($(".add-multiple").parent());
+    $(".panel-collapse").last().attr("id", "event");
+    $("[href='#event']").first().attr("href", "#default");
     getPredictions();
 
     // fetch the countries for the 'manual event' -> select countries drop down 
@@ -90,7 +95,11 @@ config.association.on('click', '.add-manual-event', function() {
     $('#modal-add-manual-event .confirm-event .odd').html('-');
 
     $('#modal-add-manual-event .button-previous').trigger('click');
-
+    
+    $('#modal-add-manual-event').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
     $('#modal-add-manual-event').modal('show');
 });
 
@@ -723,17 +732,17 @@ $(document).on('click', '.add-multiple', function() {
     html += $(this).parents().eq(2).find(".panel").last().html();
     html += '</div>';
     
-    $("a[data-parent='#accordion']").last().trigger("click");
+    $(".modal a[data-parent='#accordion2']").last().trigger("click");
     $(html).insertBefore($(this).parent());
-    $(".panel.panel-primary").slideDown('slow', function() {
-        $('[name="association-modal-event-type[]"]').last().trigger("change");
+    $(".modal .panel.panel-primary").slideDown('slow', function() {
+        $('.modal [name="association-modal-event-type[]"]').last().trigger("change");
         $(this).removeClass("itm-none");
     });
-    var length = $(".panel.panel-primary").length;
-    $(".panel.panel-primary").last().find(".panel-heading").attr("href", "#events" + length);
-    $(".panel-collapse").last().attr("id", "events" + length);
+    var length = $(".modal .panel.panel-primary").length;
+    $(".modal .panel.panel-primary").last().find(".panel-heading").attr("href", "#events" + length);
+    $(".modal .panel-collapse").last().attr("id", "events" + length);
 
-    $('.timepicker-24').timepicker({
+    $('.modal .timepicker-24').timepicker({
         autoclose: true,
         minuteStep: 5,
         showSeconds: false,
@@ -742,14 +751,12 @@ $(document).on('click', '.add-multiple', function() {
 });
 
 // remove the item from the panel body
-$(document).on('click', '.remove', function() {
+$(document).on('click', '.modal .remove', function() {
     var element = $(this);
     var length = $(element).parents().eq(6).find('.container-multiple').length;
 
     $(element).parents().eq(4).fadeOut('slow', function() {
-        console.log(length);
         if (--length <= 1) {
-            console.log($(element).parents().eq(6).find('.container-multiple').find('.remove').parent());
             $(element).parents().eq(6).find('.container-multiple').find('.remove').parent().remove();
         }
         $(this).remove();
@@ -779,17 +786,36 @@ function showContentBasedOnEventType(type, container) {
     }
 }
 
+// used to determine which panels to remove
+var ajaxRequestsStatus = {
+    addEvent: false,
+    createEvent: false,
+    addNoTip: false
+}
+
+$('#modal-add-manual-event').on('hidden.bs.modal', function () {
+    deleteInsertedPanels("add");
+    deleteInsertedPanels("create");
+    deleteInsertedPanels("noTip");
+})
+
 $("#modal-add-manual-event").on("click", ".save-events", function() {
+    // reset ajax flags
+    ajaxRequestsStatus = {
+        addEvent: false,
+        createEvent: false,
+        addNoTip: false
+    }
+    
     var addEvents = [];
     var createEvents = [];
     var noTipEvents = [];
     var currentDate = $('#association-system-date').val();
 
-    $(".container-multiple").each(function () {
+    $("#modal-add-manual-event .container-multiple").each(function () {
         var eventType = $(this).find("[name='association-modal-event-type[]']").first().val();
 
         if (eventType === 'add') {
-            console.log("intra");
             addEvents.push(mapAddEventData($(this)));
         }
         if (eventType === 'create') {
@@ -798,19 +824,48 @@ $("#modal-add-manual-event").on("click", ".save-events", function() {
         if (eventType === 'noTip') {
             noTipEvents.push(mapNoTipEventData($(this)));
         }
-        
     });
     
     if (addEvents.length > 0) {
         ajaxAddEvent(addEvents, currentDate);
+    } else {
+        ajaxRequestsStatus.addEvent = true;
     }
     if (createEvents.length > 0) {
         ajaxCreateEvent(createEvents, currentDate);
+    } else {
+        ajaxRequestsStatus.createEvent = true;
     }
     if (noTipEvents.length > 0) {
         ajaxAddNoTipEvent(noTipEvents, currentDate);
+    } else {
+        ajaxRequestsStatus.addNoTip = true;
     }
 });
+
+function validateAjaxRequests() {
+    if (
+        ajaxRequestsStatus.addEvent === true &&
+        ajaxRequestsStatus.createEvent === true &&
+        ajaxRequestsStatus.addNoTip === true
+    ) {
+        return true;
+    }
+    return false;
+}
+
+function deleteInsertedPanels(eventType) {
+    var selects = $("#modal-add-manual-event [name='association-modal-event-type[]']");
+    $(selects).each(function(index, element) {
+        if ($(element).val() == eventType) {
+            $(element).parents(".panel.panel-primary").first().remove();
+            var panelLength = $('#modal-add-manual-event .panel.panel-primary').length;
+            if (panelLength <= 1) {
+                $('#modal-add-manual-event .panel.panel-primary').find(".remove").first().remove()
+            }
+        }
+    });
+}
 
 function ajaxAddEvent(data, currentDate) {
     $.ajax({
@@ -822,9 +877,15 @@ function ajaxAddEvent(data, currentDate) {
         },
         success: function (response) {
             console.log(response);
-            alert("Type: --- " + response.type + " --- \r\n" + response.message);
-            if (response.type == 'error')
+            if (response.type == 'error') {
+                for (var index in response.data) {
+                    var errorMessage = "";
+                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add Event' \n`;
+                    errorMessage += `Message: ${response.data[index].message}`;
+                    alert(errorMessage);
+                }
                 return;
+            }
 
             // map the id from the events saved in the DB
             for (var index in response.data) {
@@ -851,9 +912,11 @@ function ajaxAddEvent(data, currentDate) {
                             tables.push(data[index].table);
                         }
                     }
-                    $('#modal-add-manual-event').modal('hide');
-
-                    // TODO clean inputs
+                    ajaxRequestsStatus.addEvent = true;
+                    if (validateAjaxRequests()) {
+                        $('#modal-add-manual-event').modal('hide');
+                    }
+                    deleteInsertedPanels("add");
                 },
                 error: function (xhr, textStatus, errorTrown) {
                     console.log(errorTrown);
@@ -877,9 +940,19 @@ function ajaxCreateEvent(data, currentDate) {
         },
         success: function (response) {
             console.log(response);
-            alert("Type: --- " + response.type + " --- \r\n" + response.message);
-            if (response.type == 'error')
+            if (response.type == 'error') {
+                for (var index in response.data) {
+                    var errorMessage = "";
+                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Create Event' \n`;
+                    errorMessage += `${response.data[index].data.homeTeam} - ${response.data[index].data.awayTeam} \n`;
+                    errorMessage += `Message: ${response.data[index].message}`;
+                    
+                    if (response.data[index].type == "error") {
+                        alert(errorMessage);
+                    }
+                }
                 return;
+            }
 
             // map the id from the events saved in the DB
             for (var index in response.data) {
@@ -906,7 +979,11 @@ function ajaxCreateEvent(data, currentDate) {
                             tables.push(data[index].table);
                         }
                     }
-                    $('#modal-add-manual-event').modal('hide');
+                    ajaxRequestsStatus.createEvent = true;
+                    if (validateAjaxRequests()) {
+                        $('#modal-add-manual-event').modal('hide');
+                    }
+                    deleteInsertedPanels("create")
 
                     // TODO clean inputs
                 },
@@ -931,9 +1008,19 @@ function ajaxAddNoTipEvent(data, currentDate) {
             table : data,
             systemDate: currentDate,
         },
-        success: function (r) {
-            console.log(r);
-            alert("Type: --- " + r.type + " --- \r\n" + r.message);
+        success: function (response) {
+            console.log(response);
+            if (response.type == 'error') {
+                for (var index in response.data) {
+                    var errorMessage = "";
+                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add No Tip' \n`
+                    errorMessage += `Message: ${response.data[index].message}`;
+                    if (response.data[index].type == "error") {
+                        alert(errorMessage);
+                    }
+                }
+                return;
+            }
 
             // refresh table to see new entry
             var tables = [];
@@ -943,7 +1030,11 @@ function ajaxAddNoTipEvent(data, currentDate) {
                     tables.push(data[index].table);
                 }
             }
-            $('#modal-add-manual-event').modal('hide');
+            ajaxRequestsStatus.addNoTip = true;
+            if (validateAjaxRequests()) {
+                $('#modal-add-manual-event').modal('hide');
+            }
+            deleteInsertedPanels("noTip");
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
