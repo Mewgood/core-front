@@ -614,9 +614,6 @@
                         {{/if}}
                     </h6>
                 </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control assoc_websites_search" placeholder="Search">
-                </div>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -624,24 +621,29 @@
                     {{#each sites}}
                     <div class="col-md-6 assoc_website">
                         <div class="form-group row">
-                            <label class="col-md-3 control-label">
-                                <span class="assoc_website_name">{{siteName}}</span>
-                            </label>
                             <div class="col-md-9">
                                 <div class="mt-checkbox-list">
-
+                                    <h1 class="text-center">Unfilled</h1>
                                     {{#each tipIdentifier}}
-                                    <div class="tip-identifier" data-tip-identifier="{{@key}}">
-                                        {{@key}}
-                                        {{#each packages}}
-                                        <label class="mt-checkbox mt-checkbox-outline">
-                                            <input class="use" type="checkbox" {{#if eventIsAssociated}}checked="checked"{{/if}} data-id="{{id}}"/> {{name}}
-                                            {{packageAssociatedEventsNumber}} / {{tipsPerDay}}                                          <span></span>
-                                        </label>
-                                        {{/each}}
+                                    <div class="site-container text-center">
+                                        <input class="check-site-packages" type="checkbox"/>
+                                        <span class="assoc_website_name">{{siteName}} |</span>
+                                        <span>{{@key}}</span>
+                                        <span>Counter: {{tipsDifference}}</span>
+                                        
+                                        <div class="tip-identifier" data-tip-identifier="{{@key}}">
+                                            {{#each packages}}
+                                            <small>{{name}} |</small>
+                                            <div class="site-packages hidden"> 
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input class="use" type="checkbox" {{#if eventIsAssociated}}checked="checked"{{/if}} data-id="{{id}}"/> {{name}}
+                                                    {{packageAssociatedEventsNumber}} / {{tipsPerDay}}                                          <span></span>
+                                                </label>
+                                            </div>
+                                            {{/each}}
+                                        </div>
                                     </div>
                                     {{/each}}
-
                                 </div>
                             </div>
                         </div>
