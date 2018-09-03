@@ -622,13 +622,14 @@
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="mt-checkbox-list">
-                                    {{#js_if "@index === 0"}}
+                                {{@index}}
+                                    {{#js_if "@key === '0'"}}
                                         <h1 class="text-center">Unfilled</h1>
                                     {{/js_if}}
-                                    {{#js_if "@index === 1"}}
+                                    {{#js_if "@key === '1'"}}
                                         <h1 class="text-center">Filled</h1>
                                     {{/js_if}}
-                                    {{#js_if "@index === 2"}}
+                                    {{#js_if "@key === '2'"}}
                                         <h1 class="text-center">Ineligible</h1>
                                     {{/js_if}}
                                     <!-- sites keys -->

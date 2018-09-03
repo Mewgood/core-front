@@ -547,6 +547,7 @@ $('.table-association').on('click', '.modal-available-packages', function() {
         url: config.coreUrl + "/association/package/available/" + table + "/" + associateEventId  +"/" + date + "?" + getToken(),
         type: "get",
         success: function (response) {
+            console.log(response);
             if (response.type === "error") {
                 alert("Type: --- " + response.type + " --- \r\n" + response.message);
                 return;
