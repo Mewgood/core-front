@@ -616,40 +616,74 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="row">
-
+                <div class="itm-table">
                     {{#each sites}}
-                    <div class="col-md-6 assoc_website">
+                    <div class="col-md-4 assoc_website itm-table-cell">
                         <div class="form-group row">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <div class="mt-checkbox-list">
-                                    <h1 class="text-center">Unfilled</h1>
-                                    {{#each tipIdentifier}}
-                                    <div class="site-container text-center">
-                                        <input class="check-site-packages" type="checkbox"/>
-                                        <span class="assoc_website_name">{{siteName}} |</span>
-                                        <span>{{@key}}</span>
-                                        <span>Counter: {{tipsDifference}}</span>
-                                        
-                                        <div class="tip-identifier" data-tip-identifier="{{@key}}">
-                                            {{#each packages}}
-                                            <small>{{name}} |</small>
-                                            <div class="site-packages hidden"> 
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input class="use" type="checkbox" {{#if eventIsAssociated}}checked="checked"{{/if}} data-id="{{id}}"/> {{name}}
-                                                    {{packageAssociatedEventsNumber}} / {{tipsPerDay}}                                          <span></span>
+                                    {{#js_if "@index === 0"}}
+                                        <h1 class="text-center">Unfilled</h1>
+                                    {{/js_if}}
+                                    {{#js_if "@index === 1"}}
+                                        <h1 class="text-center">Filled</h1>
+                                    {{/js_if}}
+                                    {{#js_if "@index === 2"}}
+                                        <h1 class="text-center">Ineligible</h1>
+                                    {{/js_if}}
+                                    <!-- sites keys -->
+                                    {{#each this}}
+                                        <!-- unfilled / filled / not eligible indexes -->
+                                        {{#each this}}
+                                            <!-- tipIdentifier keys -->
+                                            {{#each this}}
+                                            <label for={{@key}}{{siteName}}>
+                                                <div class="site-container text-center test">
+                                                    <div>
+                                                        <input 
+                                                            id={{@key}}{{siteName}}
+                                                            class="check-site-packages" 
+                                                            type="checkbox"
+                                                            {{#unless eligible}} disabled="disabled"{{/unless}}
+                                                        />
+                                                        <span class="assoc_website_name">{{siteName}} |</span>
+                                                        <span>
+                                                            {{@key}} |
+                                                            {{#js_if "this.tipsDifference >= 0"}}
+                                                                +
+                                                            {{/js_if}}
+                                                            {{tipsDifference}}
+                                                        </span>
+                                                    </div>
                                                 </label>
-                                            </div>
+                                                    <!-- tip packages keys -->
+                                                    {{#each packages}}
+                                                        <small>
+                                                            {{name}}
+                                                                {{#unless @last}}
+                                                                    |
+                                                                {{/unless}}
+                                                        </small>
+                                                        <div class="site-packages hidden"> 
+                                                            <label class="mt-checkbox mt-checkbox-outline">
+                                                                <input 
+                                                                    class="use" 
+                                                                    type="checkbox" 
+                                                                    {{#if eventIsAssociated}}checked="checked"{{/if}}
+                                                                    data-id="{{id}}"/> 
+                                                                {{name}}
+                                                            </label>
+                                                        </div>
+                                                    {{/each}}
+                                                </div>
                                             {{/each}}
-                                        </div>
-                                    </div>
+                                        {{/each}}
                                     {{/each}}
                                 </div>
                             </div>
                         </div>
                     </div>
                     {{/each}}
-
                 </div>
             </div>
             <div class="modal-footer">

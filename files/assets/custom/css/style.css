@@ -36,15 +36,21 @@
 	float: right;
 	margin-right: 20px;
 }
-
-
-
-.assoc_website .form-group{
-	border-bottom: 1px solid #eee;
-	margin-bottom: 0;
+.assoc_website {
+    border-right:1px solid #eee;
 }
-.assoc_website:nth-child(2n+1) .form-group{
-	border-right:1px solid #eee;
+.assoc_website:last-child {
+    border-right: 0;
+}
+
+.itm-table {
+    display: table;
+    float: none;
+    width: 100%;
+}
+.itm-table-cell {
+    display: table-cell;
+    float: none;
 }
 
 .assoc_website:nth-last-child(2) .form-group, .assoc_website:nth-last-child(1) .form-group{

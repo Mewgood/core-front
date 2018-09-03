@@ -641,7 +641,6 @@ $('.table-association').on('click', '.modal-available-packages', function() {
         url: config.coreUrl + "/association/package/available/" + table + "/" + associateEventId  +"/" + date + "?" + getToken(),
         type: "get",
         success: function (response) {
-            console.log(response);
             if (response.type === "error") {
                 alert("Type: --- " + response.type + " --- \r\n" + response.message);
                 return;
@@ -652,21 +651,15 @@ $('.table-association').on('click', '.modal-available-packages', function() {
             var data = response;
             data.table = table;
 
-            for (var index in data.sites) {
-                for (var key in data.sites[index].tipIdentifier) {
-                    data.sites[index].tipIdentifier[key].siteName = data.sites[index].siteName;
-                    data.sites[index].tipIdentifier[key].tipsDifference = data.sites[index].tipIdentifier[key].packages[0].tipsDifference;
-                }
-            }
-            console.log(data);
             var template = element.find('.template-modal-content').html();
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
             element.find('.modal-content').html(html);
+            
             // check the checkbox near the site name
             // the real values are stored in the hidden checkboxes
             // of the site's packages
-            $("#modal-associate-events .use:checked").parents(".site-container").find(".check-site-packages").prop("checked", true)
+            $("#modal-associate-events .use:checked").parents(".site-container").find(".check-site-packages").prop("checked", true);
             
             element.modal();
         },
@@ -677,8 +670,8 @@ $('.table-association').on('click', '.modal-available-packages', function() {
 });
 
 // toggle on/off site packages
-$("#modal-associate-events").on("click", ".check-site-packages", function() {
-    var sitePackages = $(this).parent().find(".use");
+$("#modal-associate-events").on("change", ".check-site-packages", function() {
+    var sitePackages = $(this).parent().parent().find(".use");
     $(sitePackages).each(function(index, element) {
         $(element).prop("checked", !$(element).prop("checked"));
     }); 
