@@ -744,7 +744,7 @@ $(document).on('click', '.add-multiple', function() {
     html += $(this).parents().eq(2).find(".panel").last().html();
     html += '</div>';
     
-    $(".modal a[data-parent='#accordion2']").last().trigger("click");
+    $(".modal a[data-parent='#accordion']").last().trigger("click");
     $(html).insertBefore($(this).parent());
     $(".modal .panel.panel-primary").slideDown('slow', function() {
         $('.modal [name="association-modal-event-type[]"]').last().trigger("change");
