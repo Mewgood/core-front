@@ -697,11 +697,202 @@
 </div>
 <!-- END MODAL ASSOCIATE EVENT-PACKAGE -->
 
+<!-- MULTIPLE ADD EVENT DEFAULT PANEL TEMPLATE -->
+<div id="multiple-add-panel-template" class="hidden">
+    <div class="panel panel-primary">
+        <a data-toggle="collapse" data-parent="#accordion" href="#default" aria-expanded="false" class="panel-heading with-border collapsed itm-block">
+            <h4 class="panel-title">
+                Choose table and event type
+            </h4>
+        </a>
+        <div id="default" class="panel-collapse collapse in" aria-expanded="false">
+            <div class="panel-body multiple-panel">
+                <div class="container-multiple">
+                    <div class="add_tip_automatically row">
+                        <!-- table selection -->
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Select Table</label>
+                            <select class="form-control select-table" name="table[]">
+                                <option value="run" selected="selected">Real Users Normal</option>
+                                <option value="ruv">Real Users Vip</option>
+                                <option value="nun">No Users Normal</option>
+                                <option value="nuv">No Users Vip</option>
+                            </select>
+                        </div>
+
+                        <!-- event type selection -->
+                        <div class="form-group col-md-6">
+                            <label>Select event type</label>
+                            <select class="form-control" name="association-modal-event-type[]">
+                                <option value="add" selected="selected">Add Event</option>
+                                <option value="create">Create Event</option>
+                                <option value="noTip">Add No Tip</option>
+                            </select>
+                        </div>
+
+                        <!-- hidden input to persist matchId -->
+                        <input type="hidden" class="match-id" name="match_id[]">
+                        <!-- hidden input to persist leagueId -->
+                        <input type="hidden" class="league-id" name="league_id[]">
+
+                        <!-- content based on event type selection  noTip -->
+                        <div class="col-md-12">
+                            <div class="add-event-option option-no-tip">
+                                <h3>You chose to add no tip</h3>
+                            </div>
+                        </div>
+
+                        <!-- content based on event type selection  add -->
+                        <div class="col-md-12">
+                            <div class="add-event-option option-add hidden">
+                                <h3>Search event</h3>
+                                
+                                <!-- GDM Placeholder START -->
+                                <div class="row">
+                                    <div class="date-selector col-md-4">
+                                        <select class="match_date_filter" class="form-control input-sm" name="search_date">
+                                            <option value="none" >No date filter</option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected" >Today: <?php echo gmdate('Y-m-d'); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
+                                        </select>
+                                    </div>													
+                                </div>
+                                <!-- GDM Placeholder END -->
+                                
+                                <div class="row">
+                                    <!-- search event -->
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label">Search Event</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-cogs"></i>
+                                            </span>
+                                            <input type="text" class="form-control search-match"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- div for founded events -->
+                                    <div class="col-md-12">
+                                        <div class="selectable-block"></div>
+                                        <script class="template-selectable-block" type="text/template7">
+                                            {{#each matches}}
+                                            <div class="selectable-row" data-id="{{id}}"    data-league-id="{{leagueId}}">{{country}}: {{league}} {{homeTeam}} --- {{awayTeam}} {{result}} {{eventDate}}</div>
+                                            {{else}}
+                                            <div class="selectable">No Events Available</div>
+                                            {{/each}}
+                                        </script>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- content based on event type selection  create -->
+                        <div class="col-md-12">
+                            <div class="add-event-option option-create hidden">
+                                <h3>Create Event Manually</h3>
+                                
+                                <!-- GDM Placeholder START -->
+                                <div class="row">
+                                    <div class="date-selector col-md-4">
+                                        <select class="manual_event_date" class="form-control input-sm" name="event_date[]">
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected" >Today: <?php echo gmdate('Y-m-d'); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
+                                            <option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker timepicker-24" name="event_time[]">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- GDM Placeholder END -->
+                                
+                                <ul class="add_event_manually row">
+                                    <li class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Select Country</label>
+                                            <select class="form-control select-provider manual_event_country_sel" name="country[]">
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Select League</label>
+                                            <select class="form-control select-provider manual_event_league_sel" name="league[]">
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Home Team</label>
+                                            <select class="form-control select-provider manual_event_home_sel" name="home_team[]">
+                                            </select>
+                                        </div>
+                                    </li>
+                                    <li class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Away Team</label>
+                                            <select class="form-control select-prediction-manual manual_event_away_sel" name="away_team[]">
+                                            </select>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- content based on event type selection  add or create -->
+                        <div class="col-md-12">
+                            <div class="row add-event-option option-add-create hidden">
+                                <!-- select prediction -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Select Prediction</label>
+                                        <select class="form-control select-prediction" name="prediction[]"></select>
+                                        <script class="template-select-prediction" type="text/template7">
+                                            <option value="-">- Select -</option>
+                                            {{#each predictions}}
+                                                {{#each predictions}}
+                                                <option value="{{identifier}}">{{name}}</option>
+                                                {{/each}}
+                                            {{/each}}
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <!-- odd -->
+                                <div class="col-md-5">
+                                    <label class="control-label">Odd</label>
+                                    <input type="text" class="form-control odd" name="odd[]">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- START MODAL ADD EVENT -->
 <div class="modal fade" id="modal-add-manual-event" role="basic" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                 <h4 class="modal-title import_modal_title">Add Event</h4>
@@ -734,213 +925,14 @@
                                     <button class="close" data-dismiss="alert"></button> You have some form errors. Please check below. </div>
                                 <div class="alert alert-success display-none">
                                     <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
-                                <div class="tab-pane active" id="tab1">
-                                    <h3 class="block">Choose table and event type</h3>
-                                    <div class="add_tip_automatically row">
-
-                                        <!-- table selection -->
-	                                    <div class="form-group col-md-6">
-	                                        <label class="control-label">Select Table</label>
-	                                        <select class="form-control select-table">
-	                                            <option value="run" selected="selected">Real Users Normal</option>
-	                                            <option value="ruv">Real Users Vip</option>
-	                                            <option value="nun">No Users Normal</option>
-	                                            <option value="nuv">No Users Vip</option>
-	                                        </select>
-	                                    </div>
-
-                                        <!-- event type selection -->
-	                                    <div class="form-group col-md-6">
-	                                        <label>Select event type</label>
-                                            <div class="mt-radio-inline">
-                                                    <label class="mt-radio">
-                                                        <input type="radio" name="association-modal-event-type" value="noTip">
-                                                        Add No Tip
-                                                        <span></span>
-                                                    </label>
-                                                    <label class="mt-radio">
-                                                        <input type="radio" name="association-modal-event-type" value="add" checked>
-                                                        Add Event
-                                                        <span></span>
-                                                    </label>
-                                                    <label class="mt-radio">
-                                                        <input type="radio" name="association-modal-event-type" value="create">
-                                                        Create Event
-                                                        <span></span>
-                                                    </label>
-                                            </div>
-	                                    </div>
-
-                                        <!-- hidden inputt to persist matchId -->
-                                        <input type="hidden" class="match-id">
-                                        <!-- hidden inputt to persist leagueId -->
-                                        <input type="hidden" class="league-id">
-
-                                        <!-- content based on event type selection  noTip -->
-	                                    <div class="col-md-12">
-                                            <div class="add-event-option option-no-tip">
-                                                <h3>You chose to add no tip</h3>
-                                            </div>
-	                                    </div>
-
-                                        <!-- content based on event type selection  add -->
-	                                    <div class="col-md-12">
-                                            <div class="add-event-option option-add hidden">
-                                                <h3>Search event</h3>
-												
-												<!-- GDM Placeholder START -->
-												<div class="row">
-													<div class="date-selector col-md-4">
-														<select id="match_date_filter" class="form-control input-sm">
-															<option value="none" >No date filter</option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected" >Today: <?php echo gmdate('Y-m-d'); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
-														</select>
-													</div>													
-												</div>
-												<!-- GDM Placeholder END -->
-												
-                                                <div class="row">
-
-                                                    <!-- search event -->
-                                                    <div class="form-group col-md-12">
-                                                        <label class="control-label">Search Event</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-cogs"></i>
-                                                            </span>
-                                                            <input type="text" class="form-control search-match"/>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- div for founded events -->
-                                                    <div class="col-md-12">
-                                                        <div class="selectable-block"></div>
-                                                        <script class="template-selectable-block" type="text/template7">
-                                                            {{#each matches}}
-                                                            <div class="selectable-row" data-id="{{id}}"    data-league-id="{{leagueId}}">{{country}}: {{league}} {{homeTeam}} --- {{awayTeam}} {{result}} {{eventDate}}</div>
-                                                            {{else}}
-                                                            <div class="selectable">No Events Available</div>
-                                                            {{/each}}
-                                                        </script>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-	                                    </div>
-
-                                        <!-- content based on event type selection  create -->
-	                                    <div class="col-md-12">
-                                            <div class="add-event-option option-create hidden">
-                                                <h3>Create Event Manually</h3>
-												
-												<!-- GDM Placeholder START -->
-												<div class="row">
-													<div class="date-selector col-md-4">
-														<select id="manual_event_date" class="form-control input-sm">
-															<option value="<?php echo gmdate('Y-m-d', strtotime('+3day')); ?>">+3 Days: <?php echo gmdate('Y-m-d', strtotime('+3day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('+2day')); ?>">+2 Days: <?php echo gmdate('Y-m-d', strtotime('+2day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('+1day')); ?>">+1 Day: <?php echo gmdate('Y-m-d', strtotime('+1day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d'); ?>" selected="selected" >Today: <?php echo gmdate('Y-m-d'); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('-1day')); ?>">-1 Day: <?php echo gmdate('Y-m-d', strtotime('-1day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('-2day')); ?>">-2 Days: <?php echo gmdate('Y-m-d', strtotime('-2day')); ?></option>
-															<option value="<?php echo gmdate('Y-m-d', strtotime('-3day')); ?>">-3 Days: <?php echo gmdate('Y-m-d', strtotime('-3day')); ?></option>
-														</select>
-													</div>
-													<div class="col-md-3">
-														<div class="input-group">
-                                                            <input type="text" class="form-control timepicker timepicker-24">
-                                                            <span class="input-group-btn">
-                                                                <button class="btn default" type="button">
-                                                                    <i class="fa fa-clock-o"></i>
-                                                                </button>
-                                                            </span>
-                                                        </div>
-													</div>
-												</div>
-												<!-- GDM Placeholder END -->
-												
-                                                <ul class="add_event_manually row">
-                                                    <li class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Select Country</label>
-                                                            <select class="form-control select-provider select2" id="manual_event_country_sel" >
-																<!--
-                                                                <option></option>
-                                                                <option value="1"> 1 </option>
-                                                                <option value="2"> 2 </option>
-																-->
-                                                            </select>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Select League</label>
-                                                            <select class="form-control select-provider select2" id="manual_event_league_sel" >
-																<!--
-                                                                <option></option>
-                                                                <option value="1"> 1 </option>
-                                                                <option value="2"> 2 </option>
-																-->
-                                                            </select>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-md-3">
-                                                        <div class="form-group">
-                                                            <!--<label class="control-label">Select Event</label>-->
-                                                            <label class="control-label">Home Team</label>
-                                                            <select class="form-control select-provider select2" id="manual_event_home_sel" >
-																<!--
-                                                                <option></option>
-                                                                <option value="1"> 1 </option>
-                                                                <option value="2"> 2 </option>
-																-->
-                                                            </select>
-                                                        </div>
-                                                    </li>
-                                                    <li class="col-md-3">
-                                                        <div class="form-group">
-                                                            <!--<label class="control-label">Select Prediction</label>-->
-                                                            <label class="control-label">Away Team</label>
-                                                            <select class="form-control select-prediction-manual select2" id="manual_event_away_sel" >
-															</select>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-	                                    </div>
-
-                                        <!-- content based on event type selection  add or create -->
-	                                    <div class="col-md-12">
-                                            <div class="row add-event-option option-add-create hidden">
-                                                <!-- select prediction -->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Select Prediction</label>
-                                                        <select class="form-control select-prediction select2"></select>
-                                                        <script class="template-select-prediction" type="text/template7">
-                                                            <option value="-">- Select -</option>
-                                                            {{#each predictions}}
-                                                                {{#each predictions}}
-                                                                <option value="{{identifier}}">{{name}}</option>
-                                                                {{/each}}
-                                                            {{/each}}
-                                                        </script>
-                                                    </div>
-                                                </div>
-
-                                                <!-- odd -->
-                                                <div class="col-md-5">
-                                                    <label class="control-label">Odd</label>
-                                                    <input type="text" class="form-control odd">
-                                                </div>
-                                            </div>
-	                                    </div>
+                                
+                                <div class="box-group" id="accordion">
+                                    <!-- MULTIPLE PANELS WILL BE INSERTED HERE -->
+                                    
+                                    <!-- ************************************* -->
+                                    <div class="text-right">
+                                        <button class="btn btn-success add-multiple" type="button"><i class="fa fa-plus"></i>&nbsp; Add multiple</button>
+                                        <button class="btn btn-primary save-events" type="button"><i class="fa fa-check"></i>&nbsp; Save</button>
                                     </div>
                                 </div>
 
@@ -995,6 +987,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!--
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-offset-3 col-md-9">
@@ -1007,8 +1000,10 @@
                                         <i class="fa fa-check"></i>
                                     </a>
                                 </div>
+                                <hr>
                             </div>
                         </div>
+                        -->
                     </div>
                 </form>
             </div>

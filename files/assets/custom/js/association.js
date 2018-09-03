@@ -69,48 +69,18 @@ $('.table-association').on('click', '.delete-event', function() {
 // Modal Add Event
 // Launch modal for add new event
 config.association.on('click', '.add-manual-event', function() {
-    $.ajax({
-        url: config.coreUrl + "/prediction?" + getToken(),
-        type: "get",
-        success: function (response) {
+    $("[href='#default']").first().attr("href", "#event");
+    var panelHtml = $("#multiple-add-panel-template").html();
+    $(panelHtml).insertBefore($(".add-multiple").parent());
+    $(".panel-collapse").last().attr("id", "event");
+    $("[href='#event']").first().attr("href", "#default");
+    getPredictions();
 
-            var data = {predictions: response};
-            var element = $('#modal-add-manual-event');
+    // fetch the countries for the 'manual event' -> select countries drop down 
+    getCountries();
 
-            var template = element.find('.template-select-prediction').html();
-            var compiledTemplate = Template7.compile(template);
-            var html = compiledTemplate(data);
-
-            element.find('.select-prediction').html(html);
-        },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
-        }
-    });
-	
-	// fetch the countries for the 'manual event' -> select countries drop down 
-	$.ajax({
-        url: config.coreUrl + "/leagues/get-all-countries?" + getToken(),
-        type: "get",
-        success: function (response) {
-			// console.log(response);
-			
-			var options_string = '';
-			var options_string = '<option value="-">-</option>';
-			$.each(response, function(i, e) {
-				// options_string += '<option value="'+e.country_code+'" >'+e.name+'</option>';
-				options_string += '<option value="'+e.code+'" >'+e.name+'</option>';
-			});
-			// clear the countries select options and re-generate them
-			$('#manual_event_country_sel').empty().append(options_string);
-			
-        },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
-        }
-    });
-
-    showContentBasedOnEventType($('#modal-add-manual-event [name="association-modal-event-type"]:checked').val());
+    var container = $('#modal-add-manual-event [name="association-modal-event-type[]"]');
+    showContentBasedOnEventType($(container).val(), container);
     $('#modal-add-manual-event .confirm-event .systemDate').html($('#association-system-date').val());
     $('#modal-add-manual-event .confirm-event .table').html($('#modal-add-manual-event .select-table option:selected').val());
 
@@ -125,45 +95,18 @@ config.association.on('click', '.add-manual-event', function() {
     $('#modal-add-manual-event .confirm-event .odd').html('-');
 
     $('#modal-add-manual-event .button-previous').trigger('click');
-
+    
+    $('#modal-add-manual-event').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
     $('#modal-add-manual-event').modal('show');
 });
 
 // Modal Add Event
 // when change type of new event show differit content based os selection
-$('#modal-add-manual-event').on('change', '[name="association-modal-event-type"]', function() {
-    showContentBasedOnEventType($(this).val())
-});
-
-// Modal Add Event
-// when change prediction show text in confirm area
-$('#modal-add-manual-event').on('change', '.select-prediction', function() {
-    var element = $('#modal-add-manual-event');
-
-    var matchId = element.find('.match-id').val();
-    var leagueId = element.find('.league-id').val();
-    var predictionId = $(this).val();
-
-    element.find('.confirm-event .prediction').html(predictionId);
-
-    $.ajax({
-        url: config.coreUrl + "/odd/get-value?" + getToken(),
-        type: "post",
-        data: {
-            matchId: matchId,
-            leagueId: leagueId,
-            predictionId: predictionId,
-        },
-        success: function (response) {
-            if (response.type == 'success'){
-                element.find('.odd').val(response.value);
-                element.find('.confirm-event .odd').html(response.value);
-            }
-        },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
-        }
-    });
+$('#modal-add-manual-event').on('change', '[name="association-modal-event-type[]"]', function() {
+    showContentBasedOnEventType($(this).val(), $(this))
 });
 
 // Modal Add Event
@@ -182,44 +125,43 @@ $('#modal-add-manual-event .odd').keyup(function() {
 var matchFilterAjax; // define an variable to be used for the Ajax call ( in order to cancel older requests when we make a new one )
 // live search fot available events
 // every keyup means a new search
-$('#modal-add-manual-event .search-match').keyup(function() {
-    var element = $('#modal-add-manual-event');
-    var table = element.find('.select-table').val();
+$('#modal-add-manual-event').on("keyup", ".search-match", function() {
+    var table = $(this).parents().eq(5).find('.select-table').first().val();
     var filterValue = $(this).val().trim();
-	var filterDate = $('#match_date_filter').val();
-	var dateFilterQuery = '';
-	if( typeof filterDate != 'undefined' && filterDate != 'none' ) {
-		dateFilterQuery = "/"+filterDate;
-	}
-	
-	if (typeof matchFilterAjax !='undefined' ) {
-		matchFilterAjax.abort();
-	}
+    var filterDate = $(this).parents().eq(3).find('.match_date_filter').val();
+    var dateFilterQuery = '';
+    if( typeof filterDate != 'undefined' && filterDate != 'none' ) {
+        dateFilterQuery = "/"+filterDate;
+    }
+
+    if (typeof matchFilterAjax !='undefined' ) {
+        matchFilterAjax.abort();
+    }
 
     if (filterValue.length < 2) {
-        element.find('.selectable-block').addClass('hidden');
+        $(this).parents().eq(3).find('.selectable-block').first().addClass('hidden');
         return;
     }
-	
-	
+
+    var container = $(this);
     matchFilterAjax = $.ajax({
         url: config.coreUrl + "/match/filter/" + table + "/" + filterValue + dateFilterQuery + "?" + getToken(),
         type: "get",
         success: function (response) {
 
             var data = {matches: response};
-            element.find('.selectable-block').removeClass('hidden');
+            $(container).parents().eq(3).find('.selectable-block').removeClass('hidden');
 
-            var template = element.find('.template-selectable-block').html();
+            var template = $(container).parents().eq(3).find('.template-selectable-block').html();
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
-            element.find('.selectable-block').html(html);
+            $(container).parents().eq(3).find('.selectable-block').html(html);
         },
         error: function (xhr, textStatus, errorTrown) {
-			// we don't throw error if the request was 'aborted'
-			if( errorTrown != 'abort' ) {
-				manageError(xhr, textStatus, errorTrown);
-			}
+            // we don't throw error if the request was 'aborted'
+            if( errorTrown != 'abort' ) {
+                manageError(xhr, textStatus, errorTrown);
+            }
         }
     });
 });
@@ -275,9 +217,10 @@ $('#modal-add-manual-event').on('hidden.bs.modal', function(e) {
 
 // Modal Add Event --- add complete event
 // click on selectable-row to choose it
-$('#modal-add-manual-event .selectable-block').on('click', '.selectable-row', function() {
+$('#modal-add-manual-event').on('click', '.selectable-row', function() {
     var matchId = $(this).attr('data-id');
     var leagueId = $(this).attr('data-league-id');
+    var container = $(this);
 
     // return if click on no available events
     if (typeof matchId === typeof undefined || matchId === false)
@@ -286,17 +229,16 @@ $('#modal-add-manual-event .selectable-block').on('click', '.selectable-row', fu
     if (typeof leagueId === typeof undefined || leagueId === false)
         return;
 
-    var element = $('#modal-add-manual-event');
-
     // put content in html input
-    element.find('.search-match').val($(this).html());
+    $(this).parents().eq(2).find('.search-match').val($(this).html());
 
     // put id in hidden input .match-id
-    element.find('.match-id').val(matchId);
-    element.find('.league-id').val(leagueId);
-    element.find('.selectable-block').addClass('hidden');
+    $(this).parents().eq(5).find('.match-id').val(matchId);
+    $(this).parents().eq(5).find('.league-id').val(leagueId);
+    $(this).parents().eq(5).find('.selectable-block').addClass('hidden');
 
     // get selected event and complete confirmation step with event details
+    /*
     $.ajax({
         url: config.coreUrl + "/match/" + matchId + "?" + getToken(),
         type: "get",
@@ -310,6 +252,7 @@ $('#modal-add-manual-event .selectable-block').on('click', '.selectable-row', fu
             manageError(xhr, textStatus, errorTrown);
         }
     });
+    */
 });
 
 // Modal Add Event
@@ -468,73 +411,36 @@ $('#modal-add-manual-event').on('click', '.button-submit', function() {
 // Clickable - country selection
 // change country selection
 // show leagues in selected country.
-$('#modal-add-manual-event').on('change', '#manual_event_country_sel' , function() {
-	var country_code = $('#manual_event_country_sel').val();
-	var country = $('#modal-add-manual-event #manual_event_country_sel option:selected' ).text();
-	
-	if( country_code == '-' ) {
-		$('#modal-add-manual-event .confirm-event .country').html( '-' );
-		$('#manual_event_league_sel').empty().append('<option value="-">-</option>');
-		$('#manual_event_home_sel').empty().append('<option value="-">-</option>');
-		$('#manual_event_away_sel').empty().append('<option value="-">-</option>');
-		return;
-	}
-	$('#modal-add-manual-event .confirm-event .country').html( country );
-	
-    $.ajax({
-        url: config.coreUrl + "/leagues/get-country-leagues/" + country_code + "?" + getToken(),
-        type: "get",
-        success: function (response) {
-            // console.log(response);
-			
-			var options_string = '<option value="-">-</option>';
-			$.each(response, function(i, e) {
-				// options_string += '<option value="'+e.league_id+'" >'+e.title+'</option>';
-				options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
-			});
-			// clear the league select options and re-generate them
-			$('#manual_event_league_sel').empty().append(options_string);			
-			
-        },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
-        }
-    });
+$('#modal-add-manual-event').on('change', '.manual_event_country_sel' , function() {
+    var country_code = $(this).val();
+    var country = $(this).find("option:selected").first().text();
+
+    if( country_code == '-' ) {
+        $(this).find('.modal-add-manual-event .confirm-event .country').first().html( '-' );
+        $(this).find('.manual_event_league_sel').first().empty().append('<option value="-">-</option>');
+        $(this).find('.manual_event_home_sel').first().empty().append('<option value="-">-</option>');
+        $(this).find('.manual_event_away_sel').first().empty().append('<option value="-">-</option>');
+        return;
+    }
+    $('.modal-add-manual-event .confirm-event .country').html( country );
+
+    getCountryLeagues(country_code, $(this));
 });
 // Clickable - league selection
 // change league selection
 // show teams in selected league.
-$('#modal-add-manual-event').on('change', '#manual_event_league_sel', function() {
-	var leagueId = $('#manual_event_league_sel').val();
-	var league = $('#modal-add-manual-event #manual_event_league_sel option:selected' ).text();
-	
-	if( leagueId == '-' ) {
-		$('#modal-add-manual-event .confirm-event .league').html( '-' );
-		$('#manual_event_home_sel').empty().append('<option value="-">-</option>');
-		$('#manual_event_away_sel').empty().append('<option value="-">-</option>');
-		return;
-	}
-	$('#modal-add-manual-event .confirm-event .league').html( league );
-	
-    $.ajax({
-        url: config.coreUrl + "/leagues/get-league-teams/" + leagueId + "?" + getToken(),
-        type: "get",
-        success: function (response) {			
-            // console.log(response);
-			
-			var options_string = '<option value="-">-</option>';
-			$.each(response, function(i, e) {
-				// options_string += '<option value="'+e.team_id+'" >'+e.title+'</option>';
-				options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
-			});
-			// clear the teams select options and re-generate them
-			$('#manual_event_home_sel').empty().append(options_string);
-			$('#manual_event_away_sel').empty().append(options_string);
-        },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
-        }
-    });
+$('#modal-add-manual-event').on('change', '.manual_event_league_sel', function() {
+    var leagueId = $(this).val();
+    var league = $(this).find('.manual_event_league_sel option:selected' ).first().text();
+    
+    if( leagueId == '-' ) {
+        $('#modal-add-manual-event .confirm-event .league').html( '-' );
+        $('#manual_event_home_sel').empty().append('<option value="-">-</option>');
+        $('#manual_event_away_sel').empty().append('<option value="-">-</option>');
+        return;
+    }
+    $('#modal-add-manual-event .confirm-event .league').html( league );
+    getLeagueTeams(leagueId, $(this));
 });
 // Clickable - Home/Away team selection
 // set the html for the confirm poage
@@ -784,7 +690,6 @@ function getEventsAssociations(argTable, date = '0') {
         url: config.coreUrl + "/association/event/" + argTable + '/' + date + "?" + getToken(),
         type: "get",
         success: function (response) {
-
             var element = $('#table-association-' + argTable);
             var table = element.find('.association-table-datatable').DataTable();
             var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages">Associate</button>';
@@ -818,23 +723,466 @@ function getEventsAssociations(argTable, date = '0') {
     });
 }
 
+/******************************************************************************/
+/*********  MULTIPLE ADD MODAL     ********************************************/
+/******************************************************************************/
+    
+// clone the panel form inputs and append to the panel body
+$(document).on('click', '.add-multiple', function() {
+    var remove = "";
+    if($(this).parents().eq(2).find('.multiple-panel').find('.container-multiple').length == 1) {
+        remove = '';
+        remove += '<div class="row form-group">'
+        remove += '<button class="btn btn-xs btn-danger pull-right itm-m-r-10 remove" type="button" title="Remove"><i class="fa fa-times"></i></button>';
+        remove += '</div>';
+        $(this).parents().eq(2).find(".multiple-panel").find('.container-multiple').first().prepend(remove);
+    }
+
+    var html = '';
+    html += '<div class="panel panel-primary itm-none">';
+    html += $(this).parents().eq(2).find(".panel").last().html();
+    html += '</div>';
+    
+    $(".modal a[data-parent='#accordion2']").last().trigger("click");
+    $(html).insertBefore($(this).parent());
+    $(".modal .panel.panel-primary").slideDown('slow', function() {
+        $('.modal [name="association-modal-event-type[]"]').last().trigger("change");
+        $(this).removeClass("itm-none");
+    });
+    var length = $(".modal .panel.panel-primary").length;
+    $(".modal .panel.panel-primary").last().find(".panel-heading").attr("href", "#events" + length);
+    $(".modal .panel-collapse").last().attr("id", "events" + length);
+
+    $('.modal .timepicker-24').timepicker({
+        autoclose: true,
+        minuteStep: 5,
+        showSeconds: false,
+        showMeridian: false
+    });
+});
+
+// remove the item from the panel body
+$(document).on('click', '.modal .remove', function() {
+    var element = $(this);
+    var length = $(element).parents().eq(6).find('.container-multiple').length;
+
+    $(element).parents().eq(4).fadeOut('slow', function() {
+        if (--length <= 1) {
+            $(element).parents().eq(6).find('.container-multiple').find('.remove').parent().remove();
+        }
+        $(this).remove();
+    });
+
+    $(this).parents().eq(1).slideUp('slow', function() {});
+});
+
 // Functions ----- Modal Add Event
 // @string type
 // manage content when change event type (noTip, create, add)
-function showContentBasedOnEventType(type) {
+function showContentBasedOnEventType(type, container) {
     // add class hidden  for all .add-event-option
-    $('#modal-add-manual-event .add-event-option').addClass('hidden');
+    $(container).parent().parent().find('.add-event-option').addClass('hidden');
 
-    if (type === 'noTip')
-        $('#modal-add-manual-event .add-event-option.option-no-tip').removeClass('hidden');
-
+    if (type === 'noTip') {
+        $(container).parent().parent().find('.add-event-option.option-no-tip').removeClass('hidden');
+    }
     if (type === 'create') {
-        $('#modal-add-manual-event .add-event-option.option-create').removeClass('hidden');
-        $('#modal-add-manual-event .add-event-option.option-add-create').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-create').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-add-create').removeClass('hidden');
     }
 
     if (type === 'add') {
-        $('#modal-add-manual-event .add-event-option.option-add').removeClass('hidden');
-        $('#modal-add-manual-event .add-event-option.option-add-create').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-add').removeClass('hidden');
+        $(container).parent().parent().find('.add-event-option.option-add-create').removeClass('hidden');
     }
+}
+
+// used to determine which panels to remove
+var ajaxRequestsStatus = {
+    addEvent: false,
+    createEvent: false,
+    addNoTip: false
+}
+
+$('#modal-add-manual-event').on('hidden.bs.modal', function () {
+    deleteInsertedPanels("add");
+    deleteInsertedPanels("create");
+    deleteInsertedPanels("noTip");
+})
+
+$("#modal-add-manual-event").on("click", ".save-events", function() {
+    // reset ajax flags
+    ajaxRequestsStatus = {
+        addEvent: false,
+        createEvent: false,
+        addNoTip: false
+    }
+    
+    var addEvents = [];
+    var createEvents = [];
+    var noTipEvents = [];
+    var currentDate = $('#association-system-date').val();
+
+    $("#modal-add-manual-event .container-multiple").each(function () {
+        var eventType = $(this).find("[name='association-modal-event-type[]']").first().val();
+
+        if (eventType === 'add') {
+            addEvents.push(mapAddEventData($(this)));
+        }
+        if (eventType === 'create') {
+            createEvents.push(mapCreateEventData($(this)));
+        }
+        if (eventType === 'noTip') {
+            noTipEvents.push(mapNoTipEventData($(this)));
+        }
+    });
+    
+    if (addEvents.length > 0) {
+        ajaxAddEvent(addEvents, currentDate);
+    } else {
+        ajaxRequestsStatus.addEvent = true;
+    }
+    if (createEvents.length > 0) {
+        ajaxCreateEvent(createEvents, currentDate);
+    } else {
+        ajaxRequestsStatus.createEvent = true;
+    }
+    if (noTipEvents.length > 0) {
+        ajaxAddNoTipEvent(noTipEvents, currentDate);
+    } else {
+        ajaxRequestsStatus.addNoTip = true;
+    }
+});
+
+function validateAjaxRequests() {
+    if (
+        ajaxRequestsStatus.addEvent === true &&
+        ajaxRequestsStatus.createEvent === true &&
+        ajaxRequestsStatus.addNoTip === true
+    ) {
+        return true;
+    }
+    return false;
+}
+
+function deleteInsertedPanels(eventType) {
+    var selects = $("#modal-add-manual-event [name='association-modal-event-type[]']");
+    $(selects).each(function(index, element) {
+        if ($(element).val() == eventType) {
+            $(element).parents(".panel.panel-primary").first().remove();
+            var panelLength = $('#modal-add-manual-event .panel.panel-primary').length;
+            if (panelLength <= 1) {
+                $('#modal-add-manual-event .panel.panel-primary').find(".remove").first().remove()
+            }
+        }
+    });
+}
+
+function ajaxAddEvent(data, currentDate) {
+    $.ajax({
+        url: config.coreUrl + "/event/create-from-match" + "?" + getToken(),
+        type: "post",
+        dataType: "json",
+        data: {
+            events: data
+        },
+        success: function (response) {
+            console.log(response);
+            if (response.type == 'error') {
+                for (var index in response.data) {
+                    var errorMessage = "";
+                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add Event' \n`;
+                    errorMessage += `Message: ${response.data[index].message}`;
+                    alert(errorMessage);
+                }
+                return;
+            }
+
+            // map the id from the events saved in the DB
+            for (var index in response.data) {
+                data[index].id = response.data[index].id;
+            }
+            // start seccond ajax to create association event - table
+            $.ajax({
+                url: config.coreUrl + "/association" + "?" + getToken(),
+                type: "post",
+                dataType: "json",
+                data: {
+                    events: data,
+                    systemDate: currentDate,
+                },
+                beforeSend: function() {},
+                success: function (r) {
+                    console.log(r);
+                    alert("Type: --- " + r.type + " --- \r\n" + r.message);
+                    // refresh table to see new entry
+                    var tables = [];
+                    for (var index in data) {
+                        if (tables.indexOf(data[index].table) == -1) {
+                            getEventsAssociations(data[index].table, currentDate);
+                            tables.push(data[index].table);
+                        }
+                    }
+                    ajaxRequestsStatus.addEvent = true;
+                    if (validateAjaxRequests()) {
+                        $('#modal-add-manual-event').modal('hide');
+                    }
+                    deleteInsertedPanels("add");
+                },
+                error: function (xhr, textStatus, errorTrown) {
+                    console.log(errorTrown);
+                    manageError(xhr, textStatus, errorTrown);
+                }
+            });
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            console.log(errorTrown);
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function ajaxCreateEvent(data, currentDate) {
+    $.ajax({
+        url: config.coreUrl + "/event/create-manually-bulk" + "?" + getToken(),
+        type: "post",
+        data: {
+            events: data
+        },
+        success: function (response) {
+            console.log(response);
+            if (response.type == 'error') {
+                for (var index in response.data) {
+                    var errorMessage = "";
+                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Create Event' \n`;
+                    errorMessage += `${response.data[index].data.homeTeam} - ${response.data[index].data.awayTeam} \n`;
+                    errorMessage += `Message: ${response.data[index].message}`;
+                    
+                    if (response.data[index].type == "error") {
+                        alert(errorMessage);
+                    }
+                }
+                return;
+            }
+
+            // map the id from the events saved in the DB
+            for (var index in response.data) {
+                data[index].id = response.data[index].id;
+            }
+            // start seccond ajax to create association event - table
+            $.ajax({
+                url: config.coreUrl + "/association" + "?" + getToken(),
+                type: "post",
+                dataType: "json",
+                data: {
+                    events: data,
+                    systemDate: currentDate,
+                },
+                success: function (r) {
+                    console.log(r);
+                    alert("Type: --- " + r.type + " --- \r\n" + r.message);
+                    
+                    // refresh table to see new entry
+                    var tables = [];
+                    for (var index in data) {
+                        if (tables.indexOf(data[index].table) == -1) {
+                            getEventsAssociations(data[index].table, currentDate);
+                            tables.push(data[index].table);
+                        }
+                    }
+                    ajaxRequestsStatus.createEvent = true;
+                    if (validateAjaxRequests()) {
+                        $('#modal-add-manual-event').modal('hide');
+                    }
+                    deleteInsertedPanels("create")
+
+                    // TODO clean inputs
+                },
+                error: function (xhr, textStatus, errorTrown) {
+                    manageError(xhr, textStatus, errorTrown);
+                }
+            });
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            console.log(errorTrown);
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function ajaxAddNoTipEvent(data, currentDate) {
+    $.ajax({
+        url: config.coreUrl + "/association/no-tip" + "?" + getToken(),
+        type: "post",
+        dataType: "json",
+        data: {
+            table : data,
+            systemDate: currentDate,
+        },
+        success: function (response) {
+            console.log(response);
+            if (response.type == 'error') {
+                for (var index in response.data) {
+                    var errorMessage = "";
+                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add No Tip' \n`
+                    errorMessage += `Message: ${response.data[index].message}`;
+                    if (response.data[index].type == "error") {
+                        alert(errorMessage);
+                    }
+                }
+                return;
+            }
+
+            // refresh table to see new entry
+            var tables = [];
+            for (var index in data) {
+                if (tables.indexOf(data[index].table) == -1) {
+                    getEventsAssociations(data[index].table, currentDate);
+                    tables.push(data[index].table);
+                }
+            }
+            ajaxRequestsStatus.addNoTip = true;
+            if (validateAjaxRequests()) {
+                $('#modal-add-manual-event').modal('hide');
+            }
+            deleteInsertedPanels("noTip");
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function mapAddEventData(container) {
+    var table = $(container).find("[name='table[]']").first().val();
+    var matchId = $(container).find("[name='match_id[]']").val();
+    var odd = $(container).find("[name='odd[]']").first().val();
+    var predictionId = $(container).find("[name='prediction[]']").first().val();
+
+    var data = {
+        matchId: matchId,
+        odd: odd,
+        predictionId: predictionId,
+        table: table
+    };
+    return data;
+}
+
+function mapCreateEventData(container) {
+    var table = $(container).find("[name='table[]']").first().val();
+    var eventDate = $(container).find("[name='event_date[]']").first().val();
+    var eventTime = $(container).find($("[name='event_time[]']")).first().val();
+    var countryCode = $(container).find("[name='country[]']").first().val();
+    var leagueId = $(container).find("[name='league[]']").first().val();
+    var homeTeamId = $(container).find("[name='home_team[]']").first().val();
+    var awayTeamId = $(container).find("[name='away_team[]']").first().val();
+    var predictionId = $(container).find("[name='prediction[]']").first().val();
+    var odd = $(container).find("[name='odd[]']").first().val();
+    var homeTeam = $(container).find("[name='home_team[]'] option:selected").first().text();
+    var awayTeam = $(container).find("[name='away_team[]'] option:selected").first().text();
+    var country = $(container).find("[name='country[]'] option:selected").first().text();
+    var league = $(container).find("[name='league[]'] option:selected").first().text();
+
+    var data = {
+        eventDate: eventDate + " " + eventTime,
+        eventTime: eventTime,
+        countryCode: countryCode,
+        leagueId: leagueId,
+        homeTeamId: homeTeamId,
+        awayTeamId: awayTeamId,
+        predictionId: predictionId,
+        odd: odd,
+        homeTeam: homeTeam,
+        awayTeam: awayTeam,
+        country: country,
+        league: league,
+        table: table
+    };
+    return data;
+}
+
+function mapNoTipEventData(container) {
+    var table = $(container).find("[name='table[]']").first().val();
+
+    var data = {
+        table: table
+    };
+    return data;
+}
+
+function getPredictions() {
+    $.ajax({
+        url: config.coreUrl + "/prediction?" + getToken(),
+        type: "get",
+        success: function (response) {
+
+            var data = {predictions: response};
+            var element = $('#modal-add-manual-event');
+
+            var template = element.find('.template-select-prediction').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(data);
+
+            element.find('.select-prediction').html(html);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function getCountries() {
+    $.ajax({
+        url: config.coreUrl + "/leagues/get-all-countries?" + getToken(),
+        type: "get",
+        success: function (response) {
+            var options_string = '';
+            var options_string = '<option value="-">-</option>';
+            $.each(response, function(i, e) {
+                options_string += '<option value="'+e.code+'" >'+e.name+'</option>';
+            });
+            // clear the countries select options and re-generate them
+            $('.manual_event_country_sel').empty().append(options_string);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function getCountryLeagues(country_code, container) {
+    $.ajax({
+        url: config.coreUrl + "/leagues/get-country-leagues/" + country_code + "?" + getToken(),
+        type: "get",
+        success: function (response) {
+            var options_string = '<option value="-">-</option>';
+            $.each(response, function(i, e) {
+                options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
+            });
+            // clear the league select options and re-generate them
+            $(container).parent().parent().next().find('.manual_event_league_sel').first().empty().append(options_string);			
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function getLeagueTeams(leagueId, container) {
+    $.ajax({
+        url: config.coreUrl + "/leagues/get-league-teams/" + leagueId + "?" + getToken(),
+        type: "get",
+        success: function (response) {
+            var options_string = '<option value="-">-</option>';
+            $.each(response, function(i, e) {
+                options_string += '<option value="'+e.id+'" >'+e.name+'</option>';
+            });
+            // clear the teams select options and re-generate them
+            $(container).parent().parent().next().find('.manual_event_home_sel').empty().append(options_string);
+            $(container).parent().parent().next().next().find('.manual_event_away_sel').empty().append(options_string);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
 }
