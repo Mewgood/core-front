@@ -547,7 +547,7 @@ $('.table-association').on('click', '.modal-available-packages', function() {
         url: config.coreUrl + "/association/package/available/" + table + "/" + associateEventId  +"/" + date + "?" + getToken(),
         type: "get",
         success: function (response) {
-
+            console.log(response);
             if (response.type === "error") {
                 alert("Type: --- " + response.type + " --- \r\n" + response.message);
                 return;
@@ -562,7 +562,12 @@ $('.table-association').on('click', '.modal-available-packages', function() {
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
             element.find('.modal-content').html(html);
-
+            
+            // check the checkbox near the site name
+            // the real values are stored in the hidden checkboxes
+            // of the site's packages
+            $("#modal-associate-events .use:checked").parents(".site-container").find(".check-site-packages").prop("checked", true);
+            
             element.modal();
         },
         error: function (xhr, textStatus, errorTrown) {
@@ -571,6 +576,13 @@ $('.table-association').on('click', '.modal-available-packages', function() {
     });
 });
 
+// toggle on/off site packages
+$("#modal-associate-events").on("change", ".check-site-packages", function() {
+    var sitePackages = $(this).parent().parent().find(".use");
+    $(sitePackages).each(function(index, element) {
+        $(element).prop("checked", !$(element).prop("checked"));
+    }); 
+});
 
 // Modal Associate Event-Packages
 // action submit for create/delete associations event - packages
@@ -732,7 +744,7 @@ $(document).on('click', '.add-multiple', function() {
     html += $(this).parents().eq(2).find(".panel").last().html();
     html += '</div>';
     
-    $(".modal a[data-parent='#accordion2']").last().trigger("click");
+    $(".modal a[data-parent='#accordion']").last().trigger("click");
     $(html).insertBefore($(this).parent());
     $(".modal .panel.panel-primary").slideDown('slow', function() {
         $('.modal [name="association-modal-event-type[]"]').last().trigger("change");
