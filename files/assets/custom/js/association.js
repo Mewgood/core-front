@@ -548,6 +548,9 @@ $('.table-association').on('click', '.modal-available-packages', function() {
         type: "get",
         success: function (response) {
             console.log(response);
+            if (typeof(response.sites) == "object") {
+                response.sites = Object.keys(response.sites).map(key => response.sites[key])
+            }
             if (response.type === "error") {
                 alert("Type: --- " + response.type + " --- \r\n" + response.message);
                 return;
@@ -965,11 +968,11 @@ function ajaxCreateEvent(data, currentDate) {
                 }
                 return;
             }
-
             // map the id from the events saved in the DB
             for (var index in response.data) {
                 data[index].id = response.data[index].id;
             }
+            console.log(data);
             // start seccond ajax to create association event - table
             $.ajax({
                 url: config.coreUrl + "/association" + "?" + getToken(),
