@@ -255,158 +255,6 @@ $('#modal-add-manual-event').on('click', '.selectable-row', function() {
     */
 });
 
-// Modal Add Event
-// submit action to add new event
-$('#modal-add-manual-event').on('click', '.button-submit', function() {
-    // check what user want to do: add no tip, add tip from events or create tip
-    var eventType = $('#modal-add-manual-event [name="association-modal-event-type"]:checked').val();
-    var table = $('#modal-add-manual-event .select-table').val();
-    var currentDate = $('#association-system-date').val();
-
-    if (eventType === 'noTip') {
-        $.ajax({
-            url: config.coreUrl + "/association/no-tip" + "?" + getToken(),
-            type: "post",
-            dataType: "json",
-            data: {
-                table : table,
-                systemDate: currentDate,
-            },
-            success: function (r) {
-                alert("Type: --- " + r.type + " --- \r\n" + r.message);
-
-                // refresh table to see new entry
-                getEventsAssociations(table, currentDate);
-                $('#modal-add-manual-event').modal('hide');
-            },
-            error: function (xhr, textStatus, errorTrown) {
-                manageError(xhr, textStatus, errorTrown);
-            }
-        });
-
-        return;
-    }
-
-    if (eventType === 'create') {
-        // get parameters
-        var eventDate = $('#modal-add-manual-event #manual_event_date').val();
-		var eventTime = $('.timepicker').val();
-        var countryCode = $('#modal-add-manual-event #manual_event_country_sel').val();
-        var leagueId = $('#modal-add-manual-event #manual_event_league_sel').val();
-        var homeTeamId = $('#modal-add-manual-event #manual_event_home_sel').val();
-        var awayTeamId = $('#modal-add-manual-event #manual_event_away_sel').val();
-        var predictionId = $('#modal-add-manual-event .select-prediction').val();
-        var odd = $('#modal-add-manual-event .odd').val();		
-		
-		var homeTeam = $('#modal-add-manual-event #manual_event_home_sel option:selected' ).text();		
-		var awayTeam = $('#modal-add-manual-event #manual_event_away_sel option:selected' ).text();		
-		var country = $('#modal-add-manual-event #manual_event_country_sel option:selected' ).text();		
-		var league = $('#modal-add-manual-event #manual_event_league_sel option:selected' ).text();		
-
-        $.ajax({
-            url: config.coreUrl + "/event/create-manually" + "?" + getToken(),
-            type: "post",
-            dataType: "json",
-            data: {
-                eventDate: eventDate + ' ' + eventTime,
-                countryCode: countryCode,
-                leagueId: leagueId,
-                homeTeamId: homeTeamId,
-                awayTeamId: awayTeamId,
-                predictionId: predictionId,
-                odd: odd,
-                homeTeam: homeTeam,
-                awayTeam: awayTeam,
-                country: country,
-                league: league,
-            },
-            success: function (response) {
-                alert("Type: --- " + response.type + " --- \r\n" + response.message);
-                if (response.type == 'error')
-                    return;
-
-                // start seccond ajax to create association event - table
-                $.ajax({
-                    url: config.coreUrl + "/association" + "?" + getToken(),
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        eventsIds: [response.data.id],
-                        table : table,
-                        systemDate: currentDate,
-                        // systemDate: eventDate,
-                    },
-                    beforeSend: function() {},
-                    success: function (r) {
-                        alert("Type: --- " + r.type + " --- \r\n" + r.message);
-                        // refresh table to see new entry
-                        getEventsAssociations(table, currentDate);
-                        $('#modal-add-manual-event').modal('hide');
-
-                        // TODO clean inputs
-                    },
-                    error: function (xhr, textStatus, errorTrown) {
-                        manageError(xhr, textStatus, errorTrown);
-                    }
-                });
-            },
-            error: function (xhr, textStatus, errorTrown) {
-                manageError(xhr, textStatus, errorTrown);
-            }
-        });
-        return;
-    }
-
-    if (eventType === 'add') {
-        // get match id
-        var matchId = $('#modal-add-manual-event').find('.match-id').val();
-
-        $.ajax({
-            url: config.coreUrl + "/event/create-from-match" + "?" + getToken(),
-            type: "post",
-            dataType: "json",
-            data: {
-                matchId: matchId,
-                predictionId: $('#modal-add-manual-event .select-prediction').val(),
-                odd: $('#modal-add-manual-event .odd').val(),
-            },
-            success: function (response) {
-                alert("Type: --- " + response.type + " --- \r\n" + response.message);
-                if (response.type == 'error')
-                    return;
-
-                // start seccond ajax to create association event - table
-                $.ajax({
-                    url: config.coreUrl + "/association" + "?" + getToken(),
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        eventsIds: [response.data.id],
-                        table : table,
-                        systemDate: currentDate,
-                    },
-                    beforeSend: function() {},
-                    success: function (r) {
-                        alert("Type: --- " + r.type + " --- \r\n" + r.message);
-                        // refresh table to see new entry
-                        getEventsAssociations(table, currentDate);
-                        $('#modal-add-manual-event').modal('hide');
-
-                        // TODO clean inputs
-                    },
-                    error: function (xhr, textStatus, errorTrown) {
-                        manageError(xhr, textStatus, errorTrown);
-                    }
-                });
-            },
-            error: function (xhr, textStatus, errorTrown) {
-                manageError(xhr, textStatus, errorTrown);
-            }
-        });
-        return;
-    }
-});
-
 /* ------ Country / League / Team drop-down actions ------- */
 // Clickable - country selection
 // change country selection
@@ -504,10 +352,14 @@ $('.table-association').on('click', '.modal-get-event', function() {
 $('#modal-available-events').on('click', '.import', function() {
     var ids = [];
     var table = $('#modal-available-events .table-identifier').val();
+    var events = [];
 
     // get events ids for association
     $('#modal-available-events .use:checked').each(function() {
-        ids.push($(this).attr('data-id'));
+        var event = {};
+        event.id = $(this).attr('data-id');
+        event.table = table;
+        events.push(event);
     });
 
     $.ajax({
@@ -515,8 +367,7 @@ $('#modal-available-events').on('click', '.import', function() {
         type: "post",
         dataType: "json",
         data: {
-            eventsIds: ids,
-            table : table,
+            events: events,
             systemDate: $('#association-system-date').val(),
         },
         beforeSend: function() {},
@@ -548,6 +399,9 @@ $('.table-association').on('click', '.modal-available-packages', function() {
         type: "get",
         success: function (response) {
             console.log(response);
+            if (typeof(response.sites) == "object") {
+                response.sites = Object.keys(response.sites).map(key => response.sites[key])
+            }
             if (response.type === "error") {
                 alert("Type: --- " + response.type + " --- \r\n" + response.message);
                 return;
@@ -965,11 +819,11 @@ function ajaxCreateEvent(data, currentDate) {
                 }
                 return;
             }
-
             // map the id from the events saved in the DB
             for (var index in response.data) {
                 data[index].id = response.data[index].id;
             }
+            console.log(data);
             // start seccond ajax to create association event - table
             $.ajax({
                 url: config.coreUrl + "/association" + "?" + getToken(),
