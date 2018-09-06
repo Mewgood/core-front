@@ -214,6 +214,19 @@
                                 <label>Thank you page parameter</label>
                                 <input type="text" class="form-control" readonly="readonly">
                             </div>
+                            
+                            <div class="form-group">
+                                <label>Type</label>
+                                <select class="form-control type">
+                                    <option value=""> - None -</option>
+                                    <option value="static"
+                                    {{#js_compare "this.type === 'static'"}}selected="selected"{{/js_compare}}>
+                                    Static</option>
+                                    <option value="cms"
+                                    {{#js_compare "this.type === 'cms'"}}selected="selected"{{/js_compare}}>
+                                    CMS</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="col-md-4">
