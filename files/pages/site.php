@@ -342,14 +342,14 @@
                                         <div class="form-group">
                                             <label>Text</label>
                                             <input type="text" class="form-control statusName"
-                                            value="{{#if status.1.statusName}}{{status.1.statusName}}{{/if}}">
+                                            value="{{#if status[1].statusName}}{{status[1].statusName}}{{/if}}">
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                          <div class="form-group">
                                             <label>Class</label>
                                             <input type="text" class="form-control statusClass"
-                                            value="{{#if status.1.statusClass}}{{status.1.statusClass}}{{/if}}">
+                                            value="{{#if status[1].statusClass}}{{status[1].statusClass}}{{/if}}">
                                         </div>
                                     </div>
                                 </div>
@@ -361,14 +361,14 @@
                                         <div class="form-group">
                                             <label>Text</label>
                                             <input type="text" class="form-control statusName"
-                                            value="{{#if status.2.statusName}}{{status.2.statusName}}{{/if}}">
+                                            value="{{#if status[2].statusName}}{{status[2].statusName}}{{/if}}">
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                          <div class="form-group">
                                             <label>Class</label>
                                             <input type="text" class="form-control statusClass"
-                                            value="{{#if status.2.statusClass}}{{status.2.statusClass}}{{/if}}">
+                                            value="{{#if status[2].statusClass}}{{status[2].statusClass}}{{/if}}">
                                         </div>
                                     </div>
                                 </div>
@@ -380,14 +380,14 @@
                                         <div class="form-group">
                                             <label>Text</label>
                                             <input type="text" class="form-control statusName"
-                                            value="{{#if status.3.statusName}}{{status.3.statusName}}{{/if}}">
+                                            value="{{#if status[3].statusName}}{{status[3].statusName}}{{/if}}">
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                          <div class="form-group">
                                             <label>Class</label>
                                             <input type="text" class="form-control statusClass"
-                                            value="{{#if status.3.statusClass}}{{status.3.statusClass}}{{/if}}">
+                                            value="{{#if status{3].statusClass}}{{status[3].statusClass}}{{/if}}">
                                         </div>
                                     </div>
                                 </div>
@@ -399,14 +399,14 @@
                                         <div class="form-group">
                                             <label>Text</label>
                                             <input type="text" class="form-control statusName"
-                                            value="{{#if status.4.statusName}}{{status.4.statusName}}{{/if}}">
+                                            value="{{#if status[4].statusName}}{{status[4].statusName}}{{/if}}">
                                         </div>
                                     </div>
                                     <div class="col-md-5">
                                          <div class="form-group">
                                             <label>Class</label>
                                             <input type="text" class="form-control statusClass"
-                                            value="{{#if status.4.statusClass}}{{status.4.statusClass}}{{/if}}">
+                                            value="{{#if status[4].statusClass}}{{status[4].statusClass}}{{/if}}">
                                         </div>
                                     </div>
                                 </div>
