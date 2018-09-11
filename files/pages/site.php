@@ -387,7 +387,7 @@
                                          <div class="form-group">
                                             <label>Class</label>
                                             <input type="text" class="form-control statusClass"
-                                            value="{{#if status{3].statusClass}}{{status[3].statusClass}}{{/if}}">
+                                            value="{{#if status[3].statusClass}}{{status[3].statusClass}}{{/if}}">
                                         </div>
                                     </div>
                                 </div>
