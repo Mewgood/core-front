@@ -120,6 +120,7 @@ config.site.on('click', '.save-site', function(){
             email: config.site.find('.site-general .email').val(),
             url: config.site.find('.site-general .url').val(),
             dateFormat: config.site.find('.site-general .date-format').val(),
+            type: config.site.find('.site-general .type').val(),
 
             smtpHost: config.site.find('.site-general .smtp-host').val(),
             smtpPort: config.site.find('.site-general .smtp-port').val(),
@@ -137,7 +138,7 @@ config.site.on('click', '.save-site', function(){
         prediction: [],
         package: [],
     };
-
+    console.log(data);
     if (data.site.siteId === 'new') {
 
         // add new site and retrive id
@@ -334,7 +335,7 @@ function addNewSite(data) {
 // store new site
 function updateSite(data) {
     var ret = {};
-
+    console.log(data);
     $.ajax({
         url: config.coreUrl + "/site/update/" + data.siteId + "?" + getToken(),
         type: "post",
@@ -376,7 +377,7 @@ function getSiteInfo(siteId) {
         url: config.coreUrl + "/site/" + siteId + "?" + getToken(),
         type: "get",
         success: function (response) {
-
+            console.log(response);
             // show site name in front;
             showSiteName(response);
             showSiteToken(response);

@@ -91,6 +91,7 @@ config.archiveBig.on('click', '.publishInSite', function() {
         url: config.coreUrl + "/site/update-archive-big/" + siteId  + "?" + getToken(),
         type: "get",
         success: function (response) {
+            console.log(response);
             alert("Type: --- " + response.type + " --- \r\n" + response.message);
         },
         error: function (xhr, textStatus, errorTrown) {
