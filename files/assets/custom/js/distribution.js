@@ -100,7 +100,8 @@ config.distribution.on('click', '.actions .preview-and-send', function() {
 // Actions
 // trigger procedure to send emails.
 config.distribution.on('click', '.actions .send', function() {	
-    distributionSendEmails();
+    var html = $(".note-editable").html();
+    distributionSendEmails(html);
 });
 
 
@@ -627,6 +628,8 @@ function distributionSendEmails(template = null) {
 	
     if (template !== null)
         data['template'] = template;
+    
+    console.log(data);
 	
     $.ajax({
         url: config.coreUrl + "/distribution/preview-and-send/send" + "?" + getToken(),
