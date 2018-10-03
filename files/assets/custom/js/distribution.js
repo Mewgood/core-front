@@ -86,7 +86,7 @@ config.distribution.on('click', '.actions .preview-and-send', function() {
             var template = element.find('.template-modal-content-preview').html();
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
-			console.log(data);
+
             element.find('.modal-content').html(html);
             element.find('.summernote').summernote();
             element.modal();
@@ -100,8 +100,7 @@ config.distribution.on('click', '.actions .preview-and-send', function() {
 // Actions
 // trigger procedure to send emails.
 config.distribution.on('click', '.actions .send', function() {	
-    var html = $(".note-editable").html();
-    distributionSendEmails(html);
+    distributionSendEmails();
 });
 
 
@@ -629,7 +628,6 @@ function distributionSendEmails(template = null) {
     if (template !== null)
         data['template'] = template;
     
-    console.log(data);
 	
     $.ajax({
         url: config.coreUrl + "/distribution/preview-and-send/send" + "?" + getToken(),
