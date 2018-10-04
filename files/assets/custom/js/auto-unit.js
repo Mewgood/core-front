@@ -246,6 +246,19 @@ $('#auto-unit-new-schedule-event').on('click', '.save', function() {
     });
 });
 
+$('.show-admin-pool').on('click', function() {
+    const page = "admin-pool";
+
+    // set active page in config
+    config.activePage = page;
+
+    // set active page in localStorage
+    localStorage.setItem("core-app-active-page", page);
+
+    setActivePage();
+});
+
+
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
