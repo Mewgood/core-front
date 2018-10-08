@@ -10,6 +10,9 @@ $(document).ready(function() {
     let year = date.getFullYear();
     
     let today = `${year}-${month}-${day}`;
+    
+    initLeagueMatchesDatatable(today);
+    initPoolMatchesDatatable(today);
     getCountries(today);
     
     $(".select2-countries").on("select2:select", function() {
@@ -19,6 +22,25 @@ $(document).ready(function() {
     
     $(".select2-leagues").on("select2:select select2:unselect", function() {
         initLeagueMatchesDatatable(today);
+    });
+    
+    $(".itm-checkbox").click( function() {
+        let type = $(this).data("type");
+        let container = type === "countries" ? ".select2-countries" : ".select2-leagues";
+
+        if( $(this).is(':checked') ){
+            $(`${container} > option`).prop("selected","selected");
+            $(`${container}`).trigger("change");
+            $(`${container}`).trigger("select2:select");
+        } else{
+            $(`${container} > option`).removeAttr("selected");
+            $(`${container}`).trigger("change");
+            $(`${container}`).trigger("select2:unselect");
+         }
+    });
+    
+    $(".admin-pool-add-matches").click( function() {
+        addMatchesToThePool(today);
     });
     
     function getCountries(date) {
@@ -71,8 +93,8 @@ $(document).ready(function() {
                     "url": config.coreUrl + "/matches/get-league-list-matches/?" + getToken(),
                     "type": "POST",
                     "data": function(data) {
-                        data.leagueIds = $(".select2-leagues").val() || [0];
-                        data.date = "2018-10-04";
+                        data.leagueIds = JSON.stringify($(".select2-leagues").val()) || [0];
+                        data.date = date;
                         return data;
                     },
                     "dataSrc": ''
@@ -86,18 +108,81 @@ $(document).ready(function() {
                 ],
                 "columnDefs": [
                     {
-                        "render": function ( data, type, row ) {
-                            console.log(data);
-                        }
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets:   0
                     }
-                ]
+                ],
+                "select": {
+                    style:    'os',
+                    selector: 'td:first-child'
+                }
             });
         } else {
             $('#league-matches').DataTable().ajax.reload();
         }
     }
 
-    function initPoolMatchesDatatable() {
+    function addMatchesToThePool(date) {
+        let rows = $('#league-matches').DataTable().rows( {selected: true} ).data();
+        let matchIds = [];
+
+        for (let key in rows) {
+
+            if (parseInt(key) == NaN) {
+                console.log("break");
+                break;
+            }
+            matchIds.push(rows[key].primaryId);
+        }
         
+        $.ajax({
+            url: config.coreUrl + "/auto-unit/create-admin-pool/?" + getToken(),
+            type: "POST",
+            data: {
+                "matches": matchIds,
+                "date": date
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, textStatus, errorTrown) {
+                manageError(xhr, textStatus, errorTrown);
+            }
+        });
+    }
+    
+    function initPoolMatchesDatatable(date) {
+        if ( ! $.fn.DataTable.isDataTable( '#pool-matches' ) ) {
+            $('#pool-matches').dataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": config.coreUrl + "/auto-unit/get-admin-pool/" + date + "?" + getToken(),
+                    "type": "GET",
+                    "dataSrc": ''
+                },
+                "columns": [
+                    { "data": "primaryId", "name": "primaryId" },
+                    { "data": "league", "name": "league" },
+                    { "data": "homeTeam", "name": "homeTeam" },
+                    { "data": "awayTeam", "name": "awayTeam" },
+                    { "data": "result", "name": "result" }
+                ],
+                "columnDefs": [
+                    {
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets:   0
+                    }
+                ],
+                "select": {
+                    style:    'os',
+                    selector: 'td:first-child'
+                }
+            });
+        } else {
+            $('#pool-matches').DataTable().ajax.reload();
+        }
     }
 });

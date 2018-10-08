@@ -13,6 +13,7 @@
                 <ul class="table_import_filters_container">
                     <li>
                         <div class="form-group">
+                            <input type="checkbox" class="itm-checkbox" data-type="countries">
                             <label class="control-label">Countries</label>
                             <select class="form-control select2-countries" name="countryCodes"></select>
                             <script class="template-select-countries" type="text/template7">
@@ -24,6 +25,7 @@
                     </li>
                     <li>
                         <div class="form-group">
+                            <input type="checkbox" class="itm-checkbox" title="Select All" data-type="leagues">
                             <label class="control-label">Leagues</label>
                             <select class="form-control select2-leagues" name="leagueIds"></select>
                             <script class="template-select-leagues" type="text/template7">
@@ -34,7 +36,7 @@
                         </div>
                     </li>
                     <li>
-                        <button type="button" class="btn btn-success show-admin-pool">Add matches</button>
+                        <button type="button" class="btn btn-success admin-pool-add-matches">Add matches</button>
                     </li>
                 </ul>
             </div>
