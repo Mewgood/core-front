@@ -4,16 +4,16 @@ $(document).ready(function() {
         multiple: true
     });
     
-    let date = new Date();
-    let day = date.getDate() >= 10 ? date.getDate() : "0" + date.getDate(); // 2 digit day format
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    
-    let today = `${year}-${month}-${day}`;
-    
-    initLeagueMatchesDatatable(today);
-    initPoolMatchesDatatable(today);
-    getCountries(today);
+    $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+
+    $("#datepicker").on("change", function() {
+        initLeagueMatchesDatatable();
+        initPoolMatchesDatatable();
+    });
+
+    initLeagueMatchesDatatable();
+    initPoolMatchesDatatable();
+    getCountries();
     
     $(".select2-countries").on("select2:select", function() {
         let countries = $(this).val();
@@ -21,7 +21,7 @@ $(document).ready(function() {
     });
     
     $(".select2-leagues").on("select2:select select2:unselect", function() {
-        initLeagueMatchesDatatable(today);
+        initLeagueMatchesDatatable();
     });
     
     $(".itm-checkbox").click( function() {
@@ -40,10 +40,14 @@ $(document).ready(function() {
     });
     
     $(".admin-pool-add-matches").click( function() {
-        addMatchesToThePool(today);
+        addMatchesToThePool();
     });
     
-    function getCountries(date) {
+    $(".admin-pool-remove-matches").click( function() {
+        deleteMatchesFromPool();
+    });
+
+    function getCountries() {
         $.ajax({
             url: config.coreUrl + "/leagues/get-all-countries/?" + getToken(),
             type: "get",
@@ -62,7 +66,7 @@ $(document).ready(function() {
         });
     }
 
-    function getLeagues(countries = [0]) {
+    function getLeagues(countries) {
         $.ajax({
             url: config.coreUrl + "/leagues/get-country-list-leagues/?" + getToken(),
             type: "POST",
@@ -84,20 +88,25 @@ $(document).ready(function() {
         });
     }
 
-    function initLeagueMatchesDatatable(date) {
+    function initLeagueMatchesDatatable() {
         if ( ! $.fn.DataTable.isDataTable( '#league-matches' ) ) {
-            $('#league-matches').dataTable( {
-                "processing": true,
+            var table = $('#league-matches').dataTable( {
                 "serverSide": true,
+                "processing": true,
+                "deferLoading": 0,
                 "ajax": {
                     "url": config.coreUrl + "/matches/get-league-list-matches/?" + getToken(),
                     "type": "POST",
                     "data": function(data) {
-                        data.leagueIds = JSON.stringify($(".select2-leagues").val()) || [0];
-                        data.date = date;
+                        data.leagueIds = JSON.stringify($(".select2-leagues").val());
+                        data.date = $('#datepicker').val();;
+                        data.offset = $('#league-matches').DataTable().page.info().start;
+                        data.limit = $('#league-matches').DataTable().page.info().length;
                         return data;
                     },
-                    "dataSrc": ''
+                    "dataSrc": function(data) {
+                       return data.data;
+                    }
                 },
                 "columns": [
                     { "data": "primaryId", "name": "primaryId" },
@@ -123,12 +132,12 @@ $(document).ready(function() {
         }
     }
 
-    function addMatchesToThePool(date) {
+    function addMatchesToThePool() {
         let rows = $('#league-matches').DataTable().rows( {selected: true} ).data();
         let matchIds = [];
+        let date = $('#datepicker').val();
 
         for (let key in rows) {
-
             if (parseInt(key) == NaN) {
                 console.log("break");
                 break;
@@ -145,6 +154,7 @@ $(document).ready(function() {
             },
             success: function (response) {
                 console.log(response);
+                initPoolMatchesDatatable();
             },
             error: function (xhr, textStatus, errorTrown) {
                 manageError(xhr, textStatus, errorTrown);
@@ -152,15 +162,53 @@ $(document).ready(function() {
         });
     }
     
-    function initPoolMatchesDatatable(date) {
+    function deleteMatchesFromPool() {
+        let rows = $('#pool-matches').DataTable().rows( {selected: true} ).data();
+        let matchIds = [];
+
+        for (let key in rows) {
+            if (parseInt(key) == NaN) {
+                console.log("break");
+                break;
+            }
+            matchIds.push(rows[key].id);
+        }
+        
+        $.ajax({
+            url: config.coreUrl + "/auto-unit/remove-admin-pool-matches/?" + getToken(),
+            type: "POST",
+            data: {
+                "matches": matchIds
+            },
+            success: function (response) {
+                console.log(response);
+                initPoolMatchesDatatable();
+            },
+            error: function (xhr, textStatus, errorTrown) {
+                manageError(xhr, textStatus, errorTrown);
+            }
+        });
+    }
+    
+    function initPoolMatchesDatatable() {
+        let date = $('#datepicker').val();
+
         if ( ! $.fn.DataTable.isDataTable( '#pool-matches' ) ) {
             $('#pool-matches').dataTable( {
                 "processing": true,
                 "serverSide": true,
+                "deferLoading": 0,
                 "ajax": {
                     "url": config.coreUrl + "/auto-unit/get-admin-pool/" + date + "?" + getToken(),
                     "type": "GET",
-                    "dataSrc": ''
+                    "data": function(data) {
+                        data.offset = $('#pool-matches').DataTable().page.info().start;
+                        data.limit = $('#pool-matches').DataTable().page.info().length;
+                        return data;
+                    },
+                    "dataSrc": function(data) {
+                       return data.data;
+                    }
                 },
                 "columns": [
                     { "data": "primaryId", "name": "primaryId" },
@@ -182,7 +230,7 @@ $(document).ready(function() {
                 }
             });
         } else {
-            $('#pool-matches').DataTable().ajax.reload();
+            $('#pool-matches').DataTable().ajax.url(config.coreUrl + "/auto-unit/get-admin-pool/" + date + "?" + getToken()).load();
         }
     }
 });

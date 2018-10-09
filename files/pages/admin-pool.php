@@ -13,6 +13,12 @@
                 <ul class="table_import_filters_container">
                     <li>
                         <div class="form-group">
+                            <label class="control-label">Date</label>
+                            <input type="text" id="datepicker">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="form-group">
                             <input type="checkbox" class="itm-checkbox" data-type="countries">
                             <label class="control-label">Countries</label>
                             <select class="form-control select2-countries" name="countryCodes"></select>
@@ -37,6 +43,9 @@
                     </li>
                     <li>
                         <button type="button" class="btn btn-success admin-pool-add-matches">Add matches</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-danger admin-pool-remove-matches">Remove matches</button>
                     </li>
                 </ul>
             </div>
