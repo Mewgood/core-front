@@ -41,6 +41,7 @@ ini_set('display_errors','On');
         include "pages/country-league-team.php";
         include "pages/league-alias.php";
         include "pages/country-alias.php";
+        include "pages/admin-pool.php";
 
         include "common/sidebar.php";
 

@@ -56,6 +56,9 @@
                     <li>
                         <a href="<?php echo $config['coreUrl'] . '/autounit'; ?>" target="_blank" class="btn btn-success">Run Autounit Now</a>
                     </li>
+                    <li>
+                        <button type="button" class="btn btn-success show-admin-pool">Create pool</button>
+                    </li>
                 </ul>
             </div>
 

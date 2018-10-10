@@ -101,6 +101,8 @@
         <script src="../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
 
+        <!--  main js    -->
+        <script src="../assets/custom/js/main.js"></script>
         <!--  site.js    -->
         <script src="../assets/custom/js/site.js"></script>
         <!--  subscription.js    -->
@@ -121,10 +123,10 @@
         <script src="../assets/custom/js/country-league-team.js"></script>
         <!-- league-alias.js    -->
         <script src="../assets/custom/js/league-alias.js"></script>
-		 <!-- country-alias.js    -->
+        <!-- country-alias.js    -->
         <script src="../assets/custom/js/country-alias.js"></script>
-        <!--  main js    -->
-        <script src="../assets/custom/js/main.js"></script>
+        <!-- admin-pool.js    -->
+        <script src="../assets/custom/js/admin-pool.js"></script>
 
         <script>
             $(document).ready(function()
