@@ -276,9 +276,10 @@ function autoUnitShowAvailableSites() {
                 sites: response,
             }
             var element = config.autoUnit;
-
+            console.log(data);
             var template = element.find('.template-select-site').html();
             var compiledTemplate = Template7.compile(template);
+            console.log("test");
             var html = compiledTemplate(data);
             element.find('.select-site').html(html).change();
         },

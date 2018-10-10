@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    config.autoUnit = $('.page-content-wrapper.admin-pool');
+    config.adminPool = $('.page-content-wrapper.admin-pool');
     $(".select2-countries, .select2-leagues").select2({
         multiple: true
     });
@@ -52,7 +52,7 @@ $(document).ready(function() {
             url: config.coreUrl + "/leagues/get-all-countries/?" + getToken(),
             type: "get",
             success: function (response) {
-                var element = config.autoUnit;
+                var element = config.adminPool;
                 var data = {};
                 data["countries"] = response;
                 var template = element.find('.template-select-countries').html();
@@ -74,7 +74,7 @@ $(document).ready(function() {
                 countryCodes: countries
             },
             success: function (response) {
-                var element = config.autoUnit;
+                var element = config.adminPool;
                 var data = {};
                 data["leagues"] = response;
                 var template = element.find('.template-select-leagues').html();
