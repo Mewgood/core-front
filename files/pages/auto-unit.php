@@ -285,6 +285,7 @@
                                     <th> Source </th>
                                     <th> Action </th>
                                     <th> Info </th>
+                                    <th> Distributed in </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -328,6 +329,7 @@
                                             ">Delete</button>
                                         </td>
                                         <td>{{status}} - {{info}}</td>
+                                        <td>{{sites_distributed_counter}} sites</td>
                                     </tr>
                                 {{/each}}
 
