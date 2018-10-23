@@ -137,7 +137,7 @@ config.autoUnit.on('click', '.content-tip .save-tip-settings', function() {
         tableIdentifier: elem.find('.select-table').val(),
         date: elem.find('.select-date').val(),
         tipIdentifier: tipSection.find('.tip-identifier').val(),
-        leagues: tipSection.find('.leagues').val(),
+        leagues: JSON.stringify(tipSection.find('.leagues').val()),
         minOdd: tipSection.find('.min-odd').length ? tipSection.find('.min-odd').val() : 0,
         maxOdd: tipSection.find('.max-odd').length ? tipSection.find('.max-odd').val() : 0,
         maxWinrate: tipSection.find('.max-winrate').length ? tipSection.find('.max-winrate').val() : 0,
@@ -276,10 +276,8 @@ function autoUnitShowAvailableSites() {
                 sites: response,
             }
             var element = config.autoUnit;
-            console.log(data);
             var template = element.find('.template-select-site').html();
             var compiledTemplate = Template7.compile(template);
-            console.log("test");
             var html = compiledTemplate(data);
             element.find('.select-site').html(html).change();
         },
