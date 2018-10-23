@@ -3,6 +3,15 @@
     <!-- BEGIN CONTENT BODY -->
     <div class="page-content">
         <!-- BEGIN EVENT -->
+        <div class="page-bar">
+            <div class="date-selector">
+                <div class="form-group">
+                    <label class="control-label">Date:</label>
+                    <input type="text" id="event-datepicker">
+                </div>
+            </div>
+        </div>
+        
         <!-- BEGIN PAGE TITLE-->
         <h1 class="page-title">Events</h1>
         <!-- END PAGE TITLE-->

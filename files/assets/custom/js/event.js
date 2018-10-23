@@ -1,5 +1,9 @@
 config.event = $('.page-content-wrapper.event');
 
+var today = new Date().toISOString().slice(0,10);
+$("#event-datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+$("#event-datepicker").val(today);
+
     /*
      *  ----- CLICKABLE ACTIONS -----
     ----------------------------------------------------------------------*/
@@ -103,6 +107,10 @@ $('#event-modal-edit-result-status').on('click', '.save', function() {
     });
 });
 
+$("#event-datepicker").on("change", function() {
+    eventGetEvents($(this).val());
+});
+
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
@@ -110,9 +118,12 @@ $('#event-modal-edit-result-status').on('click', '.save', function() {
 // Functions
 // this execute on page start.
 // get all distributed events and show in table
-function eventGetEvents() {
+function eventGetEvents(date = null) {
+    if (!date) {
+        date = new Date().toISOString().slice(0,10);
+    }
     $.ajax({
-        url: config.coreUrl + "/event/associated-events" + "?" + getToken(),
+        url: config.coreUrl + "/event/associated-events/" + date + "?" + getToken(),
         type: "get",
         success: function (response) {
 
