@@ -376,7 +376,7 @@
                                         <option value=""> -- select -- </option>
                                         <option value="1x2">1x2</option>
                                         <option value="ah">AH</option>
-                                        <option value="gg">GG</option>
+                                        <option value="g/g">GG</option>
                                         <option value="o/u">O/U</option>
                                         <option value="ah">AH</option>
                                     </select>
