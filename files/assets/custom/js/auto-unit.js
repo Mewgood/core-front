@@ -258,7 +258,28 @@ $('.show-admin-pool').on('click', function() {
     setActivePage();
 });
 
-
+$(".auto-unit-container").on("click", ".auto-unit-info", function() {
+    var matches = $(this).data("matches").split(",");
+    var html = "";
+    
+    for (index in matches) {
+        html += "<p>" + matches[index] + "</p>";
+    }
+    $("body").popover({
+        selector: '.auto-unit-info',
+        trigger: 'click',
+        content: "placeholder", // it is needed for some reason
+        template: `<div class="popover" role="tooltip">
+            <div class="arrow"></div>
+            <h3 class="popover-header">Invalid Matches</h3>
+            <div class="popover-body">
+                ${html}
+            </div>
+        </div>`,
+        placement: 'top',
+        html: true
+    });
+});
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
