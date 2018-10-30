@@ -279,13 +279,13 @@
                                     <th> League </th>
                                     <th> Teams </th>
                                     <th> Match result </th>
+                                    <th> Info </th>
                                     <th> Prediction </th>
                                     <th> Odd </th>
                                     <th> Result </th>
                                     <th> Status </th>
                                     <th> Source </th>
                                     <th> Action </th>
-                                    <th> Info </th>
                                     <th> Distributed in </th>
                                 </tr>
                             </thead>
@@ -296,6 +296,9 @@
                                         <td>{{league}}</td>
                                         <td>{{homeTeam}} vs {{awayTeam}}</td>
                                         <td>{{result}}</td>
+                                        <td class="auto-unit-info" data-toggle="popover" data-matches="{{invalidMatches}}">
+                                            <span>{{status}} - {{info}}</span>
+                                        </td>
                                         <td>
                                             {{#if isPosted}} {{predictionName}} {{/if}}
                                             {{#if isScheduled}} {{predictionGroup}} {{/if}}
@@ -329,9 +332,6 @@
                                             {{#if isRealUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
                                             {{#if isNoUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
                                             ">Delete</button>
-                                        </td>
-                                        <td class="auto-unit-info" data-matches="{{invalidMatches}}">
-                                            {{status}} - {{info}}
                                         </td>
                                         <td>{{sites_distributed_counter}} sites</td>
                                     </tr>

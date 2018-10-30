@@ -259,14 +259,18 @@ $('.show-admin-pool').on('click', function() {
 });
 
 $(".auto-unit-container").on("click", ".auto-unit-info", function() {
-    var matches = $(this).data("matches").split(",");
     var html = "";
+    var matches = $(this).data("matches").split(",");
     
     for (index in matches) {
         html += "<p>" + matches[index] + "</p>";
     }
+
+    $('body .auto-unit-info span').popover('hide');
+    $('body').popover('destroy');
+    
     $("body").popover({
-        selector: '.auto-unit-info',
+        selector: '.auto-unit-info span',
         trigger: 'click',
         content: "placeholder", // it is needed for some reason
         template: `<div class="popover" role="tooltip">
@@ -280,6 +284,14 @@ $(".auto-unit-container").on("click", ".auto-unit-info", function() {
         html: true
     });
 });
+
+$('body').on('click', function (e) {
+    if ($(e.target).data('toggle') !== 'popover'
+        && $(e.target).parents('.popover.in').length === 0) { 
+        $('[data-toggle="popover"]').popover('hide');
+    }
+});
+
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
