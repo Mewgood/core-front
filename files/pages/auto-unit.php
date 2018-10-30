@@ -62,7 +62,7 @@
                 </ul>
             </div>
 
-            <div class="portlet-body">
+            <div class="portlet-body auto-unit-container">
 
                 <div class="panel-group accordion content-tip" id="accordion3"></div>
                 <script class="template-content-tip" type="text/template7">
@@ -330,7 +330,9 @@
                                             {{#if isNoUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
                                             ">Delete</button>
                                         </td>
-                                        <td>{{status}} - {{info}}</td>
+                                        <td class="auto-unit-info" data-matches="{{invalidMatches}}">
+                                            {{status}} - {{info}}
+                                        </td>
                                         <td>{{sites_distributed_counter}} sites</td>
                                     </tr>
                                 {{/each}}
