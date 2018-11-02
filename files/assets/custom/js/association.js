@@ -1,6 +1,5 @@
 config.association = $('.page-content-wrapper.association');
 
-
     /*
      *  ----- CLICKABLE ACTIONS -----
     ----------------------------------------------------------------------*/
@@ -309,42 +308,54 @@ $('#modal-add-manual-event').on('change', '#manual_event_away_sel', function() {
      *  ----- Modal Available Events -----
     ----------------------------------------------------------------------*/
 
-// Modal Available Events
-// get available events filtered by selection: proviser, league, minOdd, maxOdd
-// launch modal available events
-$('.table-association').on('click', '.modal-get-event', function() {
-    var parrentTable = $(this).parents('.table-association');
-
+function ajaxGetAvailableEvents(parrentTable, date) {
     var filters = {
         table: parrentTable.attr('data-table'),
         provider: parrentTable.find('.select-provider').val(),
         league: parrentTable.find('.select-league').val(),
         minOdd: parrentTable.find('.select-minOdd').val(),
-        maxOdd: parrentTable.find('.select-maxOdd').val()
+        maxOdd: parrentTable.find('.select-maxOdd').val(),
+        date: date
     };
 
     $.ajax({
         url: config.coreUrl + "/event/available?" + $.param(filters) + "&" + getToken(),
         type: "get",
         success: function (response) {
-
             var element = $('#modal-available-events');
             var data = {
                 table: filters.table,
                 events: response,
-                systemDate: $('#association-system-date').val(),
+                systemDate: date,
             };
 
             var template = element.find('.template-modal-content').html();
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
             element.find('.modal-content').html(html);
+            $("#association-event-datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+            $("#association-event-datepicker").datepicker("setDate", date);
             element.modal();
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
         }
     });
+}
+    
+// Modal Available Events
+// get available events filtered by selection: proviser, league, minOdd, maxOdd
+// launch modal available events
+$('.table-association').on('click', '.modal-get-event', function() {
+    var parrentTable = $(this).parents('.table-association');
+    var date = $("#association-system-date").val();
+    ajaxGetAvailableEvents(parrentTable, date);
+});
+
+$('#modal-available-events').on("change", "#association-event-datepicker", function() {
+    var parrentTable = $(this).parents('.table-association');
+    var date = $(this).val();
+    ajaxGetAvailableEvents(parrentTable, date);
 });
 
 // Modal Available Events
@@ -585,6 +596,7 @@ function getEventsAssociations(argTable, date = '0') {
 // clone the panel form inputs and append to the panel body
 $(document).on('click', '.add-multiple', function() {
     var remove = "";
+
     if($(this).parents().eq(2).find('.multiple-panel').find('.container-multiple').length == 1) {
         remove = '';
         remove += '<div class="row form-group">'
@@ -594,12 +606,14 @@ $(document).on('click', '.add-multiple', function() {
     }
 
     var html = '';
-    html += '<div class="panel panel-primary itm-none">';
+    html += '<div class="panel panel-primary itm-none itm-panel">';
     html += $(this).parents().eq(2).find(".panel").last().html();
     html += '</div>';
     
     $(".modal a[data-parent='#accordion']").last().trigger("click");
     $(html).insertBefore($(this).parent());
+    $(".itm-panel-counter").last().text($(".itm-panel-counter").length - 1);
+
     $(".modal .panel.panel-primary").slideDown('slow', function() {
         $('.modal [name="association-modal-event-type[]"]').last().trigger("change");
         $(this).removeClass("itm-none");
@@ -742,13 +756,14 @@ function ajaxAddEvent(data, currentDate) {
             events: data
         },
         success: function (response) {
-            console.log(response);
             if (response.type == 'error') {
                 for (var index in response.data) {
-                    var errorMessage = "";
-                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add Event' \n`;
-                    errorMessage += `Message: ${response.data[index].message}`;
-                    alert(errorMessage);
+                    if (response.data[index].type == "error") {
+                        var errorMessage = "";
+                        errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add Event' \n`;
+                        errorMessage += `Message: ${response.data[index].message}`;
+                        alert(errorMessage);
+                    }
                 }
                 return;
             }
@@ -808,12 +823,11 @@ function ajaxCreateEvent(data, currentDate) {
             console.log(response);
             if (response.type == 'error') {
                 for (var index in response.data) {
-                    var errorMessage = "";
-                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Create Event' \n`;
-                    errorMessage += `${response.data[index].data.homeTeam} - ${response.data[index].data.awayTeam} \n`;
-                    errorMessage += `Message: ${response.data[index].message}`;
-                    
                     if (response.data[index].type == "error") {
+                        var errorMessage = "";
+                        errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Create Event' \n`;
+                        errorMessage += `${response.data[index].data.homeTeam} - ${response.data[index].data.awayTeam} \n`;
+                        errorMessage += `Message: ${response.data[index].message}`;
                         alert(errorMessage);
                     }
                 }
@@ -878,10 +892,10 @@ function ajaxAddNoTipEvent(data, currentDate) {
             console.log(response);
             if (response.type == 'error') {
                 for (var index in response.data) {
-                    var errorMessage = "";
-                    errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add No Tip' \n`
-                    errorMessage += `Message: ${response.data[index].message}`;
                     if (response.data[index].type == "error") {
+                        var errorMessage = "";
+                        errorMessage = `Panel ${parseInt(index) + 1}# Type: 'Add No Tip' \n`
+                        errorMessage += `Message: ${response.data[index].message}`;
                         alert(errorMessage);
                     }
                 }

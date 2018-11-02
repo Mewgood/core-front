@@ -528,12 +528,20 @@
         <div class="modal-content"></div>
         <script class="template-modal-content" type="text/template7">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title import_modal_title">Import Events - {{table}} System date: {{systemDate}}</h4>
-                <select class="form-control import_events_sys_date input-small">
-                    <option value="AK">Alaska</option>
-                    <option value="HI" disabled="disabled">Hawaii</option>
-                </select>
+                <div class="col-xs-12">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title import_modal_title">Import Events - {{table}} System date: {{systemDate}}</h4>
+                    
+                    <select class="form-control import_events_sys_date input-small">
+                        <option value="AK">Alaska</option>
+                        <option value="HI" disabled="disabled">Hawaii</option>
+                    </select>
+                </div>
+
+                <div class="col-xs-12">
+                    <label class="control-label">Date:</label>
+                    <input type="text" id="association-event-datepicker">
+                </div>
             </div>
             <div class="modal-body">
                 <input class="table-identifier" type="hidden" value="{{table}}"/>
@@ -699,8 +707,9 @@
 
 <!-- MULTIPLE ADD EVENT DEFAULT PANEL TEMPLATE -->
 <div id="multiple-add-panel-template" class="hidden">
-    <div class="panel panel-primary">
+    <div class="panel panel-primary itm-panel">
         <a data-toggle="collapse" data-parent="#accordion" href="#default" aria-expanded="false" class="panel-heading with-border collapsed itm-block">
+            <span class="badge badge-light itm-panel-counter">1</span>
             <h4 class="panel-title">
                 Choose table and event type
             </h4>
