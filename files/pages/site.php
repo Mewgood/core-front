@@ -49,6 +49,7 @@
                             {{#js_compare "this.isConnect === 1"}}
                             <button class="btn green connection-update">Update</button>
                             {{/js_compare}}
+                            <button class="btn green connection-reset">Reset</button>
                         </script>
                     </div>
                     <div class="portlet-body">

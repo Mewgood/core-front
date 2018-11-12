@@ -32,6 +32,28 @@ config.site.on('click', '.site-token .connection-update', function() {
     });
 });
 
+// changes the site token and overwrites the token settings files in static sites
+// CMS Tokens must be changed manually
+config.site.on('click', '.site-token .connection-reset', function() {
+    var siteId = config.site.find('.site-selection').val();
+
+    $.ajax({
+        url: config.coreUrl + "/site/reset-token?" + getToken(),
+        type: "POST",
+        data: {
+            "siteId": siteId
+        },
+        success: function (response) {
+            alert('Type: ' + response.type + ' - Message: ' + response.message);
+            // refresh all site info hard for machine fastter for dev.
+            config.site.find('.site-selection').val(siteId).change();
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
 // click on send test email at:
 // this will create a get request to send a test email for selected site
 config.site.on('click', '.site-general .send-test-email', function() {
