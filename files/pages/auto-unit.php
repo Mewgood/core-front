@@ -263,10 +263,10 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
                             <ul class="text-center inline-list nostyle-list">
-                                <li class="text-center"><span class="label bg-blue"> WIN RATE: {{winrate}}% </span></li>
-                                <li class="text-center"><span class="label bg-green-jungle"> WINS: {{win}} </span></li>
-                                <li class="text-center"><span class="label bg-red-thunderbird"> LOSS: {{loss}} </span></li>
-                                <li class="text-center"><span class="label bg-yellow-gold"> DRAW: {{draw}} </span></li>
+                                <li class="text-center"><span class="label bg-blue"> WIN RATE: <span class="winrate">{{winrate}}</span>% </span></li>
+                                <li class="text-center"><span class="label bg-green-jungle"> WINS: <span class="win-counter">{{win}}<span> </span></li>
+                                <li class="text-center"><span class="label bg-red-thunderbird"> LOSS: <span class="loss-counter">{{loss}}<span> </span></li>
+                                <li class="text-center"><span class="label bg-yellow-gold"> DRAW: <span class="draw-counter">{{draw}}<span> </span></li>
                             </ul>
                         </div>
                     </div>
@@ -304,18 +304,42 @@
                                             {{#if isScheduled}} {{predictionGroup}} {{/if}}
                                         <td>{{odd}}</td>
                                         <td>
-                                            {{#js_compare "this.statusId == 1"}}
-                                            <span class="label bg-green-jungle"> WIN </span>
-                                            {{/js_compare}}
-                                            {{#js_compare "this.statusId == 2"}}
-                                            <span class="label bg-red-thunderbird"> LOSS </span>
-                                            {{/js_compare}}
-                                            {{#js_compare "this.statusId == 3"}}
-                                            <span class="label bg-yellow-gold"> DRAW </span>
-                                            {{/js_compare}}
-                                            {{#js_compare "this.statusId == 4"}}
-                                            <span class="label bg-yellow-gold"> POSTP. </span>
-                                            {{/js_compare}}
+                                        
+                                            <div class="btn-group">
+                                                {{#js_compare "this.statusId == 1"}}
+                                                    <button class="btn btn-info btn-sm bg-green-jungle itm-current-status" data-status-id="{{this.statusId}}"> WIN </button>
+                                                {{/js_compare}}
+                                                {{#js_compare "this.statusId == 2"}}
+                                                    <button class="btn btn-sm bg-red-thunderbird itm-current-status" data-status-id="{{this.statusId}}"> LOSS </button>
+                                                {{/js_compare}}
+                                                {{#js_compare "this.statusId == 3"}}
+                                                    <button class="btn btn-sm bg-yellow-gold itm-current-status" data-status-id="{{this.statusId}}"> DRAW </button>
+                                                {{/js_compare}}
+                                                {{#js_compare "this.statusId == 4"}}
+                                                    <button class="btn btn-sm bg-yellow-gold itm-current-status" data-status-id="{{this.statusId}}"> POSTP. </button>
+                                                {{/js_compare}}
+                                                
+                                                {{#js_if "this.league === '?'"}}
+                                                    <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="true">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li class="itm-autounit-match-status bg-green-jungle" data-schedule="{{this.scheduleId}}" data-status-id="1">
+                                                            <a href="#"><i class="fa fa-check-circle bg-green-jungle"></i>WIN</a>
+                                                        </li>
+                                                        <li class="itm-autounit-match-status bg-red-thunderbird" data-schedule="{{this.scheduleId}}" data-status-id="2">
+                                                            <a href="#"><i class="fa fa-exclamation bg-red-thunderbird"></i>LOSS</a>
+                                                        </li>
+                                                        <li class="itm-autounit-match-status bg-yellow-gold" data-schedule="{{this.scheduleId}}" data-status-id="3">
+                                                            <a href="#"><i class="fa fa-equals bg-yellow-gold"></i>DRAW</a>
+                                                        </li>
+                                                        <li class="itm-autounit-match-status bg-yellow-gold" data-schedule="{{this.scheduleId}}" data-status-id="4">
+                                                            <a href="#"><i class="fa fa-ban bg-yellow-gold"></i>POSTP.</a>
+                                                        </li>
+                                                    </ul>
+                                                {{/js_if}}
+                                            </div>
                                         </td>
                                         <td>
                                             {{#if isPosted}} <span class="font-green-jungle">Posted</span> {{/if}}

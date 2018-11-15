@@ -292,6 +292,28 @@ $('body').on('click', function (e) {
     }
 });
 
+$(".table-schedule").on("click", ".itm-autounit-match-status", function() {
+    var scheduleHTMLElement = $(this);
+    var schedule = $(this).data("schedule");
+    var statusId = $(this).data("statusId");
+    
+    updateAutoUnitMatchStatus(schedule, statusId, function(success) {
+        if (success) {
+            var statusText = "";
+            var currentStatus = $(scheduleHTMLElement).parent().siblings(".itm-current-status").first().data("statusId");
+
+            decrementCurrentStatusCounter(currentStatus);
+            var data = incrementNewStatusCounter(statusId);
+
+            $(scheduleHTMLElement).parent().siblings(".itm-current-status").first().data("statusId", statusId);
+            $(scheduleHTMLElement).parent().siblings(".itm-current-status").first().text(data.statusText);
+            $(scheduleHTMLElement).parent().siblings(".itm-current-status").first().attr("class", data.classes);
+
+            calculateWLDRates();
+        }
+    });
+});
+
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
@@ -385,6 +407,7 @@ function autoUnitGetScheduledEventsForTable() {
         url: config.coreUrl + "/auto-unit/get-scheduled-events?" + $.param(param) + "&" + getToken(),
         type: "get",
         success: function (response) {
+            console.log(response);
             autoUnitShowAssociatedEventsWithTable(response);
         },
         error: function (xhr, textStatus, errorTrown) {
@@ -500,3 +523,102 @@ function getWinLossDrawTotalWinrate(elem) {
     };
 }
 
+// update the schedule's match status
+function updateAutoUnitMatchStatus(schedule, statusId, callback) {
+    $.ajax({
+        url: config.coreUrl + "/auto-unit/change-match-status" + "?" + getToken(),
+        type: "POST",
+        data: {
+            schedule: schedule,
+            statusId: statusId
+        },
+        success: function (response) {
+            callback(true);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+            callback(false);
+        }
+    });
+}
+
+function calculateWLDRates() {
+    var win = 0;
+    var loss = 0;
+    var draw = 0;
+    var postp = 0;
+    var winRate = 0;
+
+    $(".itm-current-status").each(function(index, item) {
+        switch ($(item).data("statusId")) {
+            case 1:
+                win++;
+            break;
+            case 2:
+                loss++;
+            break;
+            case 3:
+                draw++;
+            break;
+            case 4:
+                postp++;
+            break;
+            
+            default:
+            break;
+        }
+        
+        if (win > 0 || loss > 0) {
+            winRate = ((win * 100) / (win + loss)).toFixed(2);
+        }
+        $(".winrate").text(winRate);
+    });
+}
+
+function decrementCurrentStatusCounter(currentStatus) {
+    switch (currentStatus) {
+        case 1:
+            $(".win-counter").text(parseInt($(".win-counter").text()) - 1);
+        break;
+        case 2:
+            $(".loss-counter").text(parseInt($(".loss-counter").text()) - 1);
+        break;
+        case 3:
+            $(".draw-counter").text(parseInt($(".draw-counter").text()) - 1);
+        break;
+        case 4:
+        break;
+        default:
+        break;
+    }
+}
+
+function incrementNewStatusCounter(statusId) {
+    var classes = "btn btn-info btn-sm itm-current-status";
+    var data = {};
+    
+    switch (statusId) {
+        case 1:
+            data.classes = classes + " bg-green-jungle";
+            data.statusText = "WIN";
+            $(".win-counter").text(parseInt($(".win-counter").text()) + 1);
+        break;
+        case 2:
+            data.classes = classes + " bg-red-thunderbird";
+            data.statusText = "LOSS";
+            $(".loss-counter").text(parseInt($(".loss-counter").text()) + 1);
+        break;
+        case 3:
+            data.classes = classes + " bg-yellow-gold";
+            data.statusText = "DRAW";
+            $(".draw-counter").text(parseInt($(".draw-counter").text()) + 1);
+        break;
+        case 4:
+            data.classes = classes + " bg-yellow-gold";
+            data.statusText = "POSTP";
+        break;
+        default:
+        break;
+    }
+    return data;
+}
