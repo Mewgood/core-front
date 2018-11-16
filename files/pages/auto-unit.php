@@ -262,11 +262,13 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
-                            <ul class="text-center inline-list nostyle-list">
+                            <ul class="text-center inline-list nostyle-list itm-autounit-statistics">
                                 <li class="text-center"><span class="label bg-blue"> WIN RATE: <span class="winrate">{{winrate}}</span>% </span></li>
                                 <li class="text-center"><span class="label bg-green-jungle"> WINS: <span class="win-counter">{{win}}<span> </span></li>
                                 <li class="text-center"><span class="label bg-red-thunderbird"> LOSS: <span class="loss-counter">{{loss}}<span> </span></li>
                                 <li class="text-center"><span class="label bg-yellow-gold"> DRAW: <span class="draw-counter">{{draw}}<span> </span></li>
+                                <li class="text-center"><span class="label bg-purple"> VIP: <span class="draw-counter">{{vip}}<span> </span></li>
+                                <li class="text-center"><span class="badge badge-secondary" data-toggle="popover" data-loaded="false"><i class="fa fa-question-circle"></i></span></li>
                             </ul>
                         </div>
                     </div>
@@ -301,7 +303,41 @@
                                         </td>
                                         <td>
                                             {{#if isPosted}} {{predictionName}} {{/if}}
-                                            {{#if isScheduled}} {{predictionGroup}} {{/if}}
+                                            {{#if isScheduled}} 
+                                                <span class="itm-current-prediction">{{predictionGroup}}</span>
+
+                                                <div class="btn-group">
+                                                {{#js_if "this.league === '?'"}}
+                                                    <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="true">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        {{#js_compare "this.prediction1x2 > 0"}}
+                                                            <li class="itm-autounit-match-prediction bg-green-jungle" data-schedule="{{this.scheduleId}}" data-prediction-group="1x2">
+                                                                <a href="#"><i class="fa fa-check-circle bg-green-jungle"></i>1x2</a>
+                                                            </li>
+                                                        {{/js_compare}}
+                                                        {{#js_compare "this.predictionOU > 0"}}
+                                                            <li class="itm-autounit-match-prediction bg-green-jungle" data-schedule="{{this.scheduleId}}" data-prediction-group="OU">
+                                                                <a href="#"><i class="fa fa-check-circle bg-green-jungle"></i>O/U</a>
+                                                            </li>
+                                                        {{/js_compare}}
+                                                        {{#js_compare "this.predictionAH > 0"}}
+                                                            <li class="itm-autounit-match-prediction bg-green-jungle" data-schedule="{{this.scheduleId}}" data-prediction-group="AH">
+                                                                <a href="#"><i class="fa fa-check-circle bg-green-jungle"></i>AH</a>
+                                                            </li>
+                                                        {{/js_compare}}
+                                                        {{#js_compare "this.predictionGG > 0"}}
+                                                            <li class="itm-autounit-match-prediction bg-green-jungle" data-schedule="{{this.scheduleId}}" data-prediction-group="GG">
+                                                                <a href="#"><i class="fa fa-check-circle bg-green-jungle"></i>GG</a>
+                                                            </li>
+                                                        {{/js_compare}}
+                                                    </ul>
+                                                {{/js_if}}
+                                                </div>
+                                            {{/if}}
+                                        </td>
                                         <td>{{odd}}</td>
                                         <td>
                                         

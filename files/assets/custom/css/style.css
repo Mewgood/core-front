@@ -96,6 +96,10 @@
 .multiselect.dropdown-toggle {
   width: 100%;
 }
+.itm-autounit-statistics .popover {
+    max-width: 100%;
+    width: 70%;
+}
 
 .distribution-event .popover{
 	max-width: none;

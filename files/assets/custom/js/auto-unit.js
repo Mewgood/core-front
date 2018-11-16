@@ -8,6 +8,8 @@ config.autoUnit = $('.page-content-wrapper.auto-unit');
 // change site selection
 // show available tables for selected site.
 config.autoUnit.on('change', '.select-site', function() {
+    $('body .itm-autounit-statistics .badge').popover('hide');
+    $('body').popover('destroy');
     $.ajax({
         url: config.coreUrl + "/site/available-table/" + $(this).val() + "?" + getToken(),
         type: "get",
@@ -292,12 +294,13 @@ $('body').on('click', function (e) {
     }
 });
 
-$(".table-schedule").on("click", ".itm-autounit-match-status", function() {
+$(".table-schedule").on("click", ".itm-autounit-match-status", function(event) {
+    event.preventDefault();
     var scheduleHTMLElement = $(this);
-    var schedule = $(this).data("schedule");
+    var scheduleId = $(this).data("schedule");
     var statusId = $(this).data("statusId");
     
-    updateAutoUnitMatchStatus(schedule, statusId, function(success) {
+    updateAutoUnitMatchStatus(scheduleId, statusId, function(success) {
         if (success) {
             var statusText = "";
             var currentStatus = $(scheduleHTMLElement).parent().siblings(".itm-current-status").first().data("statusId");
@@ -312,6 +315,31 @@ $(".table-schedule").on("click", ".itm-autounit-match-status", function() {
             calculateWLDRates();
         }
     });
+});
+
+$(".table-schedule").on("click", ".itm-autounit-match-prediction", function(event) {
+    event.preventDefault();
+    var scheduleHTMLElement = $(this);
+    var scheduleId = $(this).data("schedule");
+    var predictionGroup = $(this).data("predictionGroup");
+    
+    updateAutoUnitMatchPrediction(scheduleId, predictionGroup, function(success) {
+        if (success) {
+            $(scheduleHTMLElement).parents().eq(1).siblings(".itm-current-prediction").first().text(predictionGroup);
+        }
+    });
+});
+
+$(".table-schedule").on("click", ".itm-autounit-statistics .badge", function() {
+    var loaded = $(this).data("loaded");
+    var siteId = config.autoUnit.find('.select-site').val();
+
+    if (loaded == false) {
+        getAutoUnitLastMonthsStatistics(siteId, function(data) {
+            createAutoUnitStatisticsHTML(data);
+        });
+        $(this).data("loaded", true);
+    }
 });
 
     /*
@@ -407,7 +435,6 @@ function autoUnitGetScheduledEventsForTable() {
         url: config.coreUrl + "/auto-unit/get-scheduled-events?" + $.param(param) + "&" + getToken(),
         type: "get",
         success: function (response) {
-            console.log(response);
             autoUnitShowAssociatedEventsWithTable(response);
         },
         error: function (xhr, textStatus, errorTrown) {
@@ -524,13 +551,35 @@ function getWinLossDrawTotalWinrate(elem) {
 }
 
 // update the schedule's match status
-function updateAutoUnitMatchStatus(schedule, statusId, callback) {
+function updateAutoUnitMatchStatus(scheduleId, statusId, callback) {
     $.ajax({
-        url: config.coreUrl + "/auto-unit/change-match-status" + "?" + getToken(),
+        url: config.coreUrl + "/auto-unit/update-fields" + "?" + getToken(),
         type: "POST",
         data: {
-            schedule: schedule,
-            statusId: statusId
+            schedule: {
+                id: scheduleId,
+                statusId: statusId
+            }
+        },
+        success: function (response) {
+            callback(true);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+            callback(false);
+        }
+    });
+}
+
+function updateAutoUnitMatchPrediction(scheduleId, predictionGroup, callback) {
+    $.ajax({
+        url: config.coreUrl + "/auto-unit/update-fields" + "?" + getToken(),
+        type: "POST",
+        data: {
+            schedule: {
+                id: scheduleId,
+                predictionGroup: predictionGroup
+            }
         },
         success: function (response) {
             callback(true);
@@ -621,4 +670,53 @@ function incrementNewStatusCounter(statusId) {
         break;
     }
     return data;
+}
+
+function getAutoUnitLastMonthsStatistics(siteId, callback) {
+    $.ajax({
+        url: config.coreUrl + "/auto-unit/get-monthly-statistics" + "?" + getToken(),
+        type: "POST",
+        data: {
+            siteId: siteId
+        },
+        success: function (response) {
+            callback(response);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+            callback(false);
+        }
+    });
+}
+
+function createAutoUnitStatisticsHTML(data) {
+    var html = '';
+
+    for (index in data) {
+        html += `<p class="text-center text-primary">${data[index].date}</p>`;
+        html += '<ul class="text-center inline-list nostyle-list">';
+        html +=     `<li class="text-center"><span class="label bg-blue"> WIN RATE: <span class="winrate">${data[index].winRate}</span>% </span></li>`;
+        html +=     `<li class="text-center"><span class="label bg-green-jungle"> WIN: <span class="winrate">${data[index].win}</span></span></li>`;
+        html +=     `<li class="text-center"><span class="label bg-red-thunderbird"> LOSS: <span class="winrate">${data[index].loss}</span></span></li>`;
+        html +=     `<li class="text-center"><span class="label bg-yellow-gold"> DRAW: <span class="winrate">${data[index].draw}</span></span></li>`;
+        html +=     `<li class="text-center"><span class="label bg-purple"> VIP: <span class="winrate">${data[index].vip}</span></span></li>`;
+        html += '</ul>';
+        html += "<hr>";
+    }
+    
+    $("body").popover({
+        selector: '.itm-autounit-statistics .badge',
+        trigger: 'click',
+        content: "placeholder", // it is needed for some reason
+        template: `<div class="popover" role="tooltip">
+            <div class="arrow"></div>
+            <h4 class="popover-header text-center text-primary">Last 5 months statistics</h4>
+            <div class="popover-body">
+                ${html}
+            </div>
+        </div>`,
+        placement: 'right',
+        html: true
+    });
+    $(".itm-autounit-statistics .badge").trigger("click");
 }
