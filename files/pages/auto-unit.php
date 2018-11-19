@@ -288,7 +288,8 @@
                                     <th> Status </th>
                                     <th> Source </th>
                                     <th> Action </th>
-                                    <th> Distributed in </th>
+                                    <th> Distributed</th>
+                                    <th> Actions </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -394,6 +395,7 @@
                                             ">Delete</button>
                                         </td>
                                         <td>{{sites_distributed_counter}} sites</td>
+                                        <td><span class="itm-add-autounit-match" data-date="{{systemDate}}" data-tip-identifier="{{tipIdentifier}}"><i class="fa fa-plus-circle"></i></span></td>
                                     </tr>
                                 {{/each}}
 
@@ -426,7 +428,14 @@
                                     <select class="form-control tip-identifier">
                                         <option value=""> -- select -- </option>
                                         {{#each tips}}
-                                        <option value="{{this}}">{{this}}</option>
+                                        <option 
+                                            value="{{this}}"
+                                            {{#js_compare "this == ../selectedTip"}}
+                                                selected
+                                            {{/js_compare}}
+                                        >
+                                            {{this}}
+                                        </option>
                                         {{/each}}
                                     </select>
                                 </div>

@@ -100,6 +100,10 @@
     max-width: 100%;
     width: 70%;
 }
+.itm-add-autounit-match {
+    font-size: 24px;
+    cursor: pointer;
+}
 
 .distribution-event .popover{
 	max-width: none;

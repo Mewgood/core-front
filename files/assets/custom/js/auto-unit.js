@@ -342,6 +342,13 @@ $(".table-schedule").on("click", ".itm-autounit-statistics .badge", function() {
     }
 });
 
+$(".table-schedule").on("click", ".itm-add-autounit-match", function() {
+    var date = $(this).data("date");
+    var tip = $(this).data("tipIdentifier");
+
+    autoUnitAddNewEntry(date, tip);
+});
+
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
@@ -719,4 +726,25 @@ function createAutoUnitStatisticsHTML(data) {
         html: true
     });
     $(".itm-autounit-statistics .badge").trigger("click");
+}
+
+function autoUnitAddNewEntry(date, tip) {
+    var element = config.autoUnit.find('#auto-unit-new-schedule-event');
+    element.modal();
+
+    var tips = [];
+    $.each(config.autoUnit.find('.content-tip .tip-identifier'), function(i, e) {
+        tips.push($(e).val());
+    });
+
+    data = {tips: tips, selectedTip: tip};
+    var template = element.find('.template-new-event').html();
+    var compiledTemplate = Template7.compile(template);
+    var html = compiledTemplate(data);
+    element.find('.new-event').html(html).change();
+
+    element.find('.system-date').datepicker({
+        dateFormat: 'yy-mm-dd',
+    });
+    element.find('.system-date').datepicker("setDate", date);
 }
