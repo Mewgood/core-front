@@ -31,7 +31,7 @@
                                <option value="<?php echo gmdate('Y-m'); ?>"> <?php echo gmdate('M Y'); ?></option>
                                <?php $dates = [1, 2, 3, 4, 5, 6] ?>
                                <?php foreach ($dates as $v) { ?>
-                               <option value="<?php echo gmdate('Y-m', strtotime('- ' . $v . ' month')); ?>"> <?php echo gmdate('M Y', strtotime('- ' . $v . ' month')); ?></option>
+                               <option value="<?php echo gmdate('Y-m', strtotime('+ ' . $v . ' month')); ?>"> <?php echo gmdate('M Y', strtotime('+ ' . $v . ' month')); ?></option>
                                <?php } ?>
                             </select>
                         </div>
