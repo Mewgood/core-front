@@ -651,7 +651,14 @@
                                         {{#each predictions}}
                                         <div class="col-md-3">
                                             <label class="mt-checkbox"> {{name}}
-                                                <input type="checkbox" class="prediction" data-group="{{group}}" value="{{identifier}}" {{#if isAssociated}}checked="checked"{{/if}}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    class="prediction" 
+                                                    data-group="{{group}}" 
+                                                    value="{{identifier}}"
+                                                    {{js "(this.name.indexOf('.25') != -1 || this.name.indexOf('.75') != -1) == 1 ? 'disabled' : ''"}}
+                                                    {{#if isAssociated}}checked="checked"{{/if}}
+                                                >
                                                 <span></span>
                                             </label>
                                         </div>
