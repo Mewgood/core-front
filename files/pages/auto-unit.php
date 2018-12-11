@@ -31,7 +31,7 @@
                                <option value="<?php echo gmdate('Y-m'); ?>"> <?php echo gmdate('M Y'); ?></option>
                                <?php $dates = [1, 2, 3, 4, 5, 6] ?>
                                <?php foreach ($dates as $v) { ?>
-                               <option value="<?php echo gmdate('Y-m', strtotime('+ ' . $v . ' month')); ?>"> <?php echo gmdate('M Y', strtotime('+ ' . $v . ' month')); ?></option>
+                               <option value="<?php echo gmdate('Y-m', strtotime('- ' . $v . ' month')); ?>"> <?php echo gmdate('M Y', strtotime('- ' . $v . ' month')); ?></option>
                                <?php } ?>
                             </select>
                         </div>
@@ -285,6 +285,7 @@
                                     <th> Prediction </th>
                                     <th> Odd </th>
                                     <th> Result </th>
+                                    <th title="This match is from the Admin Pool Config"> AP </th>
                                     <th> Status </th>
                                     <th> Source </th>
                                     <th> Action </th>
@@ -377,6 +378,15 @@
                                                     </ul>
                                                 {{/js_if}}
                                             </div>
+                                        </td>
+                                        <td>
+                                            {{#js_compare "this.is_from_admin_pool == 1"}}
+                                                <i class="fa fa-star"></i>
+                                            {{/js_compare}}
+                                            
+                                            {{#js_compare "this.is_from_admin_pool == 0"}}
+                                                <i class="fa fa-star-o"></i>
+                                            {{/js_compare}}
                                         </td>
                                         <td>
                                             {{#if isPosted}} <span class="font-green-jungle">Posted</span> {{/if}}
