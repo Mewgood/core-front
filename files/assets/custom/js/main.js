@@ -27,7 +27,7 @@ $(document).ready(function() {
  * Make visible active page and trigger setControlFlow()
  * te retrive json with data for current page
  */
-function setActivePage() {
+function setActivePage(params = null) {
 
     // add class active for left mennu
     $('.page-sidebar-menu .nav-item').removeClass('active');
@@ -38,7 +38,7 @@ function setActivePage() {
     $('.page-content-wrapper.' + config.activePage).removeClass('hidden');
 
     // trigger setControlFlow() method
-    setControlFlow();
+    setControlFlow(params);
 }
 
 // this will show all notification in front.
@@ -71,8 +71,7 @@ function showLogs() {
  * This function will controll methods
  * executed by specific page
  */
-function setControlFlow() {
-
+function setControlFlow(params) {
     if (config.activePage == 'site') {
         getAllSitesIdsAndNames();
     }
@@ -123,7 +122,7 @@ function setControlFlow() {
     }
 
     if (config.activePage == 'auto-unit') {
-        autoUnitShowAvailableSites();
+        autoUnitShowAvailableSites(params);
     }
 
     if (config.activePage == 'country-league-team') {
@@ -136,5 +135,8 @@ function setControlFlow() {
     
     if (config.activePage == 'country-alias') {
         countryAliasShowAllCountries();
+    }
+    if (config.activePage == 'auto-unit-site-configuration') {
+        getAutoUnitSiteConfigurations();
     }
 }

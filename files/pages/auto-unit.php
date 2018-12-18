@@ -39,7 +39,7 @@
                     <li>
                         <div class="form-group">
                             <label class="control-label">Table</label>
-                            <select class="form-control select-table select2 table_import_filter_select">
+                            <select id="autounit-table-select" class="form-control select-table select2 table_import_filter_select">
                                <option value="-"> -- select -- </option>
                             </select>
                             <script class="template-select-table" type="text/template7">
@@ -58,6 +58,9 @@
                     </li>
                     <li>
                         <button type="button" class="btn btn-success show-admin-pool">Create pool</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-success show-site-configurations">View site configurations</button>
                     </li>
                 </ul>
             </div>

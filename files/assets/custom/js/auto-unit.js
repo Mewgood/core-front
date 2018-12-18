@@ -24,6 +24,8 @@ config.autoUnit.on('change', '.select-site', function() {
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
             element.find('.select-table').html(html).change();
+            var table = $("#autounit-table-select option").eq(1).val()
+            $("#autounit-table-select").val(table).trigger("change");
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
@@ -260,6 +262,18 @@ $('.show-admin-pool').on('click', function() {
     setActivePage();
 });
 
+$('.show-site-configurations').on('click', function() {
+    const page = "auto-unit-site-configuration";
+
+    // set active page in config
+    config.activePage = page;
+
+    // set active page in localStorage
+    localStorage.setItem("core-app-active-page", page);
+
+    setActivePage();
+});
+
 $(".auto-unit-container").on("click", ".auto-unit-info", function() {
     var html = "";
     var matches = $(this).data("matches").split(",");
@@ -356,7 +370,7 @@ $(".table-schedule").on("click", ".itm-add-autounit-match", function() {
 // Functions
 // this will be exectuted on page loading.
 // will populate site selector
-function autoUnitShowAvailableSites() {
+function autoUnitShowAvailableSites(params) {
     $.ajax({
         url: config.coreUrl + "/site/ids-and-names" + "?" + getToken(),
         type: "get",
@@ -370,6 +384,11 @@ function autoUnitShowAvailableSites() {
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
             element.find('.select-site').html(html).change();
+            
+            if (params) {
+                $(".select-site").val(params.site).trigger("change");
+                $(".select-date").val(params.date).trigger("change");
+            }
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);

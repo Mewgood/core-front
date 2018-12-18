@@ -42,6 +42,7 @@ ini_set('display_errors','On');
         include "pages/league-alias.php";
         include "pages/country-alias.php";
         include "pages/admin-pool.php";
+        include "pages/auto-unit-site-configuration.php";
 
         include "common/sidebar.php";
 

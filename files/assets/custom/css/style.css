@@ -172,7 +172,6 @@ ul.schedule{
 	background: #E87E04;
 	color: #ffffff;
 }
-
 /******************************************************************************/
 /*********  EVENT MODAL     ***************************************************/
 /******************************************************************************/
@@ -200,4 +199,11 @@ ul.schedule{
 .admin-pool .select2-container--bootstrap .select2-selection--multiple .select2-selection__rendered {
     max-height: 200px;
     overflow-y: initial;
+}
+/******************************************************************************/
+/*********  AUTO-UNIT STATISTICS     ******************************************/
+/******************************************************************************/
+.table-auto-unit-site-configuration td .config-label:hover {
+    cursor: pointer;
+    filter: brightness(80%);
 }

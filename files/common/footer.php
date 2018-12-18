@@ -127,6 +127,8 @@
         <script src="../assets/custom/js/country-alias.js"></script>
         <!-- admin-pool.js    -->
         <script src="../assets/custom/js/admin-pool.js"></script>
+        <!-- auto-unit-site-configuration.js -->
+        <script src="../assets/custom/js/auto-unit-site-configuration.js"></script>
 
         <script>
             $(document).ready(function()
