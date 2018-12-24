@@ -74,7 +74,12 @@
                         <input type="hidden" class="tip-identifier" value="{{tipIdentifier}}">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" href="#collapse_3_{{@index}}"> {{tipIdentifier}} | {{scheduleType}} configuration</a>
+                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" href="#collapse_3_{{@index}}"> 
+                                    {{tipIdentifier}} | {{scheduleType}} configuration
+                                    {{#each this.packages}}
+                                        | {{this.name}}
+                                    {{/each}}
+                                </a>
                             </h4>
                         </div>
                         <div id="collapse_3_{{@index}}" class="panel-collapse collapse">

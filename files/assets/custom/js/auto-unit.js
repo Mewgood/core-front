@@ -483,6 +483,7 @@ function autoUnitShowAssociatedEventsWithTable(data) {
 // functions
 // this will populate content-tip with data
 function autoUnitPopulateTipsInTemplate(data) {
+    console.log(data);
     var element = config.autoUnit;
     var template = element.find('.template-content-tip').html();
     var compiledTemplate = Template7.compile(template);
