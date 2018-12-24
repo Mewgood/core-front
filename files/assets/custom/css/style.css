@@ -104,6 +104,9 @@
     font-size: 24px;
     cursor: pointer;
 }
+.auto-unit tr.is-vip {
+    color: white;
+}
 
 .distribution-event .popover{
 	max-width: none;

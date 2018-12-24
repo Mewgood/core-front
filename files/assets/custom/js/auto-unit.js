@@ -461,6 +461,7 @@ function autoUnitGetScheduledEventsForTable() {
         url: config.coreUrl + "/auto-unit/get-scheduled-events?" + $.param(param) + "&" + getToken(),
         type: "get",
         success: function (response) {
+            console.log(response);
             autoUnitShowAssociatedEventsWithTable(response);
         },
         error: function (xhr, textStatus, errorTrown) {

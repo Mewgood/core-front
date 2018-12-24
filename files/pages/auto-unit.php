@@ -298,7 +298,7 @@
                             </thead>
                             <tbody>
                                 {{#each events}}
-                                    <tr {{#if isRealUser}} class="subscription-entry" {{/if}}>
+                                    <tr class="{{#if isRealUser}} subscription-entry {{/if}} {{#if this.isVip}} is-vip bg-yellow-gold {{/if}}">
                                         <td> {{systemDate}} - {{tipIdentifier}} </td>
                                         <td>{{league}}</td>
                                         <td>{{homeTeam}} vs {{awayTeam}}</td>
