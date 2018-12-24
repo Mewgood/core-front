@@ -21,6 +21,10 @@ function getAutoUnitSiteConfigurations() {
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(response);
             element.find('.table-auto-unit-site-configuration').html(html).change();
+            $('.site-details').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentAsHTML: true
+            });
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);

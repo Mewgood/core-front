@@ -79,6 +79,7 @@
         <script src="../assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/js/jquery.tooltipster.min.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
 
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
