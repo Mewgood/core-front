@@ -147,7 +147,7 @@ $('#modal-add-manual-event').on("keyup", ".search-match", function() {
         url: config.coreUrl + "/match/filter/" + table + "/" + filterValue + dateFilterQuery + "?" + getToken(),
         type: "get",
         success: function (response) {
-
+            console.log(response);
             var data = {matches: response};
             $(container).parents().eq(3).find('.selectable-block').removeClass('hidden');
 
@@ -161,6 +161,25 @@ $('#modal-add-manual-event').on("keyup", ".search-match", function() {
             if( errorTrown != 'abort' ) {
                 manageError(xhr, textStatus, errorTrown);
             }
+        }
+    });
+});
+$("#modal-add-manual-event").on("change", ".select-prediction", function() {
+    var currentElement = $(this);
+    var prediction = $(this).val();
+    var match = $(this).parents().eq(4).find(".match-id").val();
+    
+    $.ajax({
+        url: config.coreUrl + "/match/prediction/odds/" + prediction + "/" + match + "?" + getToken(),
+        type: "get",
+        success: function (response) {
+            $(currentElement).parents().eq(2).find(".odd").val(response.odd);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+			// we don't throw error if the request was 'aborted'
+			if( errorTrown != 'abort' ) {
+				manageError(xhr, textStatus, errorTrown);
+			}
         }
     });
 });
