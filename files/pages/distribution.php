@@ -18,6 +18,10 @@
             </div>
             <div class="bar-buttons actions">
                 <div class="btn-group">
+                    <label for="restrict-vip">Hide No Tip VIP</label>
+                    <input type="checkbox" id="restrict-vip" name="restrict_vip" />
+                </div>
+                <div class="btn-group">
                     <span> Sort By</span>
                 </div>
                 <div class="btn-group">
@@ -103,7 +107,6 @@
                         <li><a class="subscription-restricted-tips"> Manage Users </a></li>
                     </ul>
                 </div>
-                
             </div>
         </div>
         <!-- END PAGE BAR-->
@@ -143,6 +146,7 @@
 						<td> {{sentAtSpan}} </td>
 						<td> {{emailsReceivedSpan}} </td>
 						<td> {{publishedSpan}} </td>
+                        <td class="text-center"> {isFromAdminPool} </td
 					</tr>					
 				</script>
 				
@@ -160,6 +164,7 @@
                                     <th> Sent At </th>
                                     <th> Email Received </th>
                                     <th> Published </th>
+                                    <th> Admin pool </th>
 								</tr>
 							</thead>
 							<tbody>

@@ -371,6 +371,12 @@ $('#modal-distribution-subscription-restricted-tips').on('click', '.save', funct
     });
 });
 
+$("#restrict-vip").on("change", function() {
+    var date = $(".select-system-date").val();
+    var restrictVip = $(this).prop("checked");
+    getDistributedEvents(date, restrictVip);
+});
+
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
@@ -403,7 +409,7 @@ function getCheckedEventsIds() {
 // Functions
 // @string date formaf: YYYY-mm-dd
 // get all distributed events and put it on table
-function getDistributedEvents(date = '0') {
+function getDistributedEvents(date = '0', restrictVip = false) {
 	// check for sorting selects
 	// real / no users 
 	var real_user_sort = config.distribution.find('.select-sort-dist-real-users').val();
@@ -438,7 +444,7 @@ function getDistributedEvents(date = '0') {
 			
 			$.each( data.sites , function(index, item) {
 				// var template = $('#dist-row-template').html();	
-				console.log(item);
+
 				var siteId = item.siteId;
 				var distributionIdsString = item.distributionIdsString;
 				var distributionUserTD = '';
@@ -464,6 +470,9 @@ function getDistributedEvents(date = '0') {
 				}
 				
 				if( item.eventsCount == 0 ) {
+                    if (restrictVip && item.isVip) {
+                        return true;
+                    }
 					var template = $('#dist-row-template').html();
 
 					var packagesNames = '';
@@ -478,7 +487,20 @@ function getDistributedEvents(date = '0') {
 						distributionTipTD += '<i class="fa fa-star" ></i>';							
 					}
 					distributionTipTD += item.type+'</span></td>';
-					
+                    
+                    var isFromAdminPool = "";
+                    switch (isFromAdminPool) {
+                        case null:
+                            isFromAdminPool = "";
+                            break;
+                        case 0:
+                            isFromAdminPool = "<i class='fa fa-star-o'></i>";
+                            break;
+                        case 1:
+                            isFromAdminPool = "<i class='fa fa-star'></i>";
+                            break;
+                    }
+
 					var tmp = template.replace(/{{useClass}}/ig, useClass )
 						.replace(/{{siteId}}/ig, siteId)
 						.replace(/{{distributionIdsString}}/ig, distributionIdsString)
@@ -491,7 +513,8 @@ function getDistributedEvents(date = '0') {
 						.replace(/{{sentAtSpan}}/ig, sentAtSpan)
 						.replace(/{{emailsReceivedSpan}}/ig, emailsReceivedSpan)
 						.replace(/{{publishedSpan}}/ig, publishedSpan)
-                        .replace(/{{toDistribute}}/ig, "disabled");
+                        .replace(/{{toDistribute}}/ig, "disabled")
+                        .replace(/{isFromAdminPool}/ig, isFromAdminPool);
 					
 					$('#manually-populated-table tbody').append(tmp);
 					
@@ -503,7 +526,20 @@ function getDistributedEvents(date = '0') {
 
 					$.each( item.events , function( dIndex, dEvent) {
                         var toDistribute = !dEvent.to_distribute ? "disabled" : "";
-						var template = $('#dist-row-template').html();	
+						var template = $('#dist-row-template').html();
+                        
+                        var isFromAdminPool = "";
+                        switch (dEvent.is_from_admin_pool) {
+                            case null:
+                                isFromAdminPool = "";
+                                break;
+                            case 0:
+                                isFromAdminPool = "<i class='fa fa-star-o'></i>";
+                                break;
+                            case 1:
+                                isFromAdminPool = "<i class='fa fa-star'></i>";
+                                break;
+                        }
 						
 						sentAtSpanFixed = '';
 						
@@ -574,7 +610,8 @@ function getDistributedEvents(date = '0') {
 							.replace(/{{sentAtSpan}}/ig, sentAtSpanFixed)
 							.replace(/{{emailsReceivedSpan}}/ig, emailsReceivedSpan)
 							.replace(/{{publishedSpan}}/ig, publishedSpan)
-                            .replace(/{{toDistribute}}/ig, toDistribute);
+                            .replace(/{{toDistribute}}/ig, toDistribute)
+                            .replace(/{isFromAdminPool}/ig, isFromAdminPool);
 							
 						$('#manually-populated-table tbody').append(tmp);
 					});

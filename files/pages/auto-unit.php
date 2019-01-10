@@ -387,7 +387,7 @@
                                                 {{/js_if}}
                                             </div>
                                         </td>
-                                        <td>
+                                        <td class="{{this.is_from_admin_pool}}">
                                             {{#js_compare "this.is_from_admin_pool == 1"}}
                                                 <i class="fa fa-star"></i>
                                             {{/js_compare}}
