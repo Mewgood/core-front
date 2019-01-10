@@ -438,7 +438,7 @@ function getDistributedEvents(date = '0') {
 			
 			$.each( data.sites , function(index, item) {
 				// var template = $('#dist-row-template').html();	
-				
+				console.log(item);
 				var siteId = item.siteId;
 				var distributionIdsString = item.distributionIdsString;
 				var distributionUserTD = '';
@@ -449,8 +449,6 @@ function getDistributedEvents(date = '0') {
 				var emailsReceivedSpan = '';
 				var publishedSpan = '';				
 				var useClass = '';
-				
-				
 				var isSent = '';
 				if(item.isTotalEmailSend) {
 					isSent = 'sent';
@@ -492,7 +490,8 @@ function getDistributedEvents(date = '0') {
 						.replace(/{{eventInfo}}/ig, eventInfo)
 						.replace(/{{sentAtSpan}}/ig, sentAtSpan)
 						.replace(/{{emailsReceivedSpan}}/ig, emailsReceivedSpan)
-						.replace(/{{publishedSpan}}/ig, publishedSpan);
+						.replace(/{{publishedSpan}}/ig, publishedSpan)
+                        .replace(/{{toDistribute}}/ig, "disabled");
 					
 					$('#manually-populated-table tbody').append(tmp);
 					
@@ -501,7 +500,9 @@ function getDistributedEvents(date = '0') {
 					
 					
 					useClass = ' class="use" ';
+
 					$.each( item.events , function( dIndex, dEvent) {
+                        var toDistribute = !dEvent.to_distribute ? "disabled" : "";
 						var template = $('#dist-row-template').html();	
 						
 						sentAtSpanFixed = '';
@@ -572,7 +573,8 @@ function getDistributedEvents(date = '0') {
 							// .replace(/{{sentAtSpan}}/ig, sentAtSpan)
 							.replace(/{{sentAtSpan}}/ig, sentAtSpanFixed)
 							.replace(/{{emailsReceivedSpan}}/ig, emailsReceivedSpan)
-							.replace(/{{publishedSpan}}/ig, publishedSpan);
+							.replace(/{{publishedSpan}}/ig, publishedSpan)
+                            .replace(/{{toDistribute}}/ig, toDistribute);
 							
 						$('#manually-populated-table tbody').append(tmp);
 					});

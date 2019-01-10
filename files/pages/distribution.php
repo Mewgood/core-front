@@ -122,8 +122,16 @@
 					<tr>
 						<td> 
 							<label class="disabled_mt-checkbox disabled_mt-checkbox-single disabled_mt-checkbox-outline">
-								<input  {{useClass}}  name="btSelectItem" type="checkbox" data-site-id="{{siteId}}" data-event-id="{{distributionIdsString}}" data-distribution-ids="{{distributionIdsString}}" 
+								<input  
+                                    {{useClass}}
+                                    {{toDistribute}}
+                                    name="btSelectItem" 
+                                    type="checkbox" 
+                                    data-site-id="{{siteId}}" 
+                                    data-event-id="{{distributionIdsString}}" 
+                                    data-distribution-ids="{{distributionIdsString}}" 
 									email-sent="{{isSent}}" event-publish="{{isPublish}}"
+                                    {{toDistribute}}
 									>
 								<span></span>
 							</label>
