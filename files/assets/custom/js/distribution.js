@@ -525,7 +525,8 @@ function getDistributedEvents(date = '0', restrictVip = false) {
 					useClass = ' class="use" ';
 
 					$.each( item.events , function( dIndex, dEvent) {
-                        var toDistribute = !dEvent.to_distribute ? "disabled" : "";
+                        console.log(dEvent);
+                        var toDistribute = dEvent.to_distribute === 0 ? "disabled" : "";
 						var template = $('#dist-row-template').html();
                         
                         var isFromAdminPool = "";

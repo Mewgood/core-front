@@ -407,7 +407,7 @@
                                         </td>
                                         <td>
                                             <button type="button" class="btn red btn-xs delete-event"
-                                            {{#if isAutoUnit}}data-type="auto-unit" data-id="{{id}}"{{/if}}
+                                            {{#if isAutoUnit}}data-type="auto-unit" data-id="{{distributionId}}"{{/if}}
                                             {{#if isRealUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
                                             {{#if isNoUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
                                             ">Delete</button>

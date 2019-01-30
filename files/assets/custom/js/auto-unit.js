@@ -188,14 +188,7 @@ config.autoUnit.on('click', '.table-schedule .delete-event', function() {
 
     // default values for autoUnit
     var message = "Event is part of AutoUnits schedule.";
-    var url = config.coreUrl + "/auto-unit/delete-event?" + getToken();
-
-
-    // values for archive-big
-    if (eventType == 'archive-big') {
-        message = "Event is part of Big Archive and it was published in site.";
-        url = config.coreUrl + "/distribution/force-delete" + "?" + getToken();
-    }
+    var url = config.coreUrl + "/distribution/force-delete" + "?" + getToken();
 
     if(confirm(message + " Are you sure?")) {
         $.ajax({
