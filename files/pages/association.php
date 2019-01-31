@@ -619,7 +619,6 @@
                             {{event.league}},
                             {{event.homeTeam}} - {{event.awayTeam}},
                             {{event.predictionId}}
-                                ### {{event.to_distribute}}
                         {{/if}}
                     </h6>
                 </div>
@@ -653,7 +652,6 @@
                                                             id={{@key}}{{siteName}}
                                                             class="check-site-packages" 
                                                             type="checkbox"
-                                                            {{#unless toDistribute}} disabled="disabled"{{/unless}}
                                                             {{#unless eligible}} disabled="disabled"{{/unless}}
                                                         />
                                                         <span class="assoc_website_name">{{siteName}} |</span>

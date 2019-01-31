@@ -575,15 +575,17 @@ function getEventsAssociations(argTable, date = '0') {
         url: config.coreUrl + "/association/event/" + argTable + '/' + date + "?" + getToken(),
         type: "get",
         success: function (response) {
+            console.log(response);
             var element = $('#table-association-' + argTable);
             var table = element.find('.association-table-datatable').DataTable();
-            var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages">Associate</button>';
-            buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
 
             // clear table
             table.clear().draw();
             $.each(response, function(i, e) {
-
+                var disabled = e.to_distribute ? "" : "disabled";
+                var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages" ' + disabled + '>Associate</button>';
+                buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
+            
                 var node = table.row.add( [
                     e.country,
                     e.league,
