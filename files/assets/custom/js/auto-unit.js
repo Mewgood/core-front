@@ -10,11 +10,12 @@ config.autoUnit = $('.page-content-wrapper.auto-unit');
 config.autoUnit.on('change', '.select-site', function() {
     $('body .itm-autounit-statistics .badge').popover('hide');
     $('body').popover('destroy');
+    var site = $(this).find("option:selected").first();
+    toggleAutounitStateButton($(site).data("paused"), $(this).val());
     $.ajax({
         url: config.coreUrl + "/site/available-table/" + $(this).val() + "?" + getToken(),
         type: "get",
         success: function (response) {
-
             var data = {
                 tables: response,
             }
@@ -354,6 +355,10 @@ $(".table-schedule").on("click", ".itm-add-autounit-match", function() {
     var tip = $(this).data("tipIdentifier");
 
     autoUnitAddNewEntry(date, tip);
+});
+
+$(".toggle-autounit-state").on("click", function() {
+    toggleAutounitState($(this).data("state"), $(this).data("site"));
 });
 
     /*
@@ -761,4 +766,42 @@ function autoUnitAddNewEntry(date, tip) {
         dateFormat: 'yy-mm-dd',
     });
     element.find('.system-date').datepicker("setDate", date);
+}
+
+function toggleAutounitStateButton(paused, site) {
+    if (paused !== undefined) {
+        $(".toggle-autounit-state").removeClass("hidden");
+        if (paused) {
+            $(".toggle-autounit-state").removeClass("btn-danger");
+            $(".toggle-autounit-state").addClass("btn-primary");
+            $(".toggle-autounit-state").text("Activate autounit");
+        } else if (!paused) {
+            $(".toggle-autounit-state").removeClass("btn-primary");
+            $(".toggle-autounit-state").addClass("btn-danger");
+            $(".toggle-autounit-state").text("Pause autounit");
+        }
+        $(".toggle-autounit-state").data("state", paused);
+        $(".toggle-autounit-state").data("site", site);
+    } else {
+        $(".toggle-autounit-state").addClass("hidden");
+    }
+}
+
+function toggleAutounitState(state, site) {
+    $.ajax({
+        url: config.coreUrl + "/auto-unit/toggle-state" + "?" + getToken(),
+        type: "POST",
+        data: {
+            state: state,
+            site: site
+        },
+        success: function (response) {
+            var state = response.paused_autounit ? 1 : 0;
+            toggleAutounitStateButton(state);
+            $(".select-site").find("option:selected").first().data("paused", state);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
 }

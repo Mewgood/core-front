@@ -18,7 +18,7 @@
                             <script class="template-select-site" type="text/template7">
                                <option value="-"> -- select -- </option>
                                {{#each sites}}
-                               <option value="{{id}}">{{name}} </option>
+                               <option value="{{id}}" data-paused="{{paused_autounit}}">{{name}} </option>
                                {{/each}}
                             </script>
                         </div>
@@ -61,6 +61,9 @@
                     </li>
                     <li>
                         <button type="button" class="btn btn-success show-site-configurations">View site configurations</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-danger toggle-autounit-state hidden"></button>
                     </li>
                 </ul>
             </div>
