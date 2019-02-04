@@ -793,7 +793,8 @@ function toggleAutounitState(state, site) {
         type: "POST",
         data: {
             state: state,
-            site: site
+            site: site,
+            manual_pause: 1
         },
         success: function (response) {
             var state = response.paused_autounit ? 1 : 0;
