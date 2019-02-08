@@ -18,7 +18,7 @@
                             <script class="template-select-site" type="text/template7">
                                <option value="-"> -- select -- </option>
                                {{#each sites}}
-                               <option value="{{id}}" data-paused="{{paused_autounit}}">{{name}} </option>
+                               <option value="{{id}}">{{name}} </option>
                                {{/each}}
                             </script>
                         </div>
@@ -63,7 +63,12 @@
                         <button type="button" class="btn btn-success show-site-configurations">View site configurations</button>
                     </li>
                     <li>
-                        <button type="button" class="btn btn-danger toggle-autounit-state hidden"></button>
+                        <button 
+                            type="button" 
+                            class="btn toggle-autounit-all-sites-state"
+                            data-state=""
+                        >
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -82,6 +87,13 @@
                                     {{#each this.packages}}
                                         | {{this.name}}
                                     {{/each}}
+                                    |
+                                    {{#if this.paused}}
+                                        <span class="label label-danger autounit-status">Paused</span>
+                                    {{else}}
+                                        <span class="label label-primary autounit-status">Active</span>
+                                    {{/if}}
+                                    </span>
                                 </a>
                             </h4>
                         </div>
@@ -260,6 +272,19 @@
                                 <div class="row">
                                     <div class="col-md-2 col-md-offset-5">
                                         <button type="button" class="btn btn-success save-tip-settings">Save</button>
+                                        <button 
+                                            type="button" 
+                                            class="btn {{#if this.paused}}btn-primary {{else}} btn-danger {{/if}} toggle-autounit-state" 
+                                            data-tip-Identifier="{{this.tipIdentifier}}"
+                                            data-site="{{this.siteId}}"
+                                            data-state="{{this.paused}}"
+                                        >
+                                            {{#if this.paused}}
+                                                Activate autounit
+                                            {{else}}
+                                                Pause autounit
+                                            {{/if}}
+                                        </button>
                                     </div>
                                 </div>
                             </div>

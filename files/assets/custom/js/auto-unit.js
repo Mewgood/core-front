@@ -11,7 +11,6 @@ config.autoUnit.on('change', '.select-site', function() {
     $('body .itm-autounit-statistics .badge').popover('hide');
     $('body').popover('destroy');
     var site = $(this).find("option:selected").first();
-    toggleAutounitStateButton($(site).data("paused"), $(this).val());
     $.ajax({
         url: config.coreUrl + "/site/available-table/" + $(this).val() + "?" + getToken(),
         type: "get",
@@ -357,8 +356,13 @@ $(".table-schedule").on("click", ".itm-add-autounit-match", function() {
     autoUnitAddNewEntry(date, tip);
 });
 
-$(".toggle-autounit-state").on("click", function() {
-    toggleAutounitState($(this).data("state"), $(this).data("site"));
+$(".content-tip").on("click", ".toggle-autounit-state", function() {
+    var label = $(element).parents(".panel").find(".autounit-status").first();
+    toggleAutounitState($(this).data("state"), $(this).data("tipIdentifier"), $(this).data("site"), label);
+});
+
+$(".table_import_filters_container").on("click", ".toggle-autounit-all-sites-state", function() {
+    toggleAutounitState($(this).data("state"));
 });
 
     /*
@@ -387,6 +391,7 @@ function autoUnitShowAvailableSites(params) {
                 $(".select-site").val(params.site).trigger("change");
                 $(".select-date").val(params.date).trigger("change");
             }
+            toggleAutounitAllSitesState(parseInt(response.all_state.value));
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
@@ -481,7 +486,6 @@ function autoUnitShowAssociatedEventsWithTable(data) {
 // functions
 // this will populate content-tip with data
 function autoUnitPopulateTipsInTemplate(data) {
-    console.log(data);
     var element = config.autoUnit;
     var template = element.find('.template-content-tip').html();
     var compiledTemplate = Template7.compile(template);
@@ -768,38 +772,52 @@ function autoUnitAddNewEntry(date, tip) {
     element.find('.system-date').datepicker("setDate", date);
 }
 
-function toggleAutounitStateButton(paused, site) {
+function toggleAutounitStateButton(paused, element) {
     if (paused !== undefined) {
-        $(".toggle-autounit-state").removeClass("hidden");
         if (paused) {
-            $(".toggle-autounit-state").removeClass("btn-danger");
-            $(".toggle-autounit-state").addClass("btn-primary");
-            $(".toggle-autounit-state").text("Activate autounit");
+            $(element).removeClass("label-primary");
+            $(element).addClass("label-danger");
+            $(element).text("Paused");
         } else if (!paused) {
-            $(".toggle-autounit-state").removeClass("btn-primary");
-            $(".toggle-autounit-state").addClass("btn-danger");
-            $(".toggle-autounit-state").text("Pause autounit");
+            $(element).removeClass("label-danger");
+            $(element).addClass("label-primary");
+            $(element).text("Active");
         }
-        $(".toggle-autounit-state").data("state", paused);
-        $(".toggle-autounit-state").data("site", site);
-    } else {
-        $(".toggle-autounit-state").addClass("hidden");
+        $(element).data("state", paused);
     }
 }
 
-function toggleAutounitState(state, site) {
+function toggleAutounitAllSitesState(paused) {
+    if (paused) {
+        $(".toggle-autounit-all-sites-state").removeClass("btn-danger");
+        $(".toggle-autounit-all-sites-state").addClass("btn-primary");
+        $(".toggle-autounit-all-sites-state").text("Reactivate Autounits for all websites");
+    } else if (!paused) {
+        $(".toggle-autounit-all-sites-state").removeClass("btn-primary");
+        $(".toggle-autounit-all-sites-state").addClass("btn-danger");
+        $(".toggle-autounit-all-sites-state").text("Pause Autounits for all websites");
+    }
+    $(".toggle-autounit-all-sites-state").data("state", paused);
+}
+
+function toggleAutounitState(state, tipIdentifier = null, site = null, element = null) {
     $.ajax({
         url: config.coreUrl + "/auto-unit/toggle-state" + "?" + getToken(),
         type: "POST",
         data: {
-            state: state,
             site: site,
+            state: state,
+            tipIdentifier: tipIdentifier,
             manual_pause: 1
         },
         success: function (response) {
             var state = response.paused_autounit ? 1 : 0;
-            toggleAutounitStateButton(state);
-            $(".select-site").find("option:selected").first().data("paused", state);
+            if (!tipIdentifier) {
+                toggleAutounitAllSitesState(state);
+                toggleAutounitStateButton(state, $(".autounit-status"));
+            } else {
+                toggleAutounitStateButton(state, element);
+            }
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
