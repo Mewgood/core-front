@@ -357,8 +357,15 @@ $(".table-schedule").on("click", ".itm-add-autounit-match", function() {
 });
 
 $(".content-tip").on("click", ".toggle-autounit-state", function() {
-    var label = $(element).parents(".panel").find(".autounit-status").first();
-    toggleAutounitState($(this).data("state"), $(this).data("tipIdentifier"), $(this).data("site"), label);
+    var confirmed = true;
+    
+    if ($(".toggle-autounit-all-sites-state").data("state") == 1 && $(this).data("state") == 1) {
+        confirmed = confirm("All sites are paused, are you sure you want to activate this one?");
+    }
+    if (confirmed) {
+        var label = $(this).parents(".panel").find(".autounit-status").first();
+        toggleAutounitState($(this).data("state"), $(this).data("tipIdentifier"), $(this).data("site"), label, $(this));
+    }
 });
 
 $(".table_import_filters_container").on("click", ".toggle-autounit-all-sites-state", function() {
@@ -772,18 +779,26 @@ function autoUnitAddNewEntry(date, tip) {
     element.find('.system-date').datepicker("setDate", date);
 }
 
-function toggleAutounitStateButton(paused, element) {
+function toggleAutounitStateButton(paused, element, button) {
     if (paused !== undefined) {
         if (paused) {
             $(element).removeClass("label-primary");
             $(element).addClass("label-danger");
             $(element).text("Paused");
+
+            $(button).removeClass("btn-danger");
+            $(button).addClass("btn-primary");
+            $(button).text("Activate autounit");
         } else if (!paused) {
             $(element).removeClass("label-danger");
             $(element).addClass("label-primary");
             $(element).text("Active");
+            
+            $(button).removeClass("btn-primary");
+            $(button).addClass("btn-danger");
+            $(button).text("Pause Autounit");
         }
-        $(element).data("state", paused);
+        $(button).data("state", paused);
     }
 }
 
@@ -792,15 +807,24 @@ function toggleAutounitAllSitesState(paused) {
         $(".toggle-autounit-all-sites-state").removeClass("btn-danger");
         $(".toggle-autounit-all-sites-state").addClass("btn-primary");
         $(".toggle-autounit-all-sites-state").text("Reactivate Autounits for all websites");
+
+        $(".toggle-autounit-state").removeClass("btn-danger");
+        $(".toggle-autounit-state").addClass("btn-primary");
+        $(".toggle-autounit-state").text("Activate autounit");
     } else if (!paused) {
         $(".toggle-autounit-all-sites-state").removeClass("btn-primary");
         $(".toggle-autounit-all-sites-state").addClass("btn-danger");
         $(".toggle-autounit-all-sites-state").text("Pause Autounits for all websites");
+        
+        $(".toggle-autounit-state").removeClass("btn-primary");
+        $(".toggle-autounit-state").addClass("btn-danger");
+        $(".toggle-autounit-state").text("Pause autounit");
     }
     $(".toggle-autounit-all-sites-state").data("state", paused);
+    $(".toggle-autounit-state").data("state", paused);
 }
 
-function toggleAutounitState(state, tipIdentifier = null, site = null, element = null) {
+function toggleAutounitState(state, tipIdentifier = null, site = null, element = null, button = null) {
     $.ajax({
         url: config.coreUrl + "/auto-unit/toggle-state" + "?" + getToken(),
         type: "POST",
@@ -816,7 +840,7 @@ function toggleAutounitState(state, tipIdentifier = null, site = null, element =
                 toggleAutounitAllSitesState(state);
                 toggleAutounitStateButton(state, $(".autounit-status"));
             } else {
-                toggleAutounitStateButton(state, element);
+                toggleAutounitStateButton(state, element, button);
             }
         },
         error: function (xhr, textStatus, errorTrown) {
