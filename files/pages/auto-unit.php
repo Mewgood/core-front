@@ -326,7 +326,6 @@
                                     <th> Source </th>
                                     <th> Action </th>
                                     <th> Distributed</th>
-                                    <th> Actions </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -439,9 +438,10 @@
                                             {{#if isRealUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
                                             {{#if isNoUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
                                             ">Delete</button>
+                                            
+                                            <span class="itm-add-autounit-match" data-date="{{systemDate}}" data-tip-identifier="{{tipIdentifier}}"><i class="fa fa-plus-circle"></i></span>
                                         </td>
                                         <td>{{sites_distributed_counter}} sites</td>
-                                        <td><span class="itm-add-autounit-match" data-date="{{systemDate}}" data-tip-identifier="{{tipIdentifier}}"><i class="fa fa-plus-circle"></i></span></td>
                                     </tr>
                                 {{/each}}
 

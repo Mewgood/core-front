@@ -16,7 +16,8 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>Site</th>
+                                        <th>Tip</th>
                                         <?php
                                             $html = "";
                                             foreach ($dates as $date) {
@@ -33,23 +34,30 @@
                                                 {{#js_compare "this.@key != 'display'"}}
                                                     {{#js_if "this.display"}}
                                                         <td class="site-details" title="Last subscription: {{this.lastSubscription}} <br> Tips: {{this.tipsLeft}}" data-tips-left="{{this.tipsLeft}}" data-last-subscription="{{this.lastSubscription}}">{{this.name}}</td>
+                                                        <td>{{this.tipIdentifier}}</td>
                                                     {{/js_if}}
                                                     <td>
-                                                        {{#js_compare "this.configurationStatus == 1"}}
-                                                            <span class="label bg-green-jungle config-label" data-site="{{this.id}}" data-date="{{this.date}}">
-                                                                <i class="fa fa-check"></i>
+                                                        {{#if this.pause}}
+                                                            <span class="label bg-blue config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                <i class="fa fa-pause"></i>
                                                             </span>
-                                                        {{/js_compare}}
-                                                        {{#js_compare "!this.configurationStatus"}}
-                                                            <span class="label bg-red-thunderbird config-label" data-site="{{this.id}}" data-date="{{this.date}}">
-                                                                <i class="fa fa-times"></i>
-                                                            </span>
-                                                        {{/js_compare}}
-                                                        {{#js_compare "this.configurationStatus == 2"}}
-                                                            <span class="label bg-yellow-gold config-label" data-site="{{this.id}}" data-date="{{this.date}}">
-                                                                <i class="fa fa-warning"></i>
-                                                            </span>
-                                                        {{/js_compare}}
+                                                        {{else}}
+                                                            {{#js_compare "this.configurationStatus == 1"}}
+                                                                <span class="label bg-green-jungle config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>
+                                                            {{/js_compare}}
+                                                            {{#js_compare "!this.configurationStatus"}}
+                                                                <span class="label bg-red-thunderbird config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                    <i class="fa fa-times"></i>
+                                                                </span>
+                                                            {{/js_compare}}
+                                                            {{#js_compare "this.configurationStatus == 2"}}
+                                                                <span class="label bg-yellow-gold config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                    <i class="fa fa-warning"></i>
+                                                                </span>
+                                                            {{/js_compare}}
+                                                        {{/if}}
                                                     </td>
                                                 {{/js_compare}}
                                             {{/each}}
@@ -66,7 +74,8 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>Site</th>
+                                        <th>Tip</th>
                                         <?php
                                             $html = "";
                                             foreach ($dates as $date) {
@@ -83,23 +92,30 @@
                                                 {{#js_compare "this.@key != 'display'"}}
                                                     {{#js_if "this.display"}}
                                                         <td class="site-details" title="Last subscription: {{this.lastSubscription}}" data-last-subscription="{{this.lastSubscription}}">{{this.name}}</td>
+                                                        <td>{{#if this.isVip}} <i class="fa fa-star"></i>{{/if}} {{this.tipIdentifier}}</td>
                                                     {{/js_if}}
                                                     <td>
-                                                        {{#js_compare "this.configurationStatus == 1"}}
-                                                            <span class="label bg-green-jungle config-label" data-site="{{this.id}}" data-date="{{this.date}}">
-                                                                <i class="fa fa-check"></i>
+                                                        {{#if this.pause}}
+                                                            <span class="label bg-blue config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                <i class="fa fa-pause"></i>
                                                             </span>
-                                                        {{/js_compare}}
-                                                        {{#js_compare "!this.configurationStatus"}}
-                                                            <span class="label bg-red-thunderbird config-label" data-site="{{this.id}}" data-date="{{this.date}}">
-                                                                <i class="fa fa-times"></i>
-                                                            </span>
-                                                        {{/js_compare}}
-                                                        {{#js_compare "this.configurationStatus == 2"}}
-                                                            <span class="label bg-yellow-gold config-label" data-site="{{this.id}}" data-date="{{this.date}}">
-                                                                <i class="fa fa-warning"></i>
-                                                            </span>
-                                                        {{/js_compare}}
+                                                        {{else}}
+                                                            {{#js_compare "this.configurationStatus == 1"}}
+                                                                <span class="label bg-green-jungle config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>
+                                                            {{/js_compare}}
+                                                            {{#js_compare "!this.configurationStatus"}}
+                                                                <span class="label bg-red-thunderbird config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                    <i class="fa fa-times"></i>
+                                                                </span>
+                                                            {{/js_compare}}
+                                                            {{#js_compare "this.configurationStatus == 2"}}
+                                                                <span class="label bg-yellow-gold config-label" data-site="{{this.siteId}}" data-date="{{this.date}}">
+                                                                    <i class="fa fa-warning"></i>
+                                                                </span>
+                                                            {{/js_compare}}
+                                                        {{/if}}
                                                     </td>
                                                 {{/js_compare}}
                                             {{/each}}
