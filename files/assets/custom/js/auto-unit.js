@@ -11,6 +11,7 @@ config.autoUnit.on('change', '.select-site', function() {
     $('body .itm-autounit-statistics .badge').popover('hide');
     $('body').popover('destroy');
     var site = $(this).find("option:selected").first();
+    console.log($(this).val());
     $.ajax({
         url: config.coreUrl + "/site/available-table/" + $(this).val() + "?" + getToken(),
         type: "get",
@@ -39,6 +40,19 @@ config.autoUnit.on('change', '.select-site', function() {
 config.autoUnit.on('change', '.select-table , .select-date', function() {
     autoUnitGetSchedulerForTable();
     autoUnitGetScheduledEventsForTable();
+});
+
+config.autoUnit.on('change', '.select-site, .select-table', function() {
+    console.log("change");
+    var site = "";
+    var table = "";
+    if ($(".select-site option:selected").val() && $(".select-site option:selected").val() != "-") {
+        site = "/" + $(".select-site option:selected").val();
+    }
+    if ($("#autounit-table-select").val() && $("#autounit-table-select").val() != "-") {
+        table = "/" + $("#autounit-table-select").val();
+    }
+    $(".run-autounit").attr("href", config.coreUrl + "/autounit" + site + table + "?" + getToken());
 });
 
 // Clickable - new schedule event

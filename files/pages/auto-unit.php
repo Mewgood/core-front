@@ -54,7 +54,7 @@
                         <button type="button" class="btn btn-success new-schedule-event">Add New Entry</button>
                     </li>
                     <li>
-                        <a href="<?php echo $config['coreUrl'] . '/autounit'; ?>" target="_blank" class="btn btn-success">Run Autounit Now</a>
+                        <a href="<?php echo $config['coreUrl'] . '/autounit'; ?>" target="_blank" class="btn btn-success run-autounit">Run Autounit Now</a>
                     </li>
                     <li>
                         <button type="button" class="btn btn-success show-admin-pool">Create pool</button>
