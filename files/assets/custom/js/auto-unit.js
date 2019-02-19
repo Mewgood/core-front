@@ -43,7 +43,6 @@ config.autoUnit.on('change', '.select-table , .select-date', function() {
 });
 
 config.autoUnit.on('change', '.select-site, .select-table', function() {
-    console.log("change");
     var site = "";
     var table = "";
     if ($(".select-site option:selected").val() && $(".select-site option:selected").val() != "-") {
@@ -53,6 +52,7 @@ config.autoUnit.on('change', '.select-site, .select-table', function() {
         table = "/" + $("#autounit-table-select").val();
     }
     $(".run-autounit").attr("href", config.coreUrl + "/autounit" + site + table + "?" + getToken());
+    $(".reset-autounit").attr("href", config.coreUrl + "/autounit-reset" + site + table + "?" + getToken());
 });
 
 // Clickable - new schedule event

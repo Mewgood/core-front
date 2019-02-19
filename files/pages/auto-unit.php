@@ -57,6 +57,9 @@
                         <a href="<?php echo $config['coreUrl'] . '/autounit'; ?>" target="_blank" class="btn btn-success run-autounit">Run Autounit Now</a>
                     </li>
                     <li>
+                        <a href="<?php echo $config['coreUrl'] . '/autounit-reset'; ?>" target="_blank" class="btn btn-success reset-autounit">Reset Autounit</a>
+                    </li>
+                    <li>
                         <button type="button" class="btn btn-success show-admin-pool">Create pool</button>
                     </li>
                     <li>
