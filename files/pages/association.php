@@ -626,7 +626,7 @@
             <div class="modal-body">
                 <div class="itm-table">
                     {{#each sites}}
-                    <div class="col-md-4 assoc_website itm-table-cell">
+                    <div class="col-md-2 assoc_website itm-table-cell">
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="mt-checkbox-list">
@@ -638,6 +638,12 @@
                                     {{/js_if}}
                                     {{#js_if "@index === 2"}}
                                         <h1 class="text-center">Ineligible</h1>
+                                    {{/js_if}}
+                                    {{#js_if "@index === 3"}}
+                                        <h1 class="text-center">AU Filled</h1>
+                                    {{/js_if}}
+                                    {{#js_if "@index === 4"}}
+                                        <h1 class="text-center">AU Unfilled</h1>
                                     {{/js_if}}
                                     <!-- sites keys -->
                                     {{#each this}}

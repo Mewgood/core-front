@@ -441,7 +441,7 @@ function getDistributedEvents(date = '0', restrictVip = false) {
 			// manually populate the layout
 			// first we empty the table
 			$('#manually-populated-table tbody').html('');
-			
+			console.log(data.sites);
 			$.each( data.sites , function(index, item) {
 				// var template = $('#dist-row-template').html();	
 
