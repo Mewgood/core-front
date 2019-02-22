@@ -126,6 +126,9 @@ License: You must have a valid license purchased only from themeforest(the above
                             <!-- DOC: Apply "dropdown-dark" class after "dropdown-extended" to change the dropdown styte -->
                             <!-- DOC: Apply "dropdown-hoverable" class after below "dropdown" and remove data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to enable hover dropdown mode -->
                             <!-- DOC: Remove "dropdown-hoverable" and add data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to the below A element with dropdown-toggle class -->
+                            <li class="">
+                                <a class="itm-subscription-notification"></a>
+                            </li>
                             <li class="dropdown dropdown-extended dropdown-notification notification-warning" id="header_notification_bar"></li>
                             <script class="template-notification-warning" type="text/template7">
                                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">

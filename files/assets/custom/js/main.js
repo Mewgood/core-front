@@ -6,6 +6,7 @@ $(document).ready(function() {
 
     // app start flow
     setActivePage();
+    getSubscriptionNotifications();
 
     $('.page-sidebar-menu .nav-item').on('click', function() {
         var page = $(this).attr('target');
@@ -19,6 +20,12 @@ $(document).ready(function() {
         setActivePage();
     });
 
+    $(".itm-subscription-notification").on("click", function() {
+        const page = "auto-unit-site-configuration";
+        config.activePage = page;
+        localStorage.setItem("core-app-active-page", page);
+        setActivePage();
+    });
     // show notifications
     setInterval(showLogs, 5000);
 });
@@ -59,6 +66,23 @@ function showLogs() {
                 var compiledTemplate = Template7.compile(template);
                 var html = compiledTemplate(data);
                 $('.notification-panic').html(html).change();
+            }
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function getSubscriptionNotifications() {
+    $.ajax({
+        url: config.coreUrl + "/subscription-notification?" + getToken(),
+        type: "get",
+        success: function (response) {
+            if (response == 0) {
+                $(".itm-subscription-notification").text("");
+            } else {
+                $(".itm-subscription-notification").text("Check recently AutoUnits reactivated websites (" + response + ")");
             }
         },
         error: function (xhr, textStatus, errorTrown) {

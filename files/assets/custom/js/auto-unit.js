@@ -386,6 +386,14 @@ $(".table_import_filters_container").on("click", ".toggle-autounit-all-sites-sta
     toggleAutounitState($(this).data("state"));
 });
 
+$(".auto-unit-container").on("click", ".clear-alert", function () {
+    var tableIdentifier = $(this).data("tableIdentifier");
+    var tipIdentifier = $(this).data("tipIdentifier");
+    var siteId = $(this).data("siteId");
+    console.log(tableIdentifier, tipIdentifier, siteId);
+    clearAlerts(tableIdentifier, tipIdentifier, siteId, $(this));
+});
+
     /*
      *  ----- Functions -----
     ----------------------------------------------------------------------*/
@@ -856,6 +864,26 @@ function toggleAutounitState(state, tipIdentifier = null, site = null, element =
             } else {
                 toggleAutounitStateButton(state, element, button);
             }
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function clearAlerts(tableIdentifier, tipIdentifier, siteId, alertElement) {
+    $.ajax({
+        url: config.coreUrl + "/package/clear-alerts" + "?" + getToken(),
+        type: "POST",
+        data: {
+            tableIdentifier: tableIdentifier,
+            tipIdentifier: tipIdentifier,
+            siteId: siteId
+        },
+        success: function (response) {
+            console.log(response);
+            getSubscriptionNotifications();
+            $(alertElement).remove();
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);

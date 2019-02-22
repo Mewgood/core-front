@@ -96,7 +96,16 @@
                                     {{else}}
                                         <span class="label label-primary autounit-status">Active</span>
                                     {{/if}}
-                                    </span>
+                                    {{#if this.hasAlert}}
+                                        <span 
+                                            class="label label-danger clear-alert" 
+                                            data-tip-identifier="{{this.tipIdentifier}}"
+                                            data-table-identifier="{{this.tableIdentifier}}"
+                                            data-site-id="{{this.siteId}}"
+                                        >
+                                            <i class="fa fa-trash"></i> Clear alerts
+                                        </span>
+                                    {{/if}}
                                 </a>
                             </h4>
                         </div>

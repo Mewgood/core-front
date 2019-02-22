@@ -29,9 +29,9 @@
                                 </thead>
                                 <tbody>
                                     {{#each this.ru}}
-                                        <tr>
+                                        <tr class="{{#js_if 'this.packageAlert'}}bg-yellow-gold{{/js_if}}">
                                             {{#each this}}
-                                                {{#js_compare "this.@key != 'display'"}}
+                                                {{#js_compare "this.@key != 'display' && this.@key != 'packageAlert'"}}
                                                     {{#js_if "this.display"}}
                                                         <td class="site-details" title="Last subscription: {{this.lastSubscription}} <br> Tips: {{this.tipsLeft}}" data-tips-left="{{this.tipsLeft}}" data-last-subscription="{{this.lastSubscription}}">{{this.name}}</td>
                                                         <td>{{this.tipIdentifier}}</td>
@@ -87,9 +87,9 @@
                                 </thead>
                                 <tbody>
                                     {{#each this.nu}}
-                                        <tr>
+                                        <tr class="{{#js_if 'this.packageAlert'}}bg-yellow-gold{{/js_if}}">
                                             {{#each this}}
-                                                {{#js_compare "this.@key != 'display'"}}
+                                                {{#js_compare "this.@key != 'display' && this.@key != 'packageAlert'"}}
                                                     {{#js_if "this.display"}}
                                                         <td class="site-details" title="Last subscription: {{this.lastSubscription}}" data-last-subscription="{{this.lastSubscription}}">{{this.name}}</td>
                                                         <td>{{#if this.isVip}} <i class="fa fa-star"></i>{{/if}} {{this.tipIdentifier}}</td>
