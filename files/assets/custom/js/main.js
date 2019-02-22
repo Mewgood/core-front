@@ -7,6 +7,7 @@ $(document).ready(function() {
     // app start flow
     setActivePage();
     getSubscriptionNotifications();
+    getAdminPoolNotification();
 
     $('.page-sidebar-menu .nav-item').on('click', function() {
         var page = $(this).attr('target');
@@ -22,6 +23,13 @@ $(document).ready(function() {
 
     $(".itm-subscription-notification").on("click", function() {
         const page = "auto-unit-site-configuration";
+        config.activePage = page;
+        localStorage.setItem("core-app-active-page", page);
+        setActivePage();
+    });
+    
+    $('.itm-admin-pool-notification').on('click', function() {
+        const page = "admin-pool";
         config.activePage = page;
         localStorage.setItem("core-app-active-page", page);
         setActivePage();
@@ -66,6 +74,23 @@ function showLogs() {
                 var compiledTemplate = Template7.compile(template);
                 var html = compiledTemplate(data);
                 $('.notification-panic').html(html).change();
+            }
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function getAdminPoolNotification() {
+    $.ajax({
+        url: config.coreUrl + "/admin-pool/notification?" + getToken(),
+        type: "get",
+        success: function (response) {
+            if (response == 0) {
+                $(".itm-admin-pool-notification").text("Create the pool");
+            } else {
+                $(".itm-admin-pool-notification").text("");
             }
         },
         error: function (xhr, textStatus, errorTrown) {

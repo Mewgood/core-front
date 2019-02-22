@@ -155,6 +155,7 @@ $(document).ready(function() {
             success: function (response) {
                 console.log(response);
                 initPoolMatchesDatatable();
+                getAdminPoolNotification();
             },
             error: function (xhr, textStatus, errorTrown) {
                 manageError(xhr, textStatus, errorTrown);
