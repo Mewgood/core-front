@@ -11,7 +11,7 @@ config.autoUnit.on('change', '.select-site', function() {
     $('body .itm-autounit-statistics .badge').popover('hide');
     $('body').popover('destroy');
     var site = $(this).find("option:selected").first();
-    console.log($(this).val());
+
     $.ajax({
         url: config.coreUrl + "/site/available-table/" + $(this).val() + "?" + getToken(),
         type: "get",
@@ -857,10 +857,10 @@ function toggleAutounitState(state, tipIdentifier = null, site = null, element =
             manual_pause: 1
         },
         success: function (response) {
-            var state = response.paused_autounit ? 1 : 0;
+            var state = response.state ? 1 : 0;
             if (!tipIdentifier) {
                 toggleAutounitAllSitesState(state);
-                toggleAutounitStateButton(state, $(".autounit-status"));
+                toggleAutounitStateButton(state, $(".autounit-status:not(.has-subscription)"));
             } else {
                 toggleAutounitStateButton(state, element, button);
             }

@@ -92,7 +92,7 @@
                                     {{/each}}
                                     |
                                     {{#if this.paused}}
-                                        <span class="label label-danger autounit-status">Paused</span>
+                                        <span class="label label-danger autounit-status {{#if this.hasSubscription}}has-subscription{{/if}}">Paused</span>
                                     {{else}}
                                         <span class="label label-primary autounit-status">Active</span>
                                     {{/if}}
