@@ -372,8 +372,10 @@ $(".table-schedule").on("click", ".itm-add-autounit-match", function() {
 
 $(".content-tip").on("click", ".toggle-autounit-state", function() {
     var confirmed = true;
-    
-    if ($(".toggle-autounit-all-sites-state").data("state") == 1 && $(this).data("state") == 1) {
+
+    if ($(this).data("hasSubscription")) {
+        confirmed = confirm("Site has a subscription, are you sure you want to activate this one?");
+    } else if ($(".toggle-autounit-all-sites-state").data("state") == 1 && $(this).data("state") == 1) {
         confirmed = confirm("All sites are paused, are you sure you want to activate this one?");
     }
     if (confirmed) {
@@ -493,7 +495,6 @@ function autoUnitGetScheduledEventsForTable() {
         url: config.coreUrl + "/auto-unit/get-scheduled-events?" + $.param(param) + "&" + getToken(),
         type: "get",
         success: function (response) {
-            console.log(response);
             autoUnitShowAssociatedEventsWithTable(response);
         },
         error: function (xhr, textStatus, errorTrown) {

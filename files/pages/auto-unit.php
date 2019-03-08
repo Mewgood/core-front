@@ -290,6 +290,7 @@
                                             data-tip-Identifier="{{this.tipIdentifier}}"
                                             data-site="{{this.siteId}}"
                                             data-state="{{this.paused}}"
+                                            data-has-subscription="{{this.hasSubscription}}"
                                         >
                                             {{#if this.paused}}
                                                 Activate autounit
