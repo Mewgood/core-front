@@ -437,8 +437,8 @@
                                             {{/js_compare}}
                                         </td>
                                         <td>
-                                            {{#if isPosted}} <span class="font-green-jungle">Posted</span> {{/if}}
-                                            {{#if isScheduled}} Scheduled {{/if}}
+                                            {{#if isPosted}} <span class="font-green-jungle">Published</span> {{/if}}
+                                            {{#if isScheduled}} Waiting {{/if}}
                                         </td>
                                         <td>
                                             {{#if isAutoUnit}} Auto Unit {{/if}}
