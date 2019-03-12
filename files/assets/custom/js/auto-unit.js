@@ -25,7 +25,12 @@ config.autoUnit.on('change', '.select-site', function() {
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(data);
             element.find('.select-table').html(html).change();
-            var table = $("#autounit-table-select option").eq(1).val()
+            var table = $("#autounit-table-select option").eq(1).val();
+            if (response.length) {
+                var monthlyGenerationBtn = generateMonthlyGenerationButton(!response[0].generate_autounit_monthly);
+                $(".toggle-generate-monthly-config").parent().remove();
+                $(".auto-unit .table_import_filters_container").append(monthlyGenerationBtn);
+            }
             $("#autounit-table-select").val(table).trigger("change");
         },
         error: function (xhr, textStatus, errorTrown) {
@@ -221,6 +226,36 @@ config.autoUnit.on('click', '.table-schedule .delete-event', function() {
         });
     }
 });
+
+$(".table_import_filters_container").on("click", ".toggle-generate-monthly-config", function() {
+    var siteId = config.autoUnit.find('.select-site').val();
+    var state = $(this).data('state');
+    var btn = $(this);
+
+    $.ajax({
+        url: config.coreUrl + "/auto-unit/toggle-monthly-config?" + getToken(),
+        type: "post",
+        data: {
+            siteId: siteId,
+            state: state
+        },
+        success: function (response) {
+            var state = response.state ? 1 : 0;
+            $(btn).data("state", state);
+            if (state) {
+                $(btn).removeClass("btn-danger").addClass("btn-success");
+                $(btn).text("Monthly generation On");
+            } else {
+                $(btn).removeClass("btn-success").addClass("btn-danger");
+                $(btn).text("Monthly generation Off");
+            }
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
     /*
      *  ----- Modal New Schedule Event -----
     ----------------------------------------------------------------------*/
@@ -392,7 +427,6 @@ $(".auto-unit-container").on("click", ".clear-alert", function () {
     var tableIdentifier = $(this).data("tableIdentifier");
     var tipIdentifier = $(this).data("tipIdentifier");
     var siteId = $(this).data("siteId");
-    console.log(tableIdentifier, tipIdentifier, siteId);
     clearAlerts(tableIdentifier, tipIdentifier, siteId, $(this));
 });
 
@@ -890,4 +924,15 @@ function clearAlerts(tableIdentifier, tipIdentifier, siteId, alertElement) {
             manageError(xhr, textStatus, errorTrown);
         }
     });
+}
+
+function generateMonthlyGenerationButton(generate_autounit_monthly) {
+    var html = "";
+    html += "<li>";
+    html += '   <button type="button" class="btn toggle-generate-monthly-config ' + 
+                    (generate_autounit_monthly ? 'btn-success' : 'btn-danger') + 
+                    '" data-state="' + generate_autounit_monthly + '">' + 
+                    (generate_autounit_monthly ? 'Monthly generation On' : 'Monthly generation Off') + '</button>';
+    html += "</li>";
+    return html;
 }
