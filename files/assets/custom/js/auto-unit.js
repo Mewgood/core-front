@@ -203,7 +203,13 @@ config.autoUnit.on('click', '.content-tip .save-tip-settings', function() {
 //    - for archive events use distribution force delete procedure
 config.autoUnit.on('click', '.table-schedule .delete-event', function() {
 
-    var eventType = $(this).attr('data-type');
+    var type = "distribution";
+    var ids = [$(this).data('id')];
+
+    if (!ids[0]) {
+        type = "autounit";
+        ids = $(this).data('scheduleid');
+    }
 
     // default values for autoUnit
     var message = "Event is part of AutoUnits schedule.";
@@ -214,7 +220,8 @@ config.autoUnit.on('click', '.table-schedule .delete-event', function() {
             url: url,
             type: "post",
             data: {
-                ids: [$(this).attr('data-id')],
+                ids: ids,
+                type: type
             },
             success: function (response) {
                 alert("Type: --- " + response.type + " --- \r\n" + response.message);
@@ -254,6 +261,17 @@ $(".table_import_filters_container").on("click", ".toggle-generate-monthly-confi
             manageError(xhr, textStatus, errorTrown);
         }
     });
+});
+
+$(".table_import_filters_container").on("click", ".toggle-empty-matches", function() {
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var currentDate = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
+    
+    $(".itm-display-empty-match").toggleClass("hidden");
+    $(".itm-display-empty-match[data-date='" + currentDate + "']").removeClass("hidden");
 });
 
     /*

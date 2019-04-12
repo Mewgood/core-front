@@ -73,6 +73,9 @@
                         >
                         </button>
                     </li>
+                    <li>
+                        <button type="button" class="btn btn-success toggle-empty-matches">Toggle empty matches</button>
+                    </li>
                 </ul>
             </div>
 
@@ -343,7 +346,16 @@
                             </thead>
                             <tbody>
                                 {{#each events}}
-                                    <tr class="{{#if isRealUser}} subscription-entry {{/if}} {{#if this.isVip}} is-vip bg-yellow-gold {{/if}}">
+                                    <tr class="
+                                        {{#if isRealUser}} subscription-entry {{/if}} 
+                                        {{#if this.isVip}} is-vip bg-yellow-gold {{/if}}
+                                        {{#if this.isVip}} is-vip bg-yellow-gold {{/if}}
+                                        {{#js_if "this.league === '?'"}}
+                                            itm-display-empty-match
+                                        {{/js_if}}
+                                    "
+                                        data-date="{{systemDate}}"
+                                    >
                                         <td> {{systemDate}} - {{tipIdentifier}} </td>
                                         <td>{{league}}</td>
                                         <td>{{homeTeam}} vs {{awayTeam}}</td>
@@ -447,9 +459,14 @@
                                         </td>
                                         <td>
                                             <button type="button" class="btn red btn-xs delete-event"
-                                            {{#if isAutoUnit}}data-type="auto-unit" data-id="{{distributionId}}"{{/if}}
-                                            {{#if isRealUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
-                                            {{#if isNoUser}}data-type="archive-big" data-id="{{distributionId}}"{{/if}}
+                                            {{#if isAutoUnit}}data-type="auto-unit"{{/if}}
+                                            {{#if isRealUser}}data-type="archive-big"{{/if}}
+                                            {{#if isNoUser}}data-type="archive-big"{{/if}}
+                                            {{#if distributionId}}
+                                                data-id="{{distributionId}}"
+                                            {{else}}
+                                                data-scheduleId="{{id}}
+                                            {{/if}}
                                             ">Delete</button>
                                             
                                             <span class="itm-add-autounit-match" data-date="{{systemDate}}" data-tip-identifier="{{tipIdentifier}}"><i class="fa fa-plus-circle"></i></span>
