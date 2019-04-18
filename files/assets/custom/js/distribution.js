@@ -425,21 +425,17 @@ function getDistributedEvents(date = '0', restrictVip = false) {
 			emails_sort: emails_sort,
 		},
         success: function (response) {
-            var data = {sites: response};
+            console.log(response);
             var element = config.distribution;
-
-			/*
-			// populate table using template7
-            var template = element.find('.template-table-content').html();
+            var template = element.find('.manual-template-table-content').html();
             var compiledTemplate = Template7.compile(template);
-            var html = compiledTemplate(data);
-						
-			element.find('#distributions-table-content').html(html);
-			$('.popovers').popover();
-			*/
+            var html = compiledTemplate(response);
+            element.find('#manually-populated-table tbody').html(html);
+            
 			
 			// manually populate the layout
 			// first we empty the table
+            /*
 			$('#manually-populated-table tbody').html('');
 			console.log(data.sites);
 			$.each( data.sites , function(index, item) {
@@ -620,17 +616,8 @@ function getDistributedEvents(date = '0', restrictVip = false) {
 				
 				
 			});
+            */
 			$('.popovers').popover();
-			
-			
-			
-            // element.find('.table-content').html(html);
-			/*
-			if( date != '0' ) {				
-				element.find('#distributions-table-content').html(html);
-				$('.popovers').popover();
-			}
-			*/
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);

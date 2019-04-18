@@ -120,36 +120,6 @@
         <!-- BEGIN SAMPLE TABLE PORTLET-->
         <div class="portlet light bordered">
             <div class="portlet-body">
-				
-				<script class="manual-template-table-content" type="text/template" id="dist-row-template" >
-					<tr>
-						<td> 
-							<label class="disabled_mt-checkbox disabled_mt-checkbox-single disabled_mt-checkbox-outline">
-								<input  
-                                    {{useClass}}
-                                    {{toDistribute}}
-                                    name="btSelectItem" 
-                                    type="checkbox" 
-                                    data-site-id="{{siteId}}" 
-                                    data-event-id="{{distributionIdsString}}" 
-                                    data-distribution-ids="{{distributionIdsString}}" 
-									email-sent="{{isSent}}" event-publish="{{isPublish}}"
-                                    {{toDistribute}}
-									>
-								<span></span>
-							</label>
-						</td>
-						{{distributionUserTD}}
-						{{distributionSiteTD}}
-						{{distributionTipTD}}						
-						<td class="distribution-event">{{eventInfo}}</td>
-						<td> {{sentAtSpan}} </td>
-						<td> {{emailsReceivedSpan}} </td>
-						<td> {{publishedSpan}} </td>
-                        <td class="text-center"> {isFromAdminPool} </td
-					</tr>					
-				</script>
-				
 				<!-- main table -->
                 <div class="table-content distributions-table" id="distributions-table-content" >
 					<div class="table-scrollable">
@@ -168,7 +138,98 @@
 								</tr>
 							</thead>
 							<tbody>
-							
+                                <script class="manual-template-table-content" type="text/template" id="dist-row-template" >
+                                    {{#each this}}
+                                        {{#each this.tips}}
+                                            {{#each this.events}}
+                                            <tr>
+                                                <td> 
+                                                    <label class="disabled_mt-checkbox disabled_mt-checkbox-single disabled_mt-checkbox-outline">
+                                                        <input  
+                                                            {{toDistribute}}
+                                                            name="btSelectItem" 
+                                                            type="checkbox" 
+                                                            data-site-id="{{this.siteId}}" 
+                                                            data-event-id="{{this.eventId}}" 
+                                                            data-distribution-ids="{{distributionIdsString}}" 
+                                                            email-sent="{{this.isEmailSend}}" 
+                                                            event-publish="{{this.isPublish}}"
+                                                            >
+                                                        <span></span>
+                                                    </label>
+                                                </td>
+                                                <td 
+                                                    rowspan="{{#if this.totalEvents}}this.totalEvents{{else}}1{{/if}}" 
+                                                    class="distribution-user">
+                                                    {{this.ruNu}}
+                                                </td>
+                                                <td 
+                                                    rowspan="{{#if this.totalEvents}}this.totalEvents{{else}}1{{/if}}" 
+                                                    class="distribution-site">
+                                                    {{this.siteName}}
+                                                </td>
+                                                <td 
+                                                    rowspan="{{#if this.totalEvents}}this.totalEvents{{else}}1{{/if}}" 
+                                                    class="distribution-tip"
+                                                >
+                                                    <span 
+                                                        class="popovers" 
+                                                        data-trigger="hover" 
+                                                        data-container=".distribution-event" 
+                                                        data-html="true" 
+                                                        data-content="{{this.name}}<br>" 
+                                                        data-original-title="" title=""
+                                                    >
+                                                    {{#if this.isVip}}
+                                                        <i class="fa fa-star"></i>
+                                                    {{/if}}
+                                                    {{this.tipIdentifier}}
+                                                    </span>
+                                                </td>
+                                                <td class="distribution-event">
+                                                    {{#if this.eventDate}}
+                                                        <span class="distribution-event-container">
+                                                        <span class="dist-event-date">{{this.eventDate}}</span> 
+                                                        | 
+                                                        <span class="dist-event-teams">{{this.homeTeam}} - {{this.awayTeam}}</span> 
+                                                        | 
+                                                        <span class="dist-event-predictions">{{this.predictionName}}</span> 
+                                                        | 
+                                                        <span class="dist-event-result">{{this.result}}</span> 
+                                                        | 
+                                                        <span class="dist-event-status Win">{{this.statusId}}</span>
+                                                        </span>
+                                                    {{/if}}
+                                                </td>
+                                                <td> 
+                                                    {{#if this.mailingDate}}
+                                                        <span class="label label-sm label-warning"> {{this.mailingDate}} </span> 
+                                                    {{/if}}
+                                                </td>
+                                                <td> 
+                                                    {{#if this.totalEvents}}
+                                                        <span class="label label-sm label-info">Waiting {{this.totalEventsMailSent}}/{{this.totalEvents}}</span> 
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    {{#if this.totalEvents}}
+                                                        {{#if this.isPublish}}
+                                                            <span class="label label-sm label-success">Published</span> 
+                                                        {{else}}
+                                                            <span class="label label-sm label-danger">Not published</span> 
+                                                        {{/if}}
+                                                    {{/if}}
+                                                </td>
+                                                <td class="text-center"> 
+                                                    {{#if this.is_from_admin_pool}}
+                                                        <i class="fa fa-star"></i> 
+                                                    {{/if}}
+                                                </td>
+                                            {{/each}}
+                                        </tr>
+                                        {{/each}}
+                                    {{/each}}
+                                </script>
 							</tbody>
 						</table>
 					</div>
