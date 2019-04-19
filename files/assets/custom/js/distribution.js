@@ -200,7 +200,7 @@ config.distribution.on('click', '.actions .select-unsent', function() {
 	// first clear the existing selection
 	config.distribution.find('.table-content .use').prop('checked', false);
 	
-    config.distribution.find('.table-content .use[email-sent="not-sent"]').prop('checked', true);
+    config.distribution.find('.table-content .use[email-sent="0"]').prop('checked', true);
 });
 
 // Actions
@@ -209,7 +209,7 @@ config.distribution.on('click', '.actions .select-unpublish', function() {
 	// first clear the existing selection
 	config.distribution.find('.table-content .use').prop('checked', false);
 	
-    config.distribution.find('.table-content .use[event-publish="not-publish"]').prop('checked', true);
+    config.distribution.find('.table-content .use[event-publish="0"]').prop('checked', true);
 });
 
 // Actions
@@ -425,198 +425,12 @@ function getDistributedEvents(date = '0', restrictVip = false) {
 			emails_sort: emails_sort,
 		},
         success: function (response) {
-            console.log(response);
             var element = config.distribution;
             var template = element.find('.manual-template-table-content').html();
             var compiledTemplate = Template7.compile(template);
             var html = compiledTemplate(response);
             element.find('#manually-populated-table tbody').html(html);
             
-			
-			// manually populate the layout
-			// first we empty the table
-            /*
-			$('#manually-populated-table tbody').html('');
-			console.log(data.sites);
-			$.each( data.sites , function(index, item) {
-				// var template = $('#dist-row-template').html();	
-
-				var siteId = item.siteId;
-				var distributionIdsString = item.distributionIdsString;
-				var distributionUserTD = '';
-				var distributionSiteTD = '';
-				var distributionTipTD = '';
-				var eventInfo = '';
-				var sentAtSpan = '';
-				var emailsReceivedSpan = '';
-				var publishedSpan = '';				
-				var useClass = '';
-				var isSent = '';
-				if(item.isTotalEmailSend) {
-					isSent = 'sent';
-				} else {
-					isSent = 'not-sent';
-				}
-				
-				var isPublish = '';
-				if(item.isTotalPublish) {
-					isPublish = 'publish';
-				} else {
-					isPublish = 'not-publish';
-				}
-				
-				if( item.eventsCount == 0 ) {
-                    if (restrictVip && item.isVip) {
-                        return true;
-                    }
-					var template = $('#dist-row-template').html();
-
-					var packagesNames = '';
-					$.each( item.packages , function( pIndex, pack ) {
-						packagesNames += pack + '<br>';
-					});					
-					distributionUserTD = '<td class="distribution-user">'+item.ruNu+'</td>';
-					distributionSiteTD = '<td class="distribution-site">'+item.siteName+'</td>';
-					distributionTipTD = '<td class="distribution-tip">';
-					distributionTipTD += '<span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="'+packagesNames+'" >';
-					if( item.isVip ) {
-						distributionTipTD += '<i class="fa fa-star" ></i>';							
-					}
-					distributionTipTD += item.type+'</span></td>';
-                    
-                    var isFromAdminPool = "";
-                    switch (isFromAdminPool) {
-                        case null:
-                            isFromAdminPool = "";
-                            break;
-                        case 0:
-                            isFromAdminPool = "<i class='fa fa-star-o'></i>";
-                            break;
-                        case 1:
-                            isFromAdminPool = "<i class='fa fa-star'></i>";
-                            break;
-                    }
-
-					var tmp = template.replace(/{{useClass}}/ig, useClass )
-						.replace(/{{siteId}}/ig, siteId)
-						.replace(/{{distributionIdsString}}/ig, distributionIdsString)
-						.replace(/{{isSent}}/ig, isSent)
-						.replace(/{{isPublish}}/ig, isPublish)
-						.replace(/{{distributionUserTD}}/ig, distributionUserTD)
-						.replace(/{{distributionSiteTD}}/ig, distributionSiteTD)
-						.replace(/{{distributionTipTD}}/ig, distributionTipTD)
-						.replace(/{{eventInfo}}/ig, eventInfo)
-						.replace(/{{sentAtSpan}}/ig, sentAtSpan)
-						.replace(/{{emailsReceivedSpan}}/ig, emailsReceivedSpan)
-						.replace(/{{publishedSpan}}/ig, publishedSpan)
-                        .replace(/{{toDistribute}}/ig, "disabled")
-                        .replace(/{isFromAdminPool}/ig, isFromAdminPool);
-					
-					$('#manually-populated-table tbody').append(tmp);
-					
-				} else {
-					
-					
-					
-					useClass = ' class="use" ';
-
-					$.each( item.events , function( dIndex, dEvent) {
-                        console.log(dEvent);
-                        var toDistribute = dEvent.to_distribute === 0 ? "disabled" : "";
-						var template = $('#dist-row-template').html();
-                        
-                        var isFromAdminPool = "";
-                        switch (dEvent.is_from_admin_pool) {
-                            case null:
-                                isFromAdminPool = "";
-                                break;
-                            case 0:
-                                isFromAdminPool = "<i class='fa fa-star-o'></i>";
-                                break;
-                            case 1:
-                                isFromAdminPool = "<i class='fa fa-star'></i>";
-                                break;
-                        }
-						
-						sentAtSpanFixed = '';
-						
-						// we add special code for the first event 
-						if( dIndex == 0 ) {
-							var packagesNames = '';
-							$.each( item.packages , function( pIndex, pack ) {
-								packagesNames += pack + '<br>';
-							});
-							
-							distributionUserTD = '<td rowspan="'+item.eventsCount+'" class="distribution-user">'+item.ruNu+'</td>';
-							distributionSiteTD = '<td rowspan="'+item.eventsCount+'" class="distribution-site">'+item.siteName+'</td>';
-							distributionTipTD = '<td rowspan="'+item.eventsCount+'" class="distribution-tip">';
-							distributionTipTD += '<span class="popovers" data-trigger="hover" data-container=".distribution-event" data-html="true" data-content="'+packagesNames+'" >';
-							if( item.isVip ) {
-								distributionTipTD += '<i class="fa fa-star" ></i>';							
-							}
-							distributionTipTD += item.type+'</span></td>';
-							
-							
-						
-						} else {
-							distributionUserTD = '';
-							distributionSiteTD = '';
-							distributionTipTD = '';
-							
-						}
-						
-						eventInfo = dEvent.eventInfo;
-						distributionIdsString = dEvent.eventDistributionIds;
-						
-						// Sent at column
-						if( dEvent.isEmailSend == '0' && dEvent.mailingDate ) {
-							sentAtSpanFixed = '<span class="label label-sm label-warning"> '+dEvent.mailingDate+' </span>';
-						} else if( dEvent.isEmailSend == '1' && dEvent.mailingDate ) {
-							sentAtSpanFixed = '<span class="label label-sm label-success"> '+dEvent.mailingDate+' </span>';
-						}
-							
-						// if( item.isTotalEmailSend ) {							
-						if( dEvent.totalSubscriptions == dEvent.totalSentSubscriptions ) {
-							sentAtSpan = '<span class="label label-sm label-success"> '+dEvent.mailingDate+' </span>';
-							emailsReceivedSpan = '<span class="label label-sm label-success">Received</span>';
-						} else {							
-							sentAtSpan = '';
-							// emailsReceivedSpan = '<span class="label label-sm label-info">Waiting '+item.totalSentSubscriptions+'/'+item.totalSubscriptions+'</span>';
-							emailsReceivedSpan = '<span class="label label-sm label-info">Waiting '+dEvent.totalSentSubscriptions+'/'+dEvent.totalSubscriptions+'</span>';
-						}
-						
-						
-						
-						
-						if( item.isTotalPublish ) {
-							publishedSpan = '<span class="label label-sm label-success">Published</span>';
-						} else {
-							publishedSpan = '<span class="label label-sm label-danger">Unpublished</span>';
-						}
-						
-						var tmp = template.replace(/{{useClass}}/ig, useClass )
-							.replace(/{{siteId}}/ig, siteId)
-							.replace(/{{distributionIdsString}}/ig, distributionIdsString)
-							.replace(/{{isSent}}/ig, isSent)
-							.replace(/{{isPublish}}/ig, isPublish)
-							.replace(/{{distributionUserTD}}/ig, distributionUserTD)
-							.replace(/{{distributionSiteTD}}/ig, distributionSiteTD)
-							.replace(/{{distributionTipTD}}/ig, distributionTipTD)
-							.replace(/{{eventInfo}}/ig, eventInfo)
-							// .replace(/{{sentAtSpan}}/ig, sentAtSpan)
-							.replace(/{{sentAtSpan}}/ig, sentAtSpanFixed)
-							.replace(/{{emailsReceivedSpan}}/ig, emailsReceivedSpan)
-							.replace(/{{publishedSpan}}/ig, publishedSpan)
-                            .replace(/{{toDistribute}}/ig, toDistribute)
-                            .replace(/{isFromAdminPool}/ig, isFromAdminPool);
-							
-						$('#manually-populated-table tbody').append(tmp);
-					});
-				}
-				
-				
-			});
-            */
 			$('.popovers').popover();
         },
         error: function (xhr, textStatus, errorTrown) {
