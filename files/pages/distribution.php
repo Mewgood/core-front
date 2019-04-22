@@ -143,38 +143,34 @@
                                                             >
                                                     </label>
                                                 </td>
-                                                    <td 
-                                                        rowspan="1" 
-                                                        class="distribution-user">
-                                                        {{this.ruNu}}
-                                                    </td>
-                                                {{#if this.display}}
-                                                    <td 
-                                                        rowspan="{{#if this.totalEvents}}{{this.totalEvents}}{{else}}1{{/if}}" 
-                                                        class="distribution-site">
-                                                        {{this.siteName}}
-                                                    </td>
-                                                {{/if}}
-                                                {{#if this.display}}
-                                                    <td 
-                                                        rowspan="{{#if this.totalEvents}}{{this.totalEvents}}{{else}}1{{/if}}" 
-                                                        class="distribution-tip"
+                                                <td 
+                                                    rowspan="1" 
+                                                    class="distribution-user">
+                                                    {{this.ruNu}}
+                                                </td>
+                                                <td 
+
+                                                    class="distribution-site">
+                                                    {{this.siteName}}
+                                                </td>
+
+                                                <td 
+                                                    class="distribution-tip"
+                                                >
+                                                    <span 
+                                                        class="popovers" 
+                                                        data-trigger="hover" 
+                                                        data-container=".distribution-event" 
+                                                        data-html="true" 
+                                                        data-content="{{this.name}}<br>" 
+                                                        data-original-title="" title=""
                                                     >
-                                                        <span 
-                                                            class="popovers" 
-                                                            data-trigger="hover" 
-                                                            data-container=".distribution-event" 
-                                                            data-html="true" 
-                                                            data-content="{{this.name}}<br>" 
-                                                            data-original-title="" title=""
-                                                        >
-                                                        {{#if this.isVip}}
-                                                            <i class="fa fa-star"></i>
-                                                        {{/if}}
-                                                        {{this.tipIdentifier}}
-                                                        </span>
-                                                    </td>
-                                                {{/if}}
+                                                    {{#if this.isVip}}
+                                                        <i class="fa fa-star"></i>
+                                                    {{/if}}
+                                                    {{this.tipIdentifier}}
+                                                    </span>
+                                                </td>
                                                 <td class="distribution-event">
                                                     {{#if this.eventDate}}
                                                         <span class="distribution-event-container">
