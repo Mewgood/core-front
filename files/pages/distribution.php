@@ -127,117 +127,117 @@
                             {{#each this}}
                                 {{#each this.tips}}
                                     {{#each this.events}}
-                                    <tr>
-                                        <td> 
-                                            <label class="disabled_mt-checkbox disabled_mt-checkbox-single disabled_mt-checkbox-outline">
-                                                <input  
-                                                    class="{{#if this.totalEvents}}use{{/if}}"
-                                                    name="btSelectItem" 
-                                                    type="checkbox" 
-                                                    data-site-id="{{this.siteId}}" 
-                                                    data-event-id="{{this.distributionIds}}" 
-                                                    data-distribution-ids="{{this.distributionIds}}" 
-                                                    email-sent="{{this.isEmailSend}}" 
-                                                    event-publish="{{this.isPublish}}"
-                                                    {{#unless this.to_distribute}}disabled{{/unless}}
+                                            <tr>
+                                                <td> 
+                                                    <label class="disabled_mt-checkbox disabled_mt-checkbox-single disabled_mt-checkbox-outline">
+                                                        <input  
+                                                            class="{{#if this.totalEvents}}use{{/if}}"
+                                                            name="btSelectItem" 
+                                                            type="checkbox" 
+                                                            data-site-id="{{this.siteId}}" 
+                                                            data-event-id="{{this.distributionIds}}" 
+                                                            data-distribution-ids="{{this.distributionIds}}" 
+                                                            email-sent="{{this.isEmailSend}}" 
+                                                            event-publish="{{this.isPublish}}"
+                                                            {{#unless this.to_distribute}}disabled{{/unless}}
+                                                            >
+                                                    </label>
+                                                </td>
+                                                    <td 
+                                                        rowspan="1" 
+                                                        class="distribution-user">
+                                                        {{this.ruNu}}
+                                                    </td>
+                                                {{#if this.display}}
+                                                    <td 
+                                                        rowspan="{{#if this.totalEvents}}{{this.totalEvents}}{{else}}1{{/if}}" 
+                                                        class="distribution-site">
+                                                        {{this.siteName}}
+                                                    </td>
+                                                {{/if}}
+                                                {{#if this.display}}
+                                                    <td 
+                                                        rowspan="{{#if this.totalEvents}}{{this.totalEvents}}{{else}}1{{/if}}" 
+                                                        class="distribution-tip"
                                                     >
-                                            </label>
-                                        </td>
-                                            <td 
-                                                rowspan="1" 
-                                                class="distribution-user">
-                                                {{this.ruNu}}
-                                            </td>
-                                        {{#if this.display}}
-                                            <td 
-                                                rowspan="{{#if this.totalEvents}}{{this.totalEvents}}{{else}}1{{/if}}" 
-                                                class="distribution-site">
-                                                {{this.siteName}}
-                                            </td>
-                                        {{/if}}
-                                        {{#if this.display}}
-                                            <td 
-                                                rowspan="{{#if this.totalEvents}}{{this.totalEvents}}{{else}}1{{/if}}" 
-                                                class="distribution-tip"
-                                            >
-                                                <span 
-                                                    class="popovers" 
-                                                    data-trigger="hover" 
-                                                    data-container=".distribution-event" 
-                                                    data-html="true" 
-                                                    data-content="{{this.name}}<br>" 
-                                                    data-original-title="" title=""
-                                                >
-                                                {{#if this.isVip}}
-                                                    <i class="fa fa-star"></i>
+                                                        <span 
+                                                            class="popovers" 
+                                                            data-trigger="hover" 
+                                                            data-container=".distribution-event" 
+                                                            data-html="true" 
+                                                            data-content="{{this.name}}<br>" 
+                                                            data-original-title="" title=""
+                                                        >
+                                                        {{#if this.isVip}}
+                                                            <i class="fa fa-star"></i>
+                                                        {{/if}}
+                                                        {{this.tipIdentifier}}
+                                                        </span>
+                                                    </td>
                                                 {{/if}}
-                                                {{this.tipIdentifier}}
-                                                </span>
-                                            </td>
-                                        {{/if}}
-                                        <td class="distribution-event">
-                                            {{#if this.eventDate}}
-                                                <span class="distribution-event-container">
-                                                <span class="dist-event-date">{{this.eventDate}}</span> 
-                                                | 
-                                                <span class="dist-event-teams">{{this.homeTeam}} - {{this.awayTeam}}</span> 
-                                                | 
-                                                <span class="dist-event-predictions">{{this.predictionName}}</span> 
-                                                | 
-                                                <span class="dist-event-result" data-test="{{this.statusId}}">{{this.result}}</span> 
-                                                | 
-                                                {{#js_compare "this.statusId == 1"}}
-                                                    <span class="dist-event-status Win">Win</span>
-                                                {{/js_compare}}
-                                                {{#js_compare "this.statusId == 2"}}
-                                                    <span class="dist-event-status Loss">Loss</span>
-                                                {{/js_compare}}
-                                                {{#js_compare "this.statusId == 3"}}
-                                                    <span class="dist-event-status Draw">Draw</span>
-                                                {{/js_compare}}
-                                                </span>
-                                            {{/if}}
-                                        </td>
-                                        <td> 
-                                            {{#if this.mailingDate}}
-                                                {{#js_compare "this.isEmailSend  == 1"}}
-                                                    <span class="label label-sm label-success"> {{this.mailingDate}} </span> 
-                                                {{/js_compare}}
-                                                {{#js_compare "this.isEmailSend  == 0"}}
-                                                    <span class="label label-sm label-warning"> {{this.mailingDate}} </span> 
-                                                {{/js_compare}}
-                                            {{/if}}
-                                        </td>
-                                        <td> 
-                                            {{#if this.totalEvents}}
-                                                {{#js_compare "this.totalEventsMailSent == this.totalEvents"}}
-                                                    <span class="label label-sm label-success">Received</span>
-                                                {{/js_compare}}
-                                                {{#js_compare "this.totalEventsMailSent < this.totalEvents"}}
-                                                    <span class="label label-sm label-info">Waiting {{this.totalEventsMailSent}}/{{this.totalEvents}}</span> 
-                                                {{/js_compare}}
-                                            {{/if}}
-                                        </td>
-                                        <td>
-                                            {{#if this.totalEvents}}
-                                                {{#if this.isPublish}}
-                                                    <span class="label label-sm label-success">Published</span> 
-                                                {{else}}
-                                                    <span class="label label-sm label-danger">Not published</span> 
-                                                {{/if}}
-                                            {{/if}}
-                                        </td>
-                                        <td class="text-center"> 
-                                            {{#js_compare "this.is_from_admin_pool == 1"}}
-                                                <i class="fa fa-star"></i>
-                                            {{/js_compare}}
-                                            
-                                            {{#js_compare "this.is_from_admin_pool == 0"}}
-                                                <i class="fa fa-star-o"></i>
-                                            {{/js_compare}}
-                                        </td>
-                                    {{/each}}
-                                </tr>
+                                                <td class="distribution-event">
+                                                    {{#if this.eventDate}}
+                                                        <span class="distribution-event-container">
+                                                        <span class="dist-event-date">{{this.eventDate}}</span> 
+                                                        | 
+                                                        <span class="dist-event-teams">{{this.homeTeam}} - {{this.awayTeam}}</span> 
+                                                        | 
+                                                        <span class="dist-event-predictions">{{this.predictionName}}</span> 
+                                                        | 
+                                                        <span class="dist-event-result" data-test="{{this.statusId}}">{{this.result}}</span> 
+                                                        | 
+                                                        {{#js_compare "this.statusId == 1"}}
+                                                            <span class="dist-event-status Win">Win</span>
+                                                        {{/js_compare}}
+                                                        {{#js_compare "this.statusId == 2"}}
+                                                            <span class="dist-event-status Loss">Loss</span>
+                                                        {{/js_compare}}
+                                                        {{#js_compare "this.statusId == 3"}}
+                                                            <span class="dist-event-status Draw">Draw</span>
+                                                        {{/js_compare}}
+                                                        </span>
+                                                    {{/if}}
+                                                </td>
+                                                <td> 
+                                                    {{#if this.mailingDate}}
+                                                        {{#js_compare "this.isEmailSend  == 1"}}
+                                                            <span class="label label-sm label-success"> {{this.mailingDate}} </span> 
+                                                        {{/js_compare}}
+                                                        {{#js_compare "this.isEmailSend  == 0"}}
+                                                            <span class="label label-sm label-warning"> {{this.mailingDate}} </span> 
+                                                        {{/js_compare}}
+                                                    {{/if}}
+                                                </td>
+                                                <td> 
+                                                    {{#if this.totalEvents}}
+                                                        {{#js_compare "this.totalEventsMailSent == this.totalEvents"}}
+                                                            <span class="label label-sm label-success">Received</span>
+                                                        {{/js_compare}}
+                                                        {{#js_compare "this.totalEventsMailSent < this.totalEvents"}}
+                                                            <span class="label label-sm label-info">Waiting {{this.totalEventsMailSent}}/{{this.totalEvents}}</span> 
+                                                        {{/js_compare}}
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    {{#if this.totalEvents}}
+                                                        {{#if this.isPublish}}
+                                                            <span class="label label-sm label-success">Published</span> 
+                                                        {{else}}
+                                                            <span class="label label-sm label-danger">Not published</span> 
+                                                        {{/if}}
+                                                    {{/if}}
+                                                </td>
+                                                <td class="text-center"> 
+                                                    {{#js_compare "this.is_from_admin_pool == 1"}}
+                                                        <i class="fa fa-star"></i>
+                                                    {{/js_compare}}
+                                                    
+                                                    {{#js_compare "this.is_from_admin_pool == 0"}}
+                                                        <i class="fa fa-star-o"></i>
+                                                    {{/js_compare}}
+                                                </td>
+                                            {{/each}}
+                                        </tr>
                                 {{/each}}
                             {{/each}}
                         </script>
