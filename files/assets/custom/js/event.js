@@ -86,11 +86,13 @@ $('#event-modal-edit-result-status').on('click', '.save', function() {
     var element = $('#event-modal-edit-result-status');
 
     $.ajax({
-        url: config.coreUrl + "/event/update-result-status/" + element.find('.event-id').val() + "?" + getToken(),
+        url: config.coreUrl + "/event/update-result-status" + "?" + getToken(),
         type: "post",
         data: {
             result: element.find('.result').val(),
-            statusId: element.find('.status').val(),
+            homeTeamId: element.find('.event-homeTeamId').val(),
+            awayTeamId: element.find('.event-awayTeamId').val(),
+            eventDate: element.find('.event-eventDate').val()
         },
         success: function (response) {
 

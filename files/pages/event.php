@@ -37,24 +37,23 @@
                                     <th> Country </th>
                                     <th> League </th>
                                     <th> Event </th>
-                                    <th> Prediction </th>
-                                    <th> Odd </th>
-                                    <th> Score </th>
-                                    <th> Status </th>
+                                    <th>Result</th>
                                     <th> Actions </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {{#each events}}
-                                <tr data-id="{{id}}">
+                                <tr 
+                                    data-id="{{id}}" 
+                                    data-homeTeamId="{{homeTeamId}}" 
+                                    data-awayTeamId="{{awayTeamId}}"
+                                    data-eventDate="{{eventDate}}"
+                                >
                                     <td>{{id}}</td>
                                     <td>{{country}}</td>
                                     <td>{{league}}</td>
                                     <td>{{homeTeam}} - {{awayTeam}}</td>
-                                    <td>{{predictionId}}</td>
-                                    <td>{{odd}}</td>
                                     <td>{{result}}</td>
-                                    <td>{{#if status}}{{status.name}}{{/if}}</td>
                                     <td>
                                         <button class="btn blue edit">Edit</button>
                                     </td>
@@ -92,6 +91,9 @@
                 <div class="event-info row"></div>
                 <script class="template-event-info" type="text/template7">
                     <input type="hidden" class="event-id" value="{{id}}"/>
+                    <input type="hidden" class="event-homeTeamId" value="{{homeTeamId}}"/>
+                    <input type="hidden" class="event-awayTeamId" value="{{awayTeamId}}"/>
+                    <input type="hidden" class="event-eventDate" value="{{eventDate}}"/>
                     <h4>
                         {{country}}
                         {{league}}
@@ -109,18 +111,6 @@
                         <div class="form-group">
                             <label class="control-label">Result</label>
                             <input type="text" class="form-control result"/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Status</label>
-                            <select class="form-control status select2">
-                               <option value="">-- select --</option>
-                               <option value="1">Win</option>
-                               <option value="2">Loss</option>
-                               <option value="3">Draw</option>
-                               <option value="4">PostP.</option>
-                            </select>
                         </div>
                     </div>
                 </div>
