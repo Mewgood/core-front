@@ -209,7 +209,7 @@ config.distribution.on('click', '.actions .select-unpublish', function() {
 	// first clear the existing selection
 	config.distribution.find('.table-content .use').prop('checked', false);
 	
-    config.distribution.find('.table-content .use[event-publish="0"]').prop('checked', true);
+    config.distribution.find('.table-content .use[event-publish="0"]:not(:disabled)').prop('checked', true);
 });
 
 // Actions
