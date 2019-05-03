@@ -414,7 +414,8 @@ function getDistributedEvents(date = '0', restrictVip = false) {
 	// real / no users 
 	var real_user_sort = config.distribution.find('.select-sort-dist-real-users').val();
 	var vip_user_sort = config.distribution.find('.select-sort-dist-vip-users').val();
-	var emails_sort = config.distribution.find('.select-sort-dist-emails').val();
+    var emails_sort = config.distribution.find('.select-sort-dist-emails').val();
+    var no_tip_vip = config.distribution.find('#restrict-vip').prop("checked");
 	
     $.ajax({
         url: config.coreUrl + "/get-distributions/" + date + "?" + getToken(),
@@ -422,7 +423,8 @@ function getDistributedEvents(date = '0', restrictVip = false) {
 		data: {
 			real_user_sort: real_user_sort,
 			vip_user_sort: vip_user_sort,
-			emails_sort: emails_sort,
+            emails_sort: emails_sort,
+            no_tip_vip: no_tip_vip ? 1 : 0
 		},
         success: function (response) {
             var element = config.distribution;
