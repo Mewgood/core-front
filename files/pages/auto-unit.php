@@ -94,11 +94,12 @@
                                         | {{this.name}}
                                     {{/each}}
                                     |
-                                    {{#if this.paused}}
+                                    {{#js_compare "this.paused == 1 || this.paused == null"}}
                                         <span class="label label-danger autounit-status {{#if this.hasSubscription}}has-subscription{{/if}}">Paused</span>
-                                    {{else}}
+                                    {{/js_compare}}
+                                    {{#js_compare "this.paused == 0"}}
                                         <span class="label label-primary autounit-status">Active</span>
-                                    {{/if}}
+                                    {{/js_compare}}
                                     {{#if this.hasAlert}}
                                         <span 
                                             class="label label-danger clear-alert" 
