@@ -320,7 +320,7 @@
                                 <li class="text-center"><span class="label bg-red-thunderbird"> LOSS: <span class="loss-counter">{{loss}}<span> </span></li>
                                 <li class="text-center"><span class="label bg-yellow-gold"> DRAW: <span class="draw-counter">{{draw}}<span> </span></li>
                                 <li class="text-center"><span class="label bg-purple"> VIP: <span class="draw-counter">{{vip}}<span> </span></li>
-                                <li class="text-center"><span class="badge badge-secondary" data-toggle="popover" data-loaded="false"><i class="fa fa-question-circle"></i></span></li>
+                                <li class="text-center statistics-container"><span class="badge badge-secondary" data-toggle="popover" data-loaded="false"><i class="fa fa-question-circle"></i></span></li>
                             </ul>
                         </div>
                     </div>

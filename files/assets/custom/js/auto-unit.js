@@ -817,7 +817,7 @@ function createAutoUnitStatisticsHTML(data) {
     }
     
     $("body").popover({
-        selector: '.itm-autounit-statistics .badge',
+        selector: '.itm-autounit-statistics .statistics-container',
         trigger: 'click',
         content: "placeholder", // it is needed for some reason
         template: `<div class="popover" role="tooltip">
@@ -830,7 +830,6 @@ function createAutoUnitStatisticsHTML(data) {
         placement: 'right',
         html: true
     });
-    $(".itm-autounit-statistics .badge").trigger("click");
 }
 
 function autoUnitAddNewEntry(date, tip) {
