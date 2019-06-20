@@ -8,7 +8,20 @@ config.distribution = $('.page-content-wrapper.distribution');
 // when change select-system-date
 // will reload table content with events from selected date.
 config.distribution.on('change', '.select-system-date', function() {
-    getDistributedEvents($(this).val());
+    var date = $(this).val();
+
+    $('#association-system-date').val($(this).val());
+    $(".match_date_filter").val($(this).val());
+
+    if (date == sessionStorage.getItem("date")) {
+        return;
+    }
+
+    $('#association-system-date').trigger("change");
+    $(".match_date_filter").trigger("change");
+
+    getDistributedEvents(date);
+    sessionStorage.setItem("date", date);
 });
 
 // Clickable

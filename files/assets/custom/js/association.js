@@ -8,10 +8,22 @@ config.association = $('.page-content-wrapper.association');
 $('#association-system-date').on('change', function() {
     var date = $(this).val();
 
+    $('.select-system-date').val($(this).val());
+    $(".match_date_filter").val($(this).val());
+
+    if (date == sessionStorage.getItem("date")) {
+        return;
+    }
+
     getEventsAssociations('run', date);
     getEventsAssociations('ruv', date);
     getEventsAssociations('nun', date);
     getEventsAssociations('nuv', date);
+
+    $('.select-system-date').trigger("change");
+    $(".match_date_filter").trigger("change");
+
+    sessionStorage.setItem("date", date);
 });
 
     /*
@@ -575,7 +587,7 @@ function getEventsAssociations(argTable, date = '0') {
         url: config.coreUrl + "/association/event/" + argTable + '/' + date + "?" + getToken(),
         type: "get",
         success: function (response) {
-            console.log(response);
+            sessionStorage.setItem("date", config.association.find('#association-system-date').val());
             var element = $('#table-association-' + argTable);
             var table = element.find('.association-table-datatable').DataTable();
 
