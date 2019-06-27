@@ -13,7 +13,7 @@ $(document).on("click", ".config-label", function() {
 
 function getAutoUnitSiteConfigurations() {
     $.ajax({
-        url: config.coreUrl + "/auto-unit/sites/statistics/?" + getToken(),
+        url: config.coreUrl + "/auto-unit/sites/statistics?" + getToken(),
         type: "get",
         success: function (response) {
             var element = config.autoUnitSiteConfiguration;

@@ -49,7 +49,7 @@ $(document).ready(function() {
 
     function getCountries() {
         $.ajax({
-            url: config.coreUrl + "/leagues/get-all-countries/?" + getToken(),
+            url: config.coreUrl + "/leagues/get-all-countries?" + getToken(),
             type: "get",
             success: function (response) {
                 var element = config.adminPool;
@@ -68,7 +68,7 @@ $(document).ready(function() {
 
     function getLeagues(countries) {
         $.ajax({
-            url: config.coreUrl + "/leagues/get-country-list-leagues/?" + getToken(),
+            url: config.coreUrl + "/leagues/get-country-list-leagues?" + getToken(),
             type: "POST",
             data: {
                 countryCodes: countries
@@ -95,7 +95,7 @@ $(document).ready(function() {
                 "processing": true,
                 "deferLoading": 0,
                 "ajax": {
-                    "url": config.coreUrl + "/matches/get-league-list-matches/?" + getToken(),
+                    "url": config.coreUrl + "/matches/get-league-list-matches?" + getToken(),
                     "type": "POST",
                     "data": function(data) {
                         data.leagueIds = JSON.stringify($(".select2-leagues").val());
@@ -146,7 +146,7 @@ $(document).ready(function() {
         }
         
         $.ajax({
-            url: config.coreUrl + "/auto-unit/create-admin-pool/?" + getToken(),
+            url: config.coreUrl + "/auto-unit/create-admin-pool?" + getToken(),
             type: "POST",
             data: {
                 "matches": matchIds,
@@ -176,7 +176,7 @@ $(document).ready(function() {
         }
         
         $.ajax({
-            url: config.coreUrl + "/auto-unit/remove-admin-pool-matches/?" + getToken(),
+            url: config.coreUrl + "/auto-unit/remove-admin-pool-matches?" + getToken(),
             type: "POST",
             data: {
                 "matches": matchIds

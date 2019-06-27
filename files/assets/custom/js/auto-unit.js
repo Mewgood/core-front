@@ -181,7 +181,7 @@ config.autoUnit.on('click', '.content-tip .save-tip-settings', function() {
     };
 
     $.ajax({
-        url: config.coreUrl + "/auto-unit/save-tip-settings/" + "?" + getToken(),
+        url: config.coreUrl + "/auto-unit/save-tip-settings" + "?" + getToken(),
         type: "post",
         data: data,
         success: function (response) {
