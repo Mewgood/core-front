@@ -131,7 +131,12 @@ function setControlFlow(params) {
     }
 
     if (config.activePage == 'event') {
-        eventGetEvents();
+        eventGetEvents(sessionStorage.getItem("date"));
+        if (sessionStorage.getItem("date")) {
+            $(".select-system-date").val(sessionStorage.getItem("date"));
+            $("#association-system-date").val(sessionStorage.getItem("date"));
+            $("#event-datepicker").val(sessionStorage.getItem("date"));
+        }
     }
 
     if (config.activePage == 'association') {
@@ -149,14 +154,26 @@ function setControlFlow(params) {
         getAvailableEventsNumber({ table: "nuv" });
 
         // get already associated events
-        getEventsAssociations('run');
-        getEventsAssociations('ruv');
-        getEventsAssociations('nun');
-        getEventsAssociations('nuv');
+        getEventsAssociations('run', sessionStorage.getItem("date"));
+        getEventsAssociations('ruv', sessionStorage.getItem("date"));
+        getEventsAssociations('nun', sessionStorage.getItem("date"));
+        getEventsAssociations('nuv', sessionStorage.getItem("date"));
+
+        if (sessionStorage.getItem("date")) {
+            $(".select-system-date").val(sessionStorage.getItem("date"));
+            $("#association-system-date").val(sessionStorage.getItem("date"));
+            $("#event-datepicker").val(sessionStorage.getItem("date"));
+        }
     }
 
     if (config.activePage == 'distribution') {
-        getDistributedEvents();
+        getDistributedEvents(sessionStorage.getItem("date"));
+        if (sessionStorage.getItem("date")) {
+            $(".select-system-date").val(sessionStorage.getItem("date"));
+            $("#association-system-date").val(sessionStorage.getItem("date"));
+            $(".match_date_filter").val(sessionStorage.getItem("date"));
+            $("#event-datepicker").val(sessionStorage.getItem("date"));
+        }
     }
 
     if (config.activePage == 'archive-big') {

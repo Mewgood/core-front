@@ -110,7 +110,20 @@ $('#event-modal-edit-result-status').on('click', '.save', function() {
 });
 
 $("#event-datepicker").on("change", function() {
-    eventGetEvents($(this).val());
+    var date = $(this).val();
+    eventGetEvents(date);
+
+    getEventsAssociations('run', date);
+    getEventsAssociations('ruv', date);
+    getEventsAssociations('nun', date);
+    getEventsAssociations('nuv', date);
+
+    getDistributedEvents(date);
+
+    $(".select-system-date").val(date);
+    $("#association-system-date").val(date);
+
+    sessionStorage.setItem("date", date);
 });
 
     /*

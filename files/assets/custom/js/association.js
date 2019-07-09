@@ -8,20 +8,16 @@ config.association = $('.page-content-wrapper.association');
 $('#association-system-date').on('change', function() {
     var date = $(this).val();
 
-    $('.select-system-date').val($(this).val());
-    $(".match_date_filter").val($(this).val());
-
-    if (date == sessionStorage.getItem("date")) {
-        return;
-    }
-
     getEventsAssociations('run', date);
     getEventsAssociations('ruv', date);
     getEventsAssociations('nun', date);
     getEventsAssociations('nuv', date);
 
-    $('.select-system-date').trigger("change");
-    $(".match_date_filter").trigger("change");
+    getDistributedEvents(date);
+
+    $("#event-datepicker").val(date);
+    $('.select-system-date').val(date);
+    $(".match_date_filter").val(date);
 
     sessionStorage.setItem("date", date);
 });
@@ -112,6 +108,9 @@ config.association.on('click', '.add-manual-event', function() {
         keyboard: false
     });
     $('#modal-add-manual-event').modal('show');
+    if (sessionStorage.getItem("date")) {
+        $(".match_date_filter").val(sessionStorage.getItem("date"));
+    }
 });
 
 // Modal Add Event

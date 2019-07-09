@@ -10,15 +10,13 @@ config.distribution = $('.page-content-wrapper.distribution');
 config.distribution.on('change', '.select-system-date', function() {
     var date = $(this).val();
 
-    $('#association-system-date').val($(this).val());
-    $(".match_date_filter").val($(this).val());
+    getEventsAssociations('run', date);
+    getEventsAssociations('ruv', date);
+    getEventsAssociations('nun', date);
+    getEventsAssociations('nuv', date);
 
-    if (date == sessionStorage.getItem("date")) {
-        return;
-    }
-
-    $('#association-system-date').trigger("change");
-    $(".match_date_filter").trigger("change");
+    $("#event-datepicker").val(date);
+    $("#association-system-date").val(date);
 
     getDistributedEvents(date);
     sessionStorage.setItem("date", date);
