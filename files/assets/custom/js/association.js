@@ -116,6 +116,7 @@ config.association.on('click', '.add-manual-event', function() {
 // Modal Add Event
 // when change type of new event show differit content based os selection
 $('#modal-add-manual-event').on('change', '[name="association-modal-event-type[]"]', function() {
+    $(this).parent().siblings(".match-id").first().val(null);
     showContentBasedOnEventType($(this).val(), $(this))
 });
 
@@ -179,20 +180,22 @@ $("#modal-add-manual-event").on("change", ".select-prediction", function() {
     var currentElement = $(this);
     var prediction = $(this).val();
     var match = $(this).parents().eq(4).find(".match-id").val();
-    
-    $.ajax({
-        url: config.coreUrl + "/match/prediction/odds/" + prediction + "/" + match + "?" + getToken(),
-        type: "get",
-        success: function (response) {
-            $(currentElement).parents().eq(2).find(".odd").val(response.odd);
-        },
-        error: function (xhr, textStatus, errorTrown) {
-			// we don't throw error if the request was 'aborted'
-			if( errorTrown != 'abort' ) {
-				manageError(xhr, textStatus, errorTrown);
-			}
-        }
-    });
+
+    if (match) {
+        $.ajax({
+            url: config.coreUrl + "/match/prediction/odds/" + prediction + "/" + match + "?" + getToken(),
+            type: "get",
+            success: function (response) {
+                $(currentElement).parents().eq(2).find(".odd").val(response.odd);
+            },
+            error: function (xhr, textStatus, errorTrown) {
+                // we don't throw error if the request was 'aborted'
+                if( errorTrown != 'abort' ) {
+                    manageError(xhr, textStatus, errorTrown);
+                }
+            }
+        });
+    }
 });
 // Date select change means a new search
 $('#modal-add-manual-event #match_date_filter').on('change',function() {
