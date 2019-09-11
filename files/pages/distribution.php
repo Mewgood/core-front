@@ -191,6 +191,9 @@
                                                         {{#js_compare "this.statusId == 3"}}
                                                             <span class="dist-event-status Draw">Draw</span>
                                                         {{/js_compare}}
+                                                        {{#js_compare "this.statusId == 4"}}
+                                                            <span class="dist-event-status Draw">POSTP</span>
+                                                        {{/js_compare}}
                                                         </span>
                                                     {{/if}}
                                                 </td>

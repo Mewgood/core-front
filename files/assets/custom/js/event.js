@@ -8,6 +8,27 @@ $("#event-datepicker").val(today);
      *  ----- CLICKABLE ACTIONS -----
     ----------------------------------------------------------------------*/
 
+$("#event-modal-edit-result-status").on("click", ".postpone", function() {
+    var element = $('#event-modal-edit-result-status');
+    var eventId = $(element).find('.event-id').val();
+
+    $.ajax({
+        url: config.coreUrl + "/event/" + eventId + "/postpone?" + getToken(),
+        type: "get",
+        success: function (response) {
+            alert("Type: --- " + response.type + " --- \r\n" + response.message);
+
+            if (response.type === 'success') {
+                eventGetEvents();
+                element.modal('hide');
+            }
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            //manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
     /*
      *  ----- Modal edit result-status -----
     ----------------------------------------------------------------------*/

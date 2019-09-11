@@ -108,10 +108,14 @@
                     <!-- hidden input for event id -->
                     <input type="hidden" class="event-id">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Result</label>
-                            <input type="text" class="form-control result"/>
+                        <div class="input-group">
+                            <input type="text" class="form-control result">
+                            <span class="input-group-btn">
+                                <button class="btn btn-danger postpone" type="button">Postpone</button>
+                            </span>
                         </div>
+                    </div>
+                    <div class="col-md-2">
                     </div>
                 </div>
             </div>
