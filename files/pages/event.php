@@ -53,7 +53,12 @@
                                     <td>{{country}}</td>
                                     <td>{{league}}</td>
                                     <td>{{homeTeam}} - {{awayTeam}}</td>
-                                    <td>{{result}}</td>
+                                    {{#js_compare "this.statusId == 4"}}
+                                        <td> - </td>
+                                    {{/js_compare}}
+                                    {{#js_compare "this.statusId != 4"}}
+                                        <td>{{result}}</td>
+                                    {{/js_compare}}
                                     <td>
                                         <button class="btn blue edit">Edit</button>
                                     </td>
