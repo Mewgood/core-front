@@ -104,10 +104,10 @@ ini_set('display_errors','On');
 		<!-- show login form -->
 		<form action="" method="post">
 		    Email:
-		    <input type="text" name="email" value="david@app.com">
+		    <input type="text" name="email" value="">
 		    <br/>
 		    Password
-		    <input type="password" name="password" value="v#TI1n!u71yAP%ycI06Gbh2x&Dybcx9y">
+		    <input type="password" name="password" value="">
 		    <input type="submit" name="login" value="login">
 		</form>
 	</body>
