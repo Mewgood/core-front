@@ -72,7 +72,22 @@ config.archiveHome.on('click', '.save-configuration', function() {
 
     var message = "Events before: " + param.dateStart + " will be deleted\n";
     message += "It will be keep only " + param.eventsNumber + " in descending order.\n";
-    message += "You can not undo this operation!";
+    message += "You can not undo this operation!\n";
+
+    var date = new Date(param.dateStart);
+    var today = new Date();
+    today.setDate(today.getDate() - 5);
+    var dateDiff = new Date(today - date);
+
+    if (dateDiff.getTime() < 0) {
+        dateDiff = new Date(date - today);
+
+        if (dateDiff.getUTCDate() - 1 >= 5) {
+            message += "**********************************************************************\n";
+            message += "!!! You selected a date in the future, continue? !!!"
+            message += "**********************************************************************\n";
+        }
+    }
 
     if (! confirm(message))
        return;
