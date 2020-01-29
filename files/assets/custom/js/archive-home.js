@@ -77,16 +77,11 @@ config.archiveHome.on('click', '.save-configuration', function() {
     var date = new Date(param.dateStart);
     var today = new Date();
     today.setDate(today.getDate() - 5);
-    var dateDiff = new Date(today - date);
 
-    if (dateDiff.getTime() < 0) {
-        dateDiff = new Date(date - today);
-
-        if (dateDiff.getUTCDate() - 1 >= 5) {
-            message += "**********************************************************************\n";
-            message += "!!! You selected a date in the future, continue? !!!"
-            message += "**********************************************************************\n";
-        }
+    if (date >= today) {
+        message += "**********************************************************************\n";
+        message += "!!! Date is close to current date, continue? !!!"
+        message += "**********************************************************************\n";
     }
 
     if (! confirm(message))
