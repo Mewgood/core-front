@@ -32,13 +32,6 @@ config.autoUnit.on('change', '.select-site', function() {
                 $(".auto-unit .table_import_filters_container").append(monthlyGenerationBtn);
             }
             $("#autounit-table-select").val(table).trigger("change");
-            var siteId = config.autoUnit.find('.select-site').val();
-            var table = config.autoUnit.find('.select-table').val();
-            $(".popover").remove();
-
-            getAutoUnitLastMonthsStatistics(siteId, table, function(data) {
-                createAutoUnitStatisticsHTML(data);
-            });
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
@@ -73,14 +66,6 @@ config.autoUnit.on('change', '.select-site, .select-table', function() {
     }
     $(".run-autounit").attr("href", config.coreUrl + "/autounit" + site + table + "?" + getToken());
     $(".reset-autounit").attr("href", config.coreUrl + "/autounit-reset" + site + table + "?" + getToken());
-
-    var siteId = config.autoUnit.find('.select-site').val();
-    var table = config.autoUnit.find('.select-table').val();
-    $(".popover").remove();
-
-    getAutoUnitLastMonthsStatistics(siteId, table, function(data) {
-        createAutoUnitStatisticsHTML(data);
-    });
 });
 
 // Clickable - new schedule event
