@@ -32,6 +32,13 @@ config.autoUnit.on('change', '.select-site', function() {
                 $(".auto-unit .table_import_filters_container").append(monthlyGenerationBtn);
             }
             $("#autounit-table-select").val(table).trigger("change");
+            var siteId = config.autoUnit.find('.select-site').val();
+            var table = config.autoUnit.find('.select-table').val();
+            $(".popover").remove();
+
+            getAutoUnitLastMonthsStatistics(siteId, table, function(data) {
+                createAutoUnitStatisticsHTML(data);
+            });
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
@@ -45,6 +52,14 @@ config.autoUnit.on('change', '.select-site', function() {
 config.autoUnit.on('change', '.select-table , .select-date', function() {
     autoUnitGetSchedulerForTable();
     autoUnitGetScheduledEventsForTable();
+
+    var siteId = config.autoUnit.find('.select-site').val();
+    var table = config.autoUnit.find('.select-table').val();
+    $(".popover").remove();
+
+    getAutoUnitLastMonthsStatistics(siteId, table, function(data) {
+        createAutoUnitStatisticsHTML(data);
+    });
 });
 
 config.autoUnit.on('change', '.select-site, .select-table', function() {
@@ -58,6 +73,14 @@ config.autoUnit.on('change', '.select-site, .select-table', function() {
     }
     $(".run-autounit").attr("href", config.coreUrl + "/autounit" + site + table + "?" + getToken());
     $(".reset-autounit").attr("href", config.coreUrl + "/autounit-reset" + site + table + "?" + getToken());
+
+    var siteId = config.autoUnit.find('.select-site').val();
+    var table = config.autoUnit.find('.select-table').val();
+    $(".popover").remove();
+
+    getAutoUnitLastMonthsStatistics(siteId, table, function(data) {
+        createAutoUnitStatisticsHTML(data);
+    });
 });
 
 // Clickable - new schedule event
@@ -402,18 +425,6 @@ $(".table-schedule").on("click", ".itm-autounit-match-prediction", function(even
             $(scheduleHTMLElement).parents().eq(1).siblings(".itm-current-prediction").first().text(predictionGroup);
         }
     });
-});
-
-$(".table-schedule").on("click", ".itm-autounit-statistics .badge", function() {
-    var loaded = $(this).data("loaded");
-    var siteId = config.autoUnit.find('.select-site').val();
-
-    if (loaded == false) {
-        getAutoUnitLastMonthsStatistics(siteId, function(data) {
-            createAutoUnitStatisticsHTML(data);
-        });
-        $(this).data("loaded", true);
-    }
 });
 
 $(".table-schedule").on("click", ".itm-add-autounit-match", function() {
@@ -784,12 +795,13 @@ function incrementNewStatusCounter(statusId) {
     return data;
 }
 
-function getAutoUnitLastMonthsStatistics(siteId, callback) {
+function getAutoUnitLastMonthsStatistics(siteId, table, callback) {
     $.ajax({
         url: config.coreUrl + "/auto-unit/get-monthly-statistics" + "?" + getToken(),
         type: "POST",
         data: {
-            siteId: siteId
+            siteId: siteId,
+            table: table
         },
         success: function (response) {
             callback(response);
@@ -803,6 +815,7 @@ function getAutoUnitLastMonthsStatistics(siteId, callback) {
 
 function createAutoUnitStatisticsHTML(data) {
     var html = '';
+    $("body").popover('destroy');
 
     for (index in data) {
         html += `<p class="text-center text-primary">${data[index].date}</p>`;
