@@ -1,4 +1,6 @@
 config.autoUnit = $('.page-content-wrapper.auto-unit');
+var currentRequest = null;
+var scheduledEventsCurrentRequest = null;
 
     /*
      *  ----- CLICKABLE ACTIONS -----
@@ -498,15 +500,21 @@ function autoUnitGetSchedulerForTable() {
         return;
     }
 
-    $.ajax({
+    currentRequest = $.ajax({
         url: config.coreUrl + "/auto-unit/get-schedule?" + $.param(param) + "&" + getToken(),
         type: "get",
+        beforeSend : function()    {           
+            if (currentRequest != null) {
+                currentRequest.abort();
+            }
+        },
         success: function (response) {
             var data = {
                 tips: response,
             }
             autoUnitPopulateTipsInTemplate(data);
             autoUnitCalculatePredictionPercentage();
+            currentRequest = null;
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
@@ -543,11 +551,17 @@ function autoUnitGetScheduledEventsForTable() {
         return;
     }
 
-    $.ajax({
+    scheduledEventsCurrentRequest = $.ajax({
         url: config.coreUrl + "/auto-unit/get-scheduled-events?" + $.param(param) + "&" + getToken(),
         type: "get",
+        beforeSend : function() {
+            if (scheduledEventsCurrentRequest != null) {
+                scheduledEventsCurrentRequest.abort();
+            }
+        },
         success: function (response) {
             autoUnitShowAssociatedEventsWithTable(response);
+            scheduledEventsCurrentRequest = null;
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
