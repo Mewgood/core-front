@@ -69,6 +69,89 @@ $('.table-association').on('click', '.delete-event', function() {
     });
 });
 
+$('.table-association').on('click', '.change-prediction', function() {
+    var associateEventId = $(this).data("associationId");
+
+    $.ajax({
+        url: config.coreUrl + "/association/detail/" + associateEventId + "?" + getToken(),
+        type: "get",
+        success: function (response) {
+            var element = $('#modal-change-association-prediction');
+            var template = element.find('.template-modal-content').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(response);
+            element.find('.modal-content').html(html);
+            element.modal();
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
+$("#modal-change-association-prediction").on("click", ".update-prediction", function() {
+    var associationId = $(this).parents("form").find(".association-id").val();
+    var predictionId = $(this).parents("form").find("#prediction").val();
+    var odd = $(this).parents("form").find("#odd").val();
+
+    $.ajax({
+        url: config.coreUrl + "/association/update-prediction?" + getToken(),
+        method: "POST",
+        data: {
+            associationId: associationId,
+            predictionId: predictionId,
+            odd: odd
+        },
+        success: function (response) {
+            $('#modal-change-association-prediction').modal('hide');
+
+            var element = $('#modal-change-association-prediction-report');
+            var template = element.find('.template-modal-content').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(response);
+            element.find('.modal-content').html(html);
+            element.modal();
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
+$("#modal-change-association-prediction-report").on("click", ".save-prediction-report", function() {
+    var associationId = $(this).parents(".modal-content").find(".association-id").val();
+    var siteIds = $(this).parents(".modal-content").find(".siteIds").map(function(){return $(this).val();}).get();
+    var actions = $(this).parents(".modal-content").find(".actions").map(function(){return $(this).val();}).get();
+
+    $.ajax({
+        url: config.coreUrl + "/association/update-published-prediction?" + getToken(),
+        method: "POST",
+        data: {
+            associationId: associationId,
+            siteIds: siteIds,
+            actions: actions
+        },
+        success: function (response) {
+            $('#modal-change-association-prediction-report').modal('hide');
+
+            var element = $('#modal-change-association-prediction-published-report');
+            var template = element.find('.template-modal-content').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(response);
+            element.find('.modal-content').html(html);
+            element.modal();
+
+            var date = $('#association-system-date').val();
+            getEventsAssociations('nun', date);
+            getEventsAssociations('nuv', date);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
+
     /*
      *  ----- Modal Add New Event -----
     ----------------------------------------------------------------------*/
@@ -598,6 +681,9 @@ function getEventsAssociations(argTable, date = '0') {
             $.each(response, function(i, e) {
                 var disabled = e.to_distribute ? "" : "disabled";
                 var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages" ' + disabled + '>Associate</button>';
+                if (argTable == "nun" || argTable == "nuv") {
+                    buttons += '<button type="button" class="btn yellow btn-outline change-prediction" data-association-id="' + e.id + '">Update</button>'
+                }
                 buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
             
                 var node = table.row.add( [

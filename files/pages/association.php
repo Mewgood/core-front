@@ -711,6 +711,153 @@
 </div>
 <!-- END MODAL ASSOCIATE EVENT-PACKAGE -->
 
+<!-- START MODAL CHANGE ASSOCIATION PREDICTION  -->
+<div class="modal fade" id="modal-change-association-prediction" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+        <script class="template-modal-content" type="text/template7">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <div class="assoc_modal_titles col-md-9">
+                    <h4 class="modal-title">
+                        {{ association.country }}: {{ association.league }} | {{ association.homeTeam }} - {{ association.awayTeam }} | {{ association.predictionId }} | {{ association.odd }}
+                    </h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="change-prediction-form">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label for="prediction">Prediction</label>
+                                <select id="prediction" name="prediction" required>
+                                    {{#each predictions}}
+                                        <option value="{{ identifier }}" 
+                                        {{#js_if "this.identifier == ../association.predictionId"}}
+                                            selected
+                                        {{/js_if}}
+                                        >
+                                            {{ name }}
+                                        </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                            <label for="odd">Odd</label>
+                                <input id="odd" type="number" name="odd" value="{{ association.odd }}" required></input>
+                            </div>
+                        </div>
+                        <div class="col-xs-2"></div>
+                        <div class="col-xs-2">
+                            <input class="association-id" name="association_id" type="hidden" value="{{association.id}}">
+                            <button type="button" class="btn green update-prediction">Save</button>
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </script>
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- END MODAL CHANGE ASSOCIATION PREDICTION -->
+
+<!-- START MODAL CHANGE ASSOCIATION PREDICTION REPORT -->
+<div class="modal fade" id="modal-change-association-prediction-report" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+        <script class="template-modal-content" type="text/template7">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <h1>Not published</h1>
+
+                {{#each notPublished}}
+                    <div class="row">
+                        <div class="col-xs-3">
+                            {{ this.site.name }}
+                        </div>
+                        <div class="col-xs-3">
+                            {{ this.type }}
+                        </div>
+                        <div class="col-xs-3">
+                            {{ this.status }}
+                        </div>
+                    </div>
+                {{/each}}
+
+                <h1>Published</h1>
+
+                {{#each published}}
+                    <div class="row">
+                        <div class="col-xs-3">
+                            {{ this.site.name }}
+                        </div>
+                        <div class="col-xs-3">
+                            {{ this.type }}
+                        </div>
+                        <div class="col-xs-3">
+                            <input class="association-id" name="association_id" type="hidden" value="{{ ../association.id }}">
+                            <input type="hidden" class="siteIds" name="siteId[]" value="{{ this.site.id }}"></input> 
+                            <select class="actions" name="action[]">
+                                <option value="keep">Keep it</option>
+                                <option value="update">Update</option>
+                                <option value="change">Change/Delete</option>
+                            </select>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green save-prediction-report">Save</button>
+            </div>
+        </script>
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- END MODAL CHANGE ASSOCIATION PREDICTION REPORT -->
+
+<!-- START MODAL CHANGE ASSOCIATION PUBLISHED PREDICTION REPORT -->
+<div class="modal fade" id="modal-change-association-prediction-published-report" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+        <script class="template-modal-content" type="text/template7">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <h1>Published</h1>
+
+                {{#each sites}}
+                    <div class="row">
+                        <div class="col-xs-3">
+                            {{ this.site.name }}
+                        </div>
+                        <div class="col-xs-3">
+                            {{ this.type }}
+                        </div>
+                        <div class="col-xs-3">
+                            {{ this.status }}
+                        </div>
+                    </div>
+                {{/each}}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+            </div>
+        </script>
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- END MODAL CHANGE ASSOCIATION PREDICTION REPORT -->
+
+
 <!-- MULTIPLE ADD EVENT DEFAULT PANEL TEMPLATE -->
 <div id="multiple-add-panel-template" class="hidden">
     <div class="panel panel-primary itm-panel">
