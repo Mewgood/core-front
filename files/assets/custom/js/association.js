@@ -103,14 +103,19 @@ $("#modal-change-association-prediction").on("click", ".update-prediction", func
             odd: odd
         },
         success: function (response) {
-            $('#modal-change-association-prediction').modal('hide');
+            if (response.error) {
+                alert(response.error.message);
+            } else {
+                $('#modal-change-association-prediction').modal('hide');
+    
+                var element = $('#modal-change-association-prediction-report');
+                var template = element.find('.template-modal-content').html();
+                var compiledTemplate = Template7.compile(template);
+                var html = compiledTemplate(response);
+                element.find('.modal-content').html(html);
+                element.modal();
+            }
 
-            var element = $('#modal-change-association-prediction-report');
-            var template = element.find('.template-modal-content').html();
-            var compiledTemplate = Template7.compile(template);
-            var html = compiledTemplate(response);
-            element.find('.modal-content').html(html);
-            element.modal();
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
