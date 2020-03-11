@@ -128,32 +128,40 @@ $("#modal-change-association-prediction-report").on("click", ".save-prediction-r
     var siteIds = $(this).parents(".modal-content").find(".siteIds").map(function(){return $(this).val();}).get();
     var actions = $(this).parents(".modal-content").find(".actions").map(function(){return $(this).val();}).get();
 
-    $.ajax({
-        url: config.coreUrl + "/association/update-published-prediction?" + getToken(),
-        method: "POST",
-        data: {
-            associationId: associationId,
-            siteIds: siteIds,
-            actions: actions
-        },
-        success: function (response) {
-            $('#modal-change-association-prediction-report').modal('hide');
+    if (siteIds.length == 0) {
+        var date = $('#association-system-date').val();
+        $("#modal-change-association-prediction-report").modal("hide");
+        getEventsAssociations('nun', date);
+        getEventsAssociations('nuv', date);
+    } else {
+        $.ajax({
+            url: config.coreUrl + "/association/update-published-prediction?" + getToken(),
+            method: "POST",
+            data: {
+                associationId: associationId,
+                siteIds: siteIds,
+                actions: actions
+            },
+            success: function (response) {
+                $('#modal-change-association-prediction-report').modal('hide');
+    
+                var element = $('#modal-change-association-prediction-published-report');
+                var template = element.find('.template-modal-content').html();
+                var compiledTemplate = Template7.compile(template);
+                var html = compiledTemplate(response);
+                element.find('.modal-content').html(html);
+                element.modal();
+    
+                var date = $('#association-system-date').val();
+                getEventsAssociations('nun', date);
+                getEventsAssociations('nuv', date);
+            },
+            error: function (xhr, textStatus, errorTrown) {
+                manageError(xhr, textStatus, errorTrown);
+            }
+        });
+    }
 
-            var element = $('#modal-change-association-prediction-published-report');
-            var template = element.find('.template-modal-content').html();
-            var compiledTemplate = Template7.compile(template);
-            var html = compiledTemplate(response);
-            element.find('.modal-content').html(html);
-            element.modal();
-
-            var date = $('#association-system-date').val();
-            getEventsAssociations('nun', date);
-            getEventsAssociations('nuv', date);
-        },
-        error: function (xhr, textStatus, errorTrown) {
-            manageError(xhr, textStatus, errorTrown);
-        }
-    });
 });
 
 
