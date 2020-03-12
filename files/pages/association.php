@@ -1039,7 +1039,7 @@
 
                                 <!-- odd -->
                                 <div class="col-md-5">
-                                    <label class="control-label">Odd</label>
+                                    <label class="control-label odd-label">Odd</label>
                                     <input type="text" class="form-control odd" name="odd[]">
                                 </div>
                             </div>

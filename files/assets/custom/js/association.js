@@ -282,7 +282,30 @@ $("#modal-add-manual-event").on("change", ".select-prediction", function() {
             url: config.coreUrl + "/match/prediction/odds/" + prediction + "/" + match + "?" + getToken(),
             type: "get",
             success: function (response) {
+                var arrow = "";
+                if (isNaN(response.initial_odd)) {
+                    arrow = ' <span class="text-danger modal-odd-status"><i class="fa fa-times"></i></span>'
+                } else if (response.odd > response.initial_odd) {
+                    arrow = ' <span class="text-success modal-odd-status" data-odd="' + response.odd + '" data-initial-odd="' + response.initial_odd + '"><i class="fa fa-arrow-up"></i></span>'
+                } else if (response.odd < response.initial_odd) {
+                    arrow = ' <span class="text-danger modal-odd-status" data-odd="' + response.odd + '" data-initial-odd="' + response.initial_odd + '"><i class="fa fa-arrow-down"></i></span>'
+                }
+
                 $(currentElement).parents().eq(2).find(".odd").val(response.odd);
+                $(currentElement).parents().eq(2).find(".modal-odd-status").remove();
+                $(currentElement).parents().eq(2).find(".odd-label").append(arrow);
+
+                var popOverSettings = {
+                    placement: 'right',
+                    container: 'body',
+                    html: true,
+                    selector: '.modal-odd-status',
+                    content: function () {
+                        return $(this).data("initialOdd") + " >> " + $(this).data("odd");
+                    }
+                };
+                
+                $('#modal-add-manual-event').popover(popOverSettings);
             },
             error: function (xhr, textStatus, errorTrown) {
                 // we don't throw error if the request was 'aborted'
@@ -692,19 +715,32 @@ function getEventsAssociations(argTable, date = '0') {
             // clear table
             table.clear().draw();
             $.each(response, function(i, e) {
+                e.odd = parseFloat(e.odd);
+                e.initial_odd = parseFloat(e.initial_odd);
+
                 var disabled = e.to_distribute ? "" : "disabled";
                 var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages" ' + disabled + '>Associate</button>';
                 if (argTable == "nun" || argTable == "nuv") {
                     buttons += '<button type="button" class="btn yellow btn-outline change-prediction" data-association-id="' + e.id + '">Update</button>'
                 }
                 buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
+
+                var arrow = "";
+
+                if (isNaN(e.initial_odd)) {
+                    arrow = ' <span class="text-danger"><i class="fa fa-times"></i></span>'
+                } else if (e.odd > e.initial_odd) {
+                    arrow = ' <span class="text-success odd-status" data-odd="' + e.odd + '" data-initial-odd="' + e.initial_odd + '"><i class="fa fa-arrow-up"></i></span>'
+                } else if (e.odd < e.initial_odd) {
+                    arrow = ' <span class="text-danger odd-status" data-odd="' + e.odd + '" data-initial-odd="' + e.initial_odd + '"><i class="fa fa-arrow-down"></i></span>'
+                }
             
                 var node = table.row.add( [
                     e.country,
                     e.league,
                     e.homeTeam,
                     e.awayTeam,
-                    e.odd,
+                    e.odd + arrow,
                     e.predictionId,
                     e.result,
                     (e.status) ? e.status.name: '???',
@@ -716,6 +752,18 @@ function getEventsAssociations(argTable, date = '0') {
                 // add data-id attribute to inserted row
                 $(node).attr('data-id', e.id);
             });
+
+            var popOverSettings = {
+                placement: 'right',
+                container: 'body',
+                html: true,
+                selector: '.odd-status', //Sepcify the selector here
+                content: function () {
+                    return $(this).data("initialOdd") + " >> " + $(this).data("odd");
+                }
+            }
+            
+            $('body').popover(popOverSettings);
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
