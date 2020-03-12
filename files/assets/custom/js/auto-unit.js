@@ -566,10 +566,11 @@ function autoUnitGetScheduledEventsForTable() {
             var popOverSettings = {
                 placement: 'right',
                 container: 'body',
+                trigger: 'hover',
                 html: true,
                 selector: '.odd-status',
                 content: function () {
-                    return $(this).data("initialOdd") + " >> " + $(this).data("odd");
+                    return parseFloat($(this).data("initialOdd")).toFixed(2) + " >> " + parseFloat($(this).data("odd")).toFixed(2);
                 }
             }
             

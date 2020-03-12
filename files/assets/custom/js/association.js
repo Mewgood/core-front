@@ -298,10 +298,11 @@ $("#modal-add-manual-event").on("change", ".select-prediction", function() {
                 var popOverSettings = {
                     placement: 'right',
                     container: 'body',
+                    trigger: 'hover',
                     html: true,
                     selector: '.modal-odd-status',
                     content: function () {
-                        return $(this).data("initialOdd") + " >> " + $(this).data("odd");
+                        return parseFloat($(this).data("initialOdd")).toFixed(2) + " >> " + parseFloat($(this).data("odd")).toFixed(2);
                     }
                 };
                 
@@ -756,10 +757,11 @@ function getEventsAssociations(argTable, date = '0') {
             var popOverSettings = {
                 placement: 'right',
                 container: 'body',
+                trigger: 'hover',
                 html: true,
                 selector: '.odd-status', //Sepcify the selector here
                 content: function () {
-                    return $(this).data("initialOdd") + " >> " + $(this).data("odd");
+                    return parseFloat($(this).data("initialOdd")).toFixed(2) + " >> " + parseFloat($(this).data("odd")).toFixed(2);
                 }
             }
             
