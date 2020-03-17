@@ -69,6 +69,102 @@ $('.table-association').on('click', '.delete-event', function() {
     });
 });
 
+$('.table-association').on('click', '.change-prediction', function() {
+    var associateEventId = $(this).data("associationId");
+
+    $.ajax({
+        url: config.coreUrl + "/association/detail/" + associateEventId + "?" + getToken(),
+        type: "get",
+        success: function (response) {
+            var element = $('#modal-change-association-prediction');
+            var template = element.find('.template-modal-content').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(response);
+            element.find('.modal-content').html(html);
+            element.modal();
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
+$("#modal-change-association-prediction").on("click", ".update-prediction", function() {
+    var associationId = $(this).parents("form").find(".association-id").val();
+    var predictionId = $(this).parents("form").find("#prediction").val();
+    var odd = $(this).parents("form").find("#odd").val();
+
+    $.ajax({
+        url: config.coreUrl + "/association/update-prediction?" + getToken(),
+        method: "POST",
+        data: {
+            associationId: associationId,
+            predictionId: predictionId,
+            odd: odd
+        },
+        success: function (response) {
+            if (response.error) {
+                alert(response.error.message);
+            } else {
+                $('#modal-change-association-prediction').modal('hide');
+    
+                var element = $('#modal-change-association-prediction-report');
+                var template = element.find('.template-modal-content').html();
+                var compiledTemplate = Template7.compile(template);
+                var html = compiledTemplate(response);
+                element.find('.modal-content').html(html);
+                element.modal();
+            }
+
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
+$("#modal-change-association-prediction-report").on("click", ".save-prediction-report", function() {
+    var associationId = $(this).parents(".modal-content").find(".association-id").val();
+    var siteIds = $(this).parents(".modal-content").find(".siteIds").map(function(){return $(this).val();}).get();
+    var actions = $(this).parents(".modal-content").find(".actions").map(function(){return $(this).val();}).get();
+
+    if (siteIds.length == 0) {
+        var date = $('#association-system-date').val();
+        $("#modal-change-association-prediction-report").modal("hide");
+        getEventsAssociations('nun', date);
+        getEventsAssociations('nuv', date);
+    } else {
+        $.ajax({
+            url: config.coreUrl + "/association/update-published-prediction?" + getToken(),
+            method: "POST",
+            data: {
+                associationId: associationId,
+                siteIds: siteIds,
+                actions: actions
+            },
+            success: function (response) {
+                $('#modal-change-association-prediction-report').modal('hide');
+    
+                var element = $('#modal-change-association-prediction-published-report');
+                var template = element.find('.template-modal-content').html();
+                var compiledTemplate = Template7.compile(template);
+                var html = compiledTemplate(response);
+                element.find('.modal-content').html(html);
+                element.modal();
+    
+                var date = $('#association-system-date').val();
+                getEventsAssociations('nun', date);
+                getEventsAssociations('nuv', date);
+            },
+            error: function (xhr, textStatus, errorTrown) {
+                manageError(xhr, textStatus, errorTrown);
+            }
+        });
+    }
+
+});
+
+
     /*
      *  ----- Modal Add New Event -----
     ----------------------------------------------------------------------*/
@@ -186,7 +282,31 @@ $("#modal-add-manual-event").on("change", ".select-prediction", function() {
             url: config.coreUrl + "/match/prediction/odds/" + prediction + "/" + match + "?" + getToken(),
             type: "get",
             success: function (response) {
+                var arrow = "";
+                if (isNaN(response.initial_odd)) {
+                    arrow = ' <span class="text-danger modal-odd-status"><i class="fa fa-times"></i></span>'
+                } else if (response.odd > response.initial_odd) {
+                    arrow = ' <span class="text-success modal-odd-status" data-odd="' + response.odd + '" data-initial-odd="' + response.initial_odd + '"><i class="fa fa-arrow-up"></i></span>'
+                } else if (response.odd < response.initial_odd) {
+                    arrow = ' <span class="text-danger modal-odd-status" data-odd="' + response.odd + '" data-initial-odd="' + response.initial_odd + '"><i class="fa fa-arrow-down"></i></span>'
+                }
+
                 $(currentElement).parents().eq(2).find(".odd").val(response.odd);
+                $(currentElement).parents().eq(2).find(".modal-odd-status").remove();
+                $(currentElement).parents().eq(2).find(".odd-label").append(arrow);
+
+                var popOverSettings = {
+                    placement: 'right',
+                    container: 'body',
+                    trigger: 'hover',
+                    html: true,
+                    selector: '.modal-odd-status',
+                    content: function () {
+                        return parseFloat($(this).data("initialOdd")).toFixed(2) + " >> " + parseFloat($(this).data("odd")).toFixed(2);
+                    }
+                };
+                
+                $('#modal-add-manual-event').popover(popOverSettings);
             },
             error: function (xhr, textStatus, errorTrown) {
                 // we don't throw error if the request was 'aborted'
@@ -596,16 +716,32 @@ function getEventsAssociations(argTable, date = '0') {
             // clear table
             table.clear().draw();
             $.each(response, function(i, e) {
+                e.odd = parseFloat(e.odd);
+                e.initial_odd = parseFloat(e.initial_odd);
+
                 var disabled = e.to_distribute ? "" : "disabled";
                 var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages" ' + disabled + '>Associate</button>';
+                if (argTable == "nun" || argTable == "nuv") {
+                    buttons += '<button type="button" class="btn yellow btn-outline change-prediction" data-association-id="' + e.id + '">Update</button>'
+                }
                 buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
+
+                var arrow = "";
+
+                if (isNaN(e.initial_odd)) {
+                    arrow = ' <span class="text-danger"><i class="fa fa-times"></i></span>'
+                } else if (e.odd > e.initial_odd) {
+                    arrow = ' <span class="text-success odd-status" data-odd="' + e.odd + '" data-initial-odd="' + e.initial_odd + '"><i class="fa fa-arrow-up"></i></span>'
+                } else if (e.odd < e.initial_odd) {
+                    arrow = ' <span class="text-danger odd-status" data-odd="' + e.odd + '" data-initial-odd="' + e.initial_odd + '"><i class="fa fa-arrow-down"></i></span>'
+                }
             
                 var node = table.row.add( [
                     e.country,
                     e.league,
                     e.homeTeam,
                     e.awayTeam,
-                    e.odd,
+                    e.odd + arrow,
                     e.predictionId,
                     e.result,
                     (e.status) ? e.status.name: '???',
@@ -617,6 +753,19 @@ function getEventsAssociations(argTable, date = '0') {
                 // add data-id attribute to inserted row
                 $(node).attr('data-id', e.id);
             });
+
+            var popOverSettings = {
+                placement: 'right',
+                container: 'body',
+                trigger: 'hover',
+                html: true,
+                selector: '.odd-status', //Sepcify the selector here
+                content: function () {
+                    return parseFloat($(this).data("initialOdd")).toFixed(2) + " >> " + parseFloat($(this).data("odd")).toFixed(2);
+                }
+            }
+            
+            $('body').popover(popOverSettings);
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);

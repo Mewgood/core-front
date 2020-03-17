@@ -558,6 +558,19 @@ function autoUnitGetScheduledEventsForTable() {
         success: function (response) {
             autoUnitShowAssociatedEventsWithTable(response);
             scheduledEventsCurrentRequest = null;
+
+            var popOverSettings = {
+                placement: 'right',
+                container: 'body',
+                trigger: 'hover',
+                html: true,
+                selector: '.odd-status',
+                content: function () {
+                    return parseFloat($(this).data("initialOdd")).toFixed(2) + " >> " + parseFloat($(this).data("odd")).toFixed(2);
+                }
+            }
+            
+            $('body').popover(popOverSettings);
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);

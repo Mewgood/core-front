@@ -401,7 +401,20 @@
                                                 </div>
                                             {{/if}}
                                         </td>
-                                        <td>{{odd}}</td>
+                                        <td>
+                                            {{odd}}
+                                        
+                                            {{#if initial_odd}}
+                                                {{#js_compare "this.odd > this.initial_odd"}}
+                                                    <span class="text-success odd-status" data-odd="{{odd}}" data-initial-odd="{{initial_odd}}"><i class="fa fa-arrow-up"></i></span>
+                                                {{/js_compare}}
+                                                {{#js_compare "this.odd < this.initial_odd"}}
+                                                    <span class="text-danger odd-status" data-odd="{{odd}}" data-initial-odd="{{initial_odd}}"><i class="fa fa-arrow-down"></i></span>
+                                                {{/js_compare}}
+                                            {{else}}
+                                                <span class="text-danger"><i class="fa fa-times"></i></span>
+                                            {{/if}}
+                                        </td>
                                         <td>
                                         
                                             <div class="btn-group">
