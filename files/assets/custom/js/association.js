@@ -741,7 +741,7 @@ function getEventsAssociations(argTable, date = '0') {
                     e.league,
                     e.homeTeam,
                     e.awayTeam,
-                    e.odd + arrow,
+                    parseFloat(e.odd).toFixed(2) + arrow,
                     e.predictionId,
                     e.result,
                     (e.status) ? e.status.name: '???',
