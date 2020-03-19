@@ -727,22 +727,24 @@
             <div class="modal-body">
                 <form id="change-prediction-form">
                     <div class="row">
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label for="prediction">Prediction</label>
-                                <select id="prediction" name="prediction" required>
-                                    {{#each predictions}}
-                                        <option value="{{ identifier }}" 
-                                        {{#js_if "this.identifier == ../association.predictionId"}}
-                                            selected
-                                        {{/js_if}}
-                                        >
-                                            {{ name }}
-                                        </option>
-                                    {{/each}}
-                                </select>
+                        {{#js_if "../association.type != 'run' && 'ruv' != '../association.type'"}}
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label for="prediction">Prediction</label>
+                                    <select id="prediction" name="prediction" required>
+                                        {{#each predictions}}
+                                            <option value="{{ identifier }}" 
+                                            {{#js_if "this.identifier == ../association.predictionId"}}
+                                                selected
+                                            {{/js_if}}
+                                            >
+                                                {{ name }}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        {{/js_if}}
                         <div class="col-xs-3">
                             <div class="form-group">
                             <label for="odd">Odd</label>
@@ -752,7 +754,12 @@
                         <div class="col-xs-2"></div>
                         <div class="col-xs-2">
                             <input class="association-id" name="association_id" type="hidden" value="{{association.id}}">
-                            <button type="button" class="btn green update-prediction">Save</button>
+                            <button 
+                                type="button" 
+                                class="btn green update-prediction {{ ../association.type }}"
+                            >
+                                Save
+                            </button>
                         </div>
                         <div class="col-xs-2">
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>

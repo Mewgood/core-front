@@ -89,7 +89,7 @@ $('.table-association').on('click', '.change-prediction', function() {
     });
 });
 
-$("#modal-change-association-prediction").on("click", ".update-prediction", function() {
+$("#modal-change-association-prediction").on("click", ".update-prediction.nuv, .update-prediction.nun", function() {
     var associationId = $(this).parents("form").find(".association-id").val();
     var predictionId = $(this).parents("form").find("#prediction").val();
     var odd = $(this).parents("form").find("#odd").val();
@@ -123,6 +123,36 @@ $("#modal-change-association-prediction").on("click", ".update-prediction", func
     });
 });
 
+$("#modal-change-association-prediction").on("click", ".update-prediction.ruv, .update-prediction.run", function() {
+    var associationId = $(this).parents("form").find(".association-id").val();
+    var odd = $(this).parents("form").find("#odd").val();
+
+    $.ajax({
+        url: config.coreUrl + "/association/update-prediction-odd?" + getToken(),
+        method: "POST",
+        data: {
+            associationId: associationId,
+            odd: odd
+        },
+        success: function (response) {
+            if (response.error) {
+                alert(response.error.message);
+            } else {
+                $('#modal-change-association-prediction').modal('hide');
+                var date = $('#association-system-date').val();
+                getEventsAssociations('nun', date);
+                getEventsAssociations('nuv', date);
+                getEventsAssociations('run', date);
+                getEventsAssociations('ruv', date);
+            }
+
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
 $("#modal-change-association-prediction-report").on("click", ".save-prediction-report", function() {
     var associationId = $(this).parents(".modal-content").find(".association-id").val();
     var siteIds = $(this).parents(".modal-content").find(".siteIds").map(function(){return $(this).val();}).get();
@@ -133,6 +163,8 @@ $("#modal-change-association-prediction-report").on("click", ".save-prediction-r
         $("#modal-change-association-prediction-report").modal("hide");
         getEventsAssociations('nun', date);
         getEventsAssociations('nuv', date);
+        getEventsAssociations('run', date);
+        getEventsAssociations('ruv', date);
     } else {
         $.ajax({
             url: config.coreUrl + "/association/update-published-prediction?" + getToken(),
@@ -721,9 +753,7 @@ function getEventsAssociations(argTable, date = '0') {
 
                 var disabled = e.to_distribute ? "" : "disabled";
                 var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages" ' + disabled + '>Associate</button>';
-                if (argTable == "nun" || argTable == "nuv") {
-                    buttons += '<button type="button" class="btn yellow btn-outline change-prediction" data-association-id="' + e.id + '">Update</button>'
-                }
+                buttons += '<button type="button" class="btn yellow btn-outline change-prediction" data-association-id="' + e.id + '">Update</button>'
                 buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
 
                 var arrow = "";
