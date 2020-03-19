@@ -15,7 +15,7 @@
 }
 .table_import_filters_container li{
 	display: inline-block;
-	width: 19%;
+	width: 15%;
 	padding-right: 1%;
 }
 .table_import_filters_container li:nth-child(5), .table_import_filters_container li:nth-child(6) {
@@ -24,7 +24,9 @@
 .table_import_filters_container li:nth-child(6) {
 	padding-right: 0;
 }
-.table_import_filters_container li:nth-child(5) > button, .table_import_filters_container li:nth-child(6) > button {
+.table_import_filters_container li:nth-child(5) > button, 
+.table_import_filters_container li:nth-child(6) > button,
+.table_import_filters_container li:nth-child(7) > button {
 	width: 100%;
 	margin: 0 0 13px;
 }

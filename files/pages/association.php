@@ -111,6 +111,10 @@
                                     <li>
                                         <button type="button" class="btn green refresh-events-btn refresh-event-info">Refresh</button>
                                     </li>
+
+                                    <li>
+                                        <button type="button" class="btn btn-primary modal-add-nu-events">Add NU events</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -234,6 +238,10 @@
 
                                     <li>
                                         <button type="button" class="btn green refresh-events-btn refresh-event-info">Refresh</button>
+                                    </li>
+
+                                    <li>
+                                        <button type="button" class="btn btn-primary modal-add-nu-events">Add NU events</button>
                                     </li>
                                 </ul>
                             </div>
@@ -531,11 +539,6 @@
                 <div class="col-xs-12">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                     <h4 class="modal-title import_modal_title">Import Events - {{table}} System date: {{systemDate}}</h4>
-                    
-                    <select class="form-control import_events_sys_date input-small">
-                        <option value="AK">Alaska</option>
-                        <option value="HI" disabled="disabled">Hawaii</option>
-                    </select>
                 </div>
 
                 <div class="col-xs-12">

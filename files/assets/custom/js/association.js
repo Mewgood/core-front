@@ -543,6 +543,13 @@ $('#modal-available-events').on("change", "#association-event-datepicker", funct
     ajaxGetAvailableEvents(parrentTable, date);
 });
 
+$('.table-association').on('click', '.modal-add-nu-events', function() {
+    console.log("intra");
+    var parentTable = $(this).parents('.table-association').attr('data-table');
+    var date = $("#association-system-date").val();
+    ajaxGetNoUserEvents(parentTable, date);
+});
+
 // Modal Available Events
 // action submit to import selected event(s) in table
 $('#modal-available-events').on('click', '.import', function() {
@@ -1251,7 +1258,7 @@ function getCountryLeagues(country_code, container) {
     });
 }
 
-function getLeagueTeams(leagueId, container) {
+function getLeagueTeams(parrentTable, container) {
     $.ajax({
         url: config.coreUrl + "/leagues/get-league-teams/" + leagueId + "?" + getToken(),
         type: "get",
@@ -1263,6 +1270,28 @@ function getLeagueTeams(leagueId, container) {
             // clear the teams select options and re-generate them
             $(container).parent().parent().next().find('.manual_event_home_sel').empty().append(options_string);
             $(container).parent().parent().next().next().find('.manual_event_away_sel').empty().append(options_string);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function ajaxGetNoUserEvents(table, date) {
+    $.ajax({
+        url: config.coreUrl + "/event/no-user?" + "&" + getToken(),
+        type: "post",
+        data: {
+            date: date,
+            table: table
+        },
+        success: function (response) {
+            var element = $('#modal-available-events');
+            var template = element.find('.template-modal-content').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(response);
+            element.find('.modal-content').html(html);
+            element.modal();
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
