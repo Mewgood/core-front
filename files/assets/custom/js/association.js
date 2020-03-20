@@ -1258,7 +1258,7 @@ function getCountryLeagues(country_code, container) {
     });
 }
 
-function getLeagueTeams(parrentTable, container) {
+function getLeagueTeams(leagueId, container) {
     $.ajax({
         url: config.coreUrl + "/leagues/get-league-teams/" + leagueId + "?" + getToken(),
         type: "get",
