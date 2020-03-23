@@ -89,7 +89,7 @@ $('.table-association').on('click', '.change-prediction', function() {
     });
 });
 
-$("#modal-change-association-prediction").on("click", ".update-prediction", function() {
+$("#modal-change-association-prediction").on("click", ".update-prediction.nuv, .update-prediction.nun", function() {
     var associationId = $(this).parents("form").find(".association-id").val();
     var predictionId = $(this).parents("form").find("#prediction").val();
     var odd = $(this).parents("form").find("#odd").val();
@@ -123,6 +123,36 @@ $("#modal-change-association-prediction").on("click", ".update-prediction", func
     });
 });
 
+$("#modal-change-association-prediction").on("click", ".update-prediction.ruv, .update-prediction.run", function() {
+    var associationId = $(this).parents("form").find(".association-id").val();
+    var odd = $(this).parents("form").find("#odd").val();
+
+    $.ajax({
+        url: config.coreUrl + "/association/update-prediction-odd?" + getToken(),
+        method: "POST",
+        data: {
+            associationId: associationId,
+            odd: odd
+        },
+        success: function (response) {
+            if (response.error) {
+                alert(response.error.message);
+            } else {
+                $('#modal-change-association-prediction').modal('hide');
+                var date = $('#association-system-date').val();
+                getEventsAssociations('nun', date);
+                getEventsAssociations('nuv', date);
+                getEventsAssociations('run', date);
+                getEventsAssociations('ruv', date);
+            }
+
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+});
+
 $("#modal-change-association-prediction-report").on("click", ".save-prediction-report", function() {
     var associationId = $(this).parents(".modal-content").find(".association-id").val();
     var siteIds = $(this).parents(".modal-content").find(".siteIds").map(function(){return $(this).val();}).get();
@@ -133,6 +163,8 @@ $("#modal-change-association-prediction-report").on("click", ".save-prediction-r
         $("#modal-change-association-prediction-report").modal("hide");
         getEventsAssociations('nun', date);
         getEventsAssociations('nuv', date);
+        getEventsAssociations('run', date);
+        getEventsAssociations('ruv', date);
     } else {
         $.ajax({
             url: config.coreUrl + "/association/update-published-prediction?" + getToken(),
@@ -511,6 +543,13 @@ $('#modal-available-events').on("change", "#association-event-datepicker", funct
     ajaxGetAvailableEvents(parrentTable, date);
 });
 
+$('.table-association').on('click', '.modal-add-nu-events', function() {
+    console.log("intra");
+    var parentTable = $(this).parents('.table-association').attr('data-table');
+    var date = $("#association-system-date").val();
+    ajaxGetNoUserEvents(parentTable, date);
+});
+
 // Modal Available Events
 // action submit to import selected event(s) in table
 $('#modal-available-events').on('click', '.import', function() {
@@ -721,9 +760,7 @@ function getEventsAssociations(argTable, date = '0') {
 
                 var disabled = e.to_distribute ? "" : "disabled";
                 var buttons = '<button type="button" class="btn green btn-outline search-events-btn modal-available-packages" ' + disabled + '>Associate</button>';
-                if (argTable == "nun" || argTable == "nuv") {
-                    buttons += '<button type="button" class="btn yellow btn-outline change-prediction" data-association-id="' + e.id + '">Update</button>'
-                }
+                buttons += '<button type="button" class="btn yellow btn-outline change-prediction" data-association-id="' + e.id + '">Update</button>'
                 buttons += '<button type="button" class="btn red btn-outline search-events-btn delete-event">Del</button>';
 
                 var arrow = "";
@@ -741,7 +778,7 @@ function getEventsAssociations(argTable, date = '0') {
                     e.league,
                     e.homeTeam,
                     e.awayTeam,
-                    e.odd + arrow,
+                    parseFloat(e.odd).toFixed(2) + arrow,
                     e.predictionId,
                     e.result,
                     (e.status) ? e.status.name: '???',
@@ -1233,6 +1270,28 @@ function getLeagueTeams(leagueId, container) {
             // clear the teams select options and re-generate them
             $(container).parent().parent().next().find('.manual_event_home_sel').empty().append(options_string);
             $(container).parent().parent().next().next().find('.manual_event_away_sel').empty().append(options_string);
+        },
+        error: function (xhr, textStatus, errorTrown) {
+            manageError(xhr, textStatus, errorTrown);
+        }
+    });
+}
+
+function ajaxGetNoUserEvents(table, date) {
+    $.ajax({
+        url: config.coreUrl + "/event/no-user?" + "&" + getToken(),
+        type: "post",
+        data: {
+            date: date,
+            table: table
+        },
+        success: function (response) {
+            var element = $('#modal-available-events');
+            var template = element.find('.template-modal-content').html();
+            var compiledTemplate = Template7.compile(template);
+            var html = compiledTemplate(response);
+            element.find('.modal-content').html(html);
+            element.modal();
         },
         error: function (xhr, textStatus, errorTrown) {
             manageError(xhr, textStatus, errorTrown);
