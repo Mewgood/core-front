@@ -196,6 +196,9 @@
                                                         {{/js_compare}}
                                                         </span>
                                                     {{/if}}
+                                                    {{#if this.isNoTip}}
+                                                        NO TIP
+                                                    {{/if}}
                                                 </td>
                                                 <td> 
                                                     {{#if this.mailingDate}}
